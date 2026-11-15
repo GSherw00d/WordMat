@@ -1,0 +1,150 @@
+/* ==========================================================================================================
+   WMUnitTable.mac -- the unit table of the word_math unit engine (data only).
+   Part of the word_math fork of WordMat. GPL v3 or later.
+
+   Loaded by WMUnits.mac (which holds the engine). Keep this file ASCII: non-ASCII spellings such as
+   degree signs, Greek Delta, micro and Omega are mapped to the ASCII names below by the VBA side
+   (WMUnits.bas, WMU_ToAscii) before anything reaches Maxima.
+
+   HOW TO ADD A UNIT
+     wm_defunit(name, definition, system, flags)
+        name        the symbol exactly as typed inside [ ] (case-sensitive), e.g. "kip"
+        definition  the unit in terms of units defined EARLIER in this file, using the same syntax as
+                    inside [ ]: numbers (exact decimals and fractions are kept exact), * / ^ ( ) and names,
+                    e.g. "1000*lbf", "lbf/in^2", "4.54609*L", "kg*m/s^2"
+        system      "SI"   SI and units accepted for use with SI (bar, L, t, ...)
+                    "imp"  imperial / US customary (selects imperial auto-fill, see CLAUDE.md)
+                    "both" neutral: does not decide the system (time, angles)
+        flags       a list of: prefix  SI prefixes may be put in front (kN, mbar, uF; "u" is micro)
+                               auto    the engine may choose an engineering prefix for a result in this unit
+                               named   a named SI unit that base-unit combinations are grouped into (rule 2)
+                                       and that imperial units of the same dimension convert to in mixed input
+     The SI factor and the base-dimension vector [m, kg, s, A, K, mol, cd] are computed from the definition,
+     so they never have to be typed twice. List them with  WMUnitInfo("name")  in Maxima.
+
+     wm_defbase(name, dimension index 1..7, SI factor, system, flags)   a base unit (m, g, s, A, K, mol, cd)
+     wm_defoffset(name, definition, offset, system, difference unit, plain unit, SI counterpart)
+                    an offset (absolute / gauge) unit: SI value = number * factor(definition) + offset.
+                    The difference unit is what absolute - absolute gives (degC -> DdegC), the plain unit
+                    what a warning result is shown in (degC -> K), the SI counterpart what an imperial
+                    offset unit becomes in mixed input (degF -> degC).
+     wm_defalias(new name, existing name)          another spelling of the same unit
+     wm_defambiguous(name, message)                a name that must not be used on its own (gal, ton, ...)
+     wm_defhint(name, other unit, message)         extra hint when this unit appears in a dimension mismatch
+                                                   that writing the other unit would fix (lb used as a force)
+     wm_defsuggest(wrong name, right name)         "Did you mean ...?" for common mistakes
+     wm_deffamily([names, smallest first])         imperial units chosen by size for auto-filled results
+     wm_setauto(name, [prefixes])                  restrict the automatic prefixes for one unit
+   ========================================================================================================== */
+
+/* ---------------- SI base units (kg is k + g) ---------------- */
+wm_defbase("m",   1, 1,      "SI", [prefix, auto])$
+wm_defbase("g",   2, 1/1000, "SI", [prefix, auto])$
+wm_defbase("s",   3, 1,      "both", [prefix, auto])$
+wm_defbase("A",   4, 1,      "SI", [prefix, auto])$
+wm_defbase("K",   5, 1,      "SI", [prefix])$
+wm_defbase("mol", 6, 1,      "SI", [prefix])$
+wm_defbase("cd",  7, 1,      "SI", [prefix])$
+wm_setauto("g", ["u", "m", "", "k"])$       /* 1500 kg stays kg (not Mg) */
+wm_setauto("s", ["n", "u", "m", ""])$       /* no ks */
+wm_setauto("m", ["n", "u", "m", "", "k"])$  /* no Mm */
+
+/* ---------------- named SI derived units (preference order matters for grouping) ---------------- */
+wm_defunit("N",   "kg*m/s^2", "SI", [prefix, auto, named])$
+wm_defunit("Pa",  "N/m^2",    "SI", [prefix, auto, named])$
+wm_defunit("J",   "N*m",      "SI", [prefix, auto, named])$
+wm_defunit("W",   "J/s",      "SI", [prefix, auto, named])$
+wm_defunit("C",   "A*s",      "SI", [prefix, auto, named])$
+wm_defunit("V",   "W/A",      "SI", [prefix, auto, named])$
+wm_defunit("Ohm", "V/A",      "SI", [prefix, auto, named])$
+wm_defunit("F",   "C/V",      "SI", [prefix, auto, named])$
+wm_defunit("Wb",  "V*s",      "SI", [prefix, auto, named])$
+wm_defunit("T",   "Wb/m^2",   "SI", [prefix, auto, named])$
+wm_defunit("H",   "Wb/A",     "SI", [prefix, auto, named])$
+wm_defunit("S",   "1/Ohm",    "SI", [prefix, auto])$
+wm_defunit("Hz",  "1/s",      "SI", [prefix, auto])$
+
+/* ---------------- units accepted for use with SI ---------------- */
+wm_defunit("min", "60*s",       "both", [])$
+wm_defunit("h",   "60*min",     "both", [])$
+wm_defunit("d",   "24*h",       "both", [])$
+wm_defunit("yr",  "365.25*d",   "both", [])$      /* Julian year */
+wm_defunit("L",   "1/1000*m^3", "SI", [prefix])$
+wm_defalias("l", "L")$
+wm_defunit("t",   "1000*kg",    "SI", [])$        /* metric tonne; no prefixes (ft would be ambiguous) */
+wm_defunit("bar", "100000*Pa",  "SI", [prefix])$
+wm_defunit("bara","bar",        "SI", [])$        /* absolute pressure: an ordinary unit, like K */
+wm_defunit("atm", "101325*Pa",  "SI", [])$
+wm_defunit("mmHg","133.322387415*Pa", "SI", [])$
+wm_defunit("ha",  "10000*m^2",  "SI", [])$
+wm_defunit("Wh",  "3600*J",     "SI", [prefix])$
+wm_defunit("eV",  "1.602176634/10^19*J", "SI", [prefix])$
+wm_defunit("cal", "4.184*J",    "SI", [prefix])$
+wm_defunit("rad", "1",          "both", [prefix])$
+wm_defunit("deg", "%pi/180*rad","both", [])$
+wm_defunit("rpm", "1/min",      "both", [])$
+
+/* ---------------- temperature (Mathcad Prime model, CLAUDE.md "Offset units") ---------------- */
+wm_defunit("DdegC", "K",        "SI", [])$        /* temperature difference, 1 DdegC = 1 K */
+wm_defunit("degR",  "5/9*K",    "imp", [])$       /* Rankine: an ordinary absolute unit */
+wm_defunit("DdegF", "5/9*K",    "imp", [])$       /* temperature difference, 1 DdegF = 5/9 K */
+wm_defoffset("degC", "K",     27315/100,   "SI",  "DdegC", "K",    "degC")$
+wm_defoffset("degF", "5/9*K", 45967/180,  "imp", "DdegF", "degR", "degC")$   /* 459.67 degR * 5/9 */
+
+/* ---------------- imperial / US customary ---------------- */
+wm_defunit("in",   "0.0254*m",    "imp", [])$
+wm_defunit("ft",   "12*in",       "imp", [])$
+wm_defunit("yd",   "3*ft",        "imp", [])$
+wm_defunit("mi",   "5280*ft",     "imp", [])$
+wm_defunit("lb",   "0.45359237*kg", "imp", [])$   /* pound-MASS */
+wm_defalias("lbm", "lb")$
+wm_defunit("oz",   "1/16*lb",     "imp", [])$     /* avoirdupois ounce (mass) */
+wm_defunit("lbf",  "lb*9.80665*m/s^2", "imp", [])$   /* pound-FORCE (standard gravity) */
+wm_defunit("kip",  "1000*lbf",    "imp", [])$
+wm_defunit("slug", "lbf*s^2/ft",  "imp", [])$
+wm_defunit("psi",  "lbf/in^2",    "imp", [])$
+wm_defunit("ksi",  "1000*psi",    "imp", [])$
+wm_defunit("psia", "psi",         "imp", [])$     /* absolute pressure: an ordinary unit */
+wm_defoffset("psig", "psi", 101325, "imp", "psi", "psia", "barg")$
+wm_defoffset("barg", "bar", 101325, "SI",  "bar", "bara", "barg")$
+wm_defunit("mph",  "mi/h",        "imp", [])$
+wm_defunit("hp",   "550*ft*lbf/s", "imp", [])$    /* mechanical horsepower */
+wm_defunit("BTU",  "1055.05585262*J", "imp", [])$ /* International Table BTU */
+wm_defalias("Btu", "BTU")$
+wm_defunit("gal_US",  "231*in^3",    "imp", [])$
+wm_defunit("gal_UK",  "4.54609*L",   "imp", [])$
+wm_defunit("pt_US",   "1/8*gal_US",  "imp", [])$
+wm_defunit("pt_UK",   "1/8*gal_UK",  "imp", [])$
+wm_defunit("floz_US", "1/128*gal_US", "imp", [])$
+wm_defunit("floz_UK", "1/160*gal_UK", "imp", [])$
+wm_defunit("ton_short", "2000*lb",   "imp", [])$
+wm_defunit("ton_long",  "2240*lb",   "imp", [])$
+
+/* imperial units chosen by size for auto-filled results (proposal: psi vs ksi, lbf vs kip) */
+wm_deffamily(["psi", "ksi"])$
+wm_deffamily(["lbf", "kip"])$
+
+/* ---------------- names that must be explicit ---------------- */
+wm_defambiguous("gal",  "[gal] is ambiguous. Write [gal_US] (US gallon, 3.785 L) or [gal_UK] (imperial gallon, 4.546 L).")$
+wm_defambiguous("ton",  "[ton] is ambiguous. Write [ton_short] (US ton, 2000 lb), [ton_long] (UK ton, 2240 lb) or [t] (metric tonne, 1000 kg).")$
+wm_defambiguous("pt",   "[pt] is ambiguous. Write [pt_US] (US pint) or [pt_UK] (imperial pint).")$
+wm_defambiguous("pint", "[pint] is ambiguous. Write [pt_US] (US pint) or [pt_UK] (imperial pint).")$
+wm_defambiguous("floz", "[floz] is ambiguous. Write [floz_US] (US fluid ounce) or [floz_UK] (imperial fluid ounce).")$
+wm_defambiguous("fl_oz", "[fl_oz] is ambiguous. Write [floz_US] (US fluid ounce) or [floz_UK] (imperial fluid ounce).")$
+
+/* ---------------- hints and suggestions ---------------- */
+wm_defhint("lb", "lbf", "[lb] is pound-mass. Did you mean [lbf] (pound-force)?")$
+wm_defsuggest("sec", "s")$
+wm_defsuggest("secs", "s")$
+wm_defsuggest("hr", "h")$
+wm_defsuggest("hrs", "h")$
+wm_defsuggest("hour", "h")$
+wm_defsuggest("mins", "min")$
+wm_defsuggest("lbs", "lb")$
+wm_defsuggest("kph", "km/h")$
+wm_defsuggest("kgf", "kg (mass) or N (force)")$
+wm_defsuggest("ohm", "Ohm")$
+wm_defsuggest("tonne", "t")$
+wm_defsuggest("litre", "L")$
+wm_defsuggest("C_deg", "degC")$
+wm_defsuggest("celsius", "degC")$

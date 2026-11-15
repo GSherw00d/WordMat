@@ -1,0 +1,597 @@
+/* ==========================================================================================================
+   WMUnits.mac -- the word_math unit engine for WordMat. GPL v3 or later.
+   Design: word_math\research\05_unit_engine_design.md.  Unit data: WMUnitTable.mac (same folder).
+
+   Loaded once per Maxima process by WordMat (CMaxima.GetMaximaSettingsString adds
+   "if wmunits_loaded#true then load(...)"). Runs in WordMat's normal Maxima process (maxima.core); it does
+   not use Maxima's unit package, so WordMat's legacy units mode (second process, maximaunit.core) is
+   untouched.
+
+   How a unit reaches Maxima. The VBA side (WMUnits.bas) replaces every [ ... ] in the input before any other
+   CodeForMaxima pass runs, so no later pass can rename a unit (psi -> Greek psi, m -> a variable):
+       5 [kN*m]   ->  wmq(5, "kN*m")       a number directly before the bracket: one quantity
+       x [m]      ->  x*wmu("m")           anything else: multiplication by the unit
+   Units are opaque symbols wmu_<name> (wmu_kN, wmu_m), so Maxima's ordinary algebra keeps the user's units
+   (kN*m stays kN*m) and cancels identical ones. Absolute offset quantities (20 [degC], 2 [barg]) become
+   wmabs(SI value, "degC", id): a function that never merges with another one, so the engine can see
+   whether absolute values were added or subtracted.
+
+   Public functions
+     wmu(s), wmq(x, s)          units and quantities (called from the translated input)
+     WMUnitResult(expr, req)    the answer for "= ?" (req = "") or "= ? [req]": returns the string
+                                "WMU@@<sign>@@<value>@@<unit>@@<message>@@<tag>", or "WMU@@NONE" when expr has
+                                no units and nothing was requested (WordMat then evaluates as before).
+                                <sign> is "=" or "~" (approximately), <tag> none/abs/diff/warn.
+     WMUnitCheck(expr)          expr if it is dimensionally consistent, else an error
+     WMUnitSI(expr)             [SI value, base-dimension vector]
+     WMUnitInfo(name)           [factor, dimension vector, system, prefixes allowed, offset data]
+   Errors are raised with error("WMUNIT: ..."); WordMat shows the text after "WMUNIT: ".
+   ========================================================================================================== */
+
+wmunits_loaded: false$
+
+/* ---------------------------------------------------------------- state */
+wm_dimkeys: ["m", "kg", "s", "A", "K", "mol", "cd"]$
+wm_dimzero: [0, 0, 0, 0, 0, 0, 0]$
+wm_names: []$          /* every registered unit name (table units and prefixed units created on demand) */
+wm_ambig: []$          /* [name, message] */
+wm_hints: []$          /* [name, other dimension unit, message] */
+wm_suggest: []$        /* [wrong, right] */
+wm_families: []$       /* imperial size families, smallest first */
+wm_named: []$          /* named SI units for rule 2 and mixed input, in preference order */
+wm_counter: 0$         /* ids for wmabs(...) */
+wm_prefixes: [["da", 10], ["Y", 10^24], ["Z", 10^21], ["E", 10^18], ["P", 10^15], ["T", 10^12], ["G", 10^9],
+              ["M", 10^6], ["k", 10^3], ["h", 10^2], ["d", 1/10], ["c", 1/100], ["m", 1/1000], ["u", 10^-6],
+              ["n", 10^-9], ["p", 10^-12], ["f", 10^-15], ["a", 10^-18], ["z", 10^-21], ["y", 10^-24]]$
+wm_defaultauto: ["p", "n", "u", "m", "", "k", "M", "G"]$
+wm_top: 0$
+
+/* ---------------------------------------------------------------- small helpers */
+wm_err(msg) := error(sconcat("WMUNIT: ", msg))$
+wm_sym(n) := concat('wmu_, n)$
+wm_isunit(x) := symbolp(x) and is(slength(string(x)) > 4) and is(substring(string(x), 1, 5) = "wmu_")$
+wm_nameof(x) := substring(string(x), 5)$
+wm_known(n) := member(n, wm_names)$
+wm_isabs(x) := not atom(x) and is(op(x) = 'wmabs)$
+wm_cx(M) := length(M) + apply("+", cons(0, map(lambda([p], abs(p[2])), M)))$
+wm_mscale(M, k) := map(lambda([p], [p[1], p[2]*k]), M)$
+wm_monofac(M) := apply("*", cons(1, map(lambda([p], wm_fac[p[1]]^p[2]), M)))$
+wm_monodim(M) := apply("+", cons(wm_dimzero, map(lambda([p], p[2]*wm_dim[p[1]]), M)))$
+wm_monoexpr(M) := apply("*", cons(1, map(lambda([p], wm_sym(p[1])^p[2]), M)))$
+wm_root(n) := wm_rootof[n]$
+wm_ndims(n) := length(sublist(wm_dim[n], lambda([x], x # 0)))$
+
+/* ---------------------------------------------------------------- table definition API */
+wm_register(n, f, d, sys, flags, chain) := block([],
+  if not wm_known(n) then wm_names: endcons(n, wm_names),
+  wm_fac[n]: f, wm_dim[n]: d, wm_sys[n]: sys,
+  wm_pfx[n]: if member('prefix, flags) then true else false,
+  wm_auto[n]: if member('auto, flags) then wm_defaultauto else [],
+  wm_chain[n]: chain, wm_off[n]: false, wm_rootof[n]: n, wm_baselike[n]: false,
+  if member('named, flags) and not member(n, wm_named) then wm_named: endcons(n, wm_named),
+  apply(assume, [wm_sym(n) > 0]),
+  n)$
+
+wm_defbase(n, k, f, sys, flags) := block([d: copylist(wm_dimzero)],
+  d[k]: 1,
+  wm_register(n, f, d, sys, flags, []),
+  wm_baselike[n]: true,
+  n)$
+
+/* chain of successive expansions of a definition monomial, down to base units */
+wm_makechain(M) := block([ch: [], cur: M, nxt, k: 0, p, sub],
+  while cur # [] and k < 10 do (
+    ch: endcons(cur, ch),
+    nxt: [], sub: false,
+    for p in cur do (
+      if wm_chain[p[1]] # [] then (nxt: append(nxt, wm_mscale(first(wm_chain[p[1]]), p[2])), sub: true)
+      else nxt: endcons(p, nxt)),
+    if not sub then return(0),
+    cur: wm_mergenames(nxt),
+    k: k + 1),
+  ch)$
+
+wm_defunit(n, def, sys, flags) := block([e, M, c],
+  e: wm_parse(def),
+  M: wm_monoof(e),
+  c: e / wm_monoexpr(M),
+  wm_register(n, c*wm_monofac(M), wm_monodim(M), sys, flags, wm_makechain(wm_mergenames(M))))$
+
+wm_defoffset(n, def, off, sys, dunit, punit, siunit) := block([],
+  wm_defunit(n, def, sys, []),
+  wm_off[n]: [off, dunit, punit, siunit],
+  n)$
+
+wm_defalias(n, existing) := block([],
+  if not wm_known(n) then wm_names: endcons(n, wm_names),
+  wm_fac[n]: wm_fac[existing], wm_dim[n]: wm_dim[existing], wm_sys[n]: wm_sys[existing],
+  wm_pfx[n]: wm_pfx[existing], wm_auto[n]: [], wm_off[n]: wm_off[existing], wm_rootof[n]: n,
+  wm_chain[n]: cons([[existing, 1]], wm_chain[existing]), wm_baselike[n]: wm_baselike[existing],
+  apply(assume, [wm_sym(n) > 0]),
+  n)$
+
+wm_defambiguous(n, msg) := (wm_ambig: endcons([n, msg], wm_ambig), n)$
+wm_defhint(n, other, msg) := (wm_hints: endcons([n, other, msg], wm_hints), n)$
+wm_defsuggest(wrong, right) := (wm_suggest: endcons([wrong, right], wm_suggest), wrong)$
+wm_deffamily(L) := (wm_families: endcons(L, wm_families), L)$
+wm_setauto(n, L) := (wm_auto[n]: L, n)$
+
+/* a prefixed unit, created the first time it is used (kN, mbar, uF) */
+wm_addprefixed(n, pr, r) := block([],
+  wm_register(n, pr[2]*wm_fac[r], wm_dim[r], wm_sys[r], [], cons([[r, 1]], wm_chain[r])),
+  wm_rootof[n]: r,
+  wm_baselike[n]: wm_baselike[r],
+  n)$
+
+/* ---------------------------------------------------------------- the [ ] parser */
+/* tokens: ["name", s] ["num", value] ["op", c] */
+wm_tokens(s) := block([i: 1, n: slength(s), t: [], c, j, w, k],
+  while i <= n do (
+    c: charat(s, i),
+    if c = " " then i: i + 1
+    elseif alphacharp(c) or c = "_" or c = "%" then (
+      j: i,
+      while j <= n and (alphacharp(charat(s, j)) or charat(s, j) = "_" or charat(s, j) = "%") do j: j + 1,
+      w: substring(s, i, j),
+      if j <= n and digitcharp(charat(s, j)) then
+        wm_err(sconcat("[", s, "] is not a valid unit: write powers with ^, e.g. [", w, "^", charat(s, j), "].")),
+      if w = "%pi" then t: endcons(["num", %pi], t) else t: endcons(["name", w], t),
+      i: j)
+    elseif digitcharp(c) then (
+      j: i,
+      while j <= n and digitcharp(charat(s, j)) do j: j + 1,
+      w: parse_string(substring(s, i, j)),
+      if j < n and charat(s, j) = "." and digitcharp(charat(s, j + 1)) then (
+        i: j + 1, j: i,
+        while j <= n and digitcharp(charat(s, j)) do j: j + 1,
+        w: w + parse_string(substring(s, i, j)) / 10^(j - i)),
+      t: endcons(["num", w], t),
+      i: j)
+    elseif member(c, ["*", ".", "/", "^", "(", ")", "-", "+"]) then (
+      /* + and - only in exponents: m^-2, s^(-1); anything else is not a unit (2[x+1]) */
+      if (c = "+" or c = "-") and not (t # [] and (last(t) = ["op", "^"] or
+            (last(t) = ["op", "("] and length(t) >= 2 and t[length(t) - 1] = ["op", "^"]))) then
+        wm_err(sconcat("[", s, "] is not a valid unit. Square brackets are reserved for units; use ( ) for grouping.")),
+      t: endcons(["op", if c = "." then "*" else c], t),
+      i: i + 1)
+    else wm_err(sconcat("[", s, "] is not a valid unit: unexpected character '", c,
+                        "'. Units may contain unit names, prefixes, * / ^ ( ) and numbers.")),
+    0),
+  t)$
+
+wm_peek() := if wm_p <= length(wm_t) then wm_t[wm_p] else ["end", ""]$
+
+wm_parse(s) := block([wm_t, wm_p: 1, e],
+  if not stringp(s) then s: string(s),
+  wm_t: wm_tokens(s),
+  if wm_t = [] then wm_err("Empty unit brackets [ ]."),
+  wm_ps: s,
+  e: wm_pexpr(),
+  if wm_p <= length(wm_t) then
+    wm_err(sconcat("[", s, "] is not a valid unit. Square brackets are reserved for units; use ( ) for grouping.")),
+  e)$
+
+wm_pexpr() := block([e, tk, more: true],
+  e: wm_pterm(),
+  while more do (
+    tk: wm_peek(),
+    if tk = ["op", "*"] then (wm_p: wm_p + 1, e: e * wm_pterm())
+    elseif tk = ["op", "/"] then (wm_p: wm_p + 1, e: e / wm_pterm())
+    elseif tk[1] = "name" or tk = ["op", "("] then e: e * wm_pterm()
+    else more: false),
+  e)$
+
+wm_pterm() := block([b, x],
+  b: wm_pprim(),
+  if wm_peek() = ["op", "^"] then (wm_p: wm_p + 1, x: wm_pexp(), b: b^x),
+  b)$
+
+wm_pexp() := block([tk, sg: 1, x, y],
+  tk: wm_peek(),
+  if tk = ["op", "("] then (
+    wm_p: wm_p + 1,
+    x: wm_pexp(),
+    if wm_peek() = ["op", "/"] then (wm_p: wm_p + 1, y: wm_pexp(), x: x / y),
+    if wm_peek() # ["op", ")"] then wm_badunit(),
+    wm_p: wm_p + 1,
+    return(x)),
+  if tk = ["op", "-"] then (sg: -1, wm_p: wm_p + 1, tk: wm_peek())
+  elseif tk = ["op", "+"] then (wm_p: wm_p + 1, tk: wm_peek()),
+  if tk[1] # "num" then wm_badunit(),
+  wm_p: wm_p + 1,
+  sg * tk[2])$
+
+wm_pprim() := block([tk, e],
+  tk: wm_peek(),
+  if tk[1] = "name" then (wm_p: wm_p + 1, wm_sym(wm_lookup(tk[2])))
+  elseif tk[1] = "num" then (wm_p: wm_p + 1, tk[2])
+  elseif tk = ["op", "("] then (
+    wm_p: wm_p + 1,
+    e: wm_pexpr(),
+    if wm_peek() # ["op", ")"] then wm_badunit(),
+    wm_p: wm_p + 1,
+    e)
+  else wm_badunit())$
+
+wm_badunit() := wm_err(sconcat("[", wm_ps, "] is not a valid unit. Square brackets are reserved for units; use ( ) for grouping."))$
+
+/* name -> registered unit name (creating prefixed units on demand), or an error with a suggestion */
+wm_lookup(n) := block([r, found: false, pl, rest],
+  if wm_known(n) then return(n),
+  r: assoc(n, wm_ambig),
+  if r # false then wm_err(r),
+  for pr in wm_prefixes do (
+    pl: slength(pr[1]),
+    if found = false and slength(n) > pl and substring(n, 1, pl + 1) = pr[1] then (
+      rest: substring(n, pl + 1),
+      if wm_known(rest) then (if wm_pfx[rest] = true then found: wm_addprefixed(n, pr, rest)))),
+  if found # false then return(found),
+  wm_err(sconcat("Unknown unit [", n, "].", wm_didyoumean(n))))$
+
+wm_didyoumean(n) := block([r, cands, c, best: false],
+  r: assoc(n, wm_suggest),
+  if r # false then return(sconcat(" Did you mean [", r, "]?")),
+  /* same letters, other case (unit names are case-sensitive) */
+  cands: append(wm_names,
+                flatten(map(lambda([u], map(lambda([p], sconcat(p, u)), ["k", "M", "G", "m", "u", "c"])),
+                            sublist(wm_names, lambda([u], wm_pfx[u] = true))))),
+  for c in cands do if best = false and sequalignore(c, n) then best: c,
+  if best = false then for c in wm_names do if best = false and wm_edit1(c, n) then best: c,
+  if best # false then sconcat(" Did you mean [", best, "]? Unit names are case-sensitive.") else "")$
+
+/* true if a and b differ by one substitution, insertion or deletion */
+wm_edit1(a, b) := block([la: slength(a), lb: slength(b), i: 1],
+  if abs(la - lb) > 1 or a = b or min(la, lb) < 2 then return(false),
+  while i <= min(la, lb) and charat(a, i) = charat(b, i) do i: i + 1,
+  if la = lb then is(substring(a, i + 1) = substring(b, i + 1))
+  elseif la > lb then is(substring(a, i + 1) = substring(b, i))
+  else is(substring(a, i) = substring(b, i + 1)))$
+
+/* ---------------------------------------------------------------- quantities (called from the input) */
+wmu(s) := block([e],
+  e: wm_parse(s),
+  if wm_hasoffset(e) then
+    wm_err(sconcat("[", s, "] is an absolute (offset) unit and needs a number directly in front of it, e.g. 20 [",
+                   s, "]. For a difference use [", wm_off[wm_nameof(wm_offsetsym(e))][2], "].")),
+  e)$
+
+wmq(x, s) := block([e, n],
+  e: wm_parse(s),
+  if wm_isunit(e) then (
+    n: wm_nameof(e),
+    if wm_off[n] # false then (
+      wm_counter: wm_counter + 1,
+      return(wmabs(x*wm_fac[n] + wm_off[n][1], n, wm_counter)))),
+  if wm_hasoffset(e) then
+    wm_err(sconcat("[", s, "] combines an absolute (offset) unit with other units. Use the difference unit [",
+                   wm_off[wm_nameof(wm_offsetsym(e))][2], "] inside compound units.")),
+  x*e)$
+
+wm_offsetsym(e) := block([r: false],
+  for v in listofvars(e) do if r = false and wm_isunit(v) then (if wm_off[wm_nameof(v)] # false then r: v),
+  r)$
+wm_hasoffset(e) := is(wm_offsetsym(e) # false)$
+
+/* ---------------------------------------------------------------- dimension analysis */
+/* returns [SI value, dimension vector]; raises a unit-mismatch error */
+wm_an(e) := block([inflag: true, o, r, rs, v, d, k, a],
+  if numberp(e) then return([e, wm_dimzero]),
+  if wm_isunit(e) then return([wm_fac[wm_nameof(e)], wm_dim[wm_nameof(e)]]),
+  if atom(e) or subvarp(e) then return([e, wm_dimzero]),
+  o: op(e),
+  if o = 'wmabs then return([part(e, 1), wm_dim[part(e, 2)]]),
+  if o = "*" then (
+    v: 1, d: wm_dimzero,
+    for a in args(e) do (r: wm_an(a), v: v*r[1], d: d + r[2]),
+    return([v, d])),
+  if o = "+" then (
+    rs: map(wm_an, args(e)),
+    for k: 2 thru length(rs) do
+      if rs[k][2] # rs[1][2] then wm_mismatch("add", rs[1][2], rs[k][2]),
+    return([apply("+", map(first, rs)), rs[1][2]])),
+  if o = "^" then (
+    r: wm_an(part(e, 1)), k: wm_an(part(e, 2)),
+    if k[2] # wm_dimzero then wm_err(sconcat("An exponent can't have a unit (", wm_dimtext(k[2]), ").")),
+    if r[2] = wm_dimzero then return([r[1]^k[1], wm_dimzero]),
+    if not numberp(part(e, 2)) then
+      wm_err(sconcat("A quantity with a unit (", wm_dimtext(r[2]), ") can only be raised to a fixed number.")),
+    return([r[1]^part(e, 2), r[2]*part(e, 2)])),
+  if member(o, ["=", "<", ">", "<=", ">=", "#"]) then (
+    r: wm_an(lhs(e)), k: wm_an(rhs(e)),
+    if r[2] # k[2] then wm_mismatch("compare", r[2], k[2]),
+    return([apply(o, [r[1], k[1]]), r[2]])),
+  if member(o, ['abs, 'max, 'min, 'floor, 'ceiling, 'round, 'signum]) then (
+    rs: map(wm_an, args(e)),
+    for k: 2 thru length(rs) do
+      if rs[k][2] # rs[1][2] then wm_mismatch("compare", rs[1][2], rs[k][2]),
+    return([apply(o, map(first, rs)), if o = 'signum then wm_dimzero else rs[1][2]])),
+  if o = "[" then wm_err("Lists can't hold quantities with units yet."),
+  /* any other function: its arguments must be dimensionless */
+  rs: map(wm_an, args(e)),
+  for r in rs do
+    if r[2] # wm_dimzero then
+      wm_err(sconcat("Unit mismatch: the argument of ", string(o), "( ) must be dimensionless, but it is ",
+                     wm_dimtext(r[2]), ".")),
+  if freeof('wmabs, e) and lfreeof(map(wm_sym, wm_names), e) then [e, wm_dimzero]
+  else [apply(o, map(first, rs)), wm_dimzero])$
+
+wm_mismatch(how, d1, d2) := block([msg, h],
+  msg: sconcat("Unit mismatch: can't ", how, " ", wm_dimtext(d1), " and ", wm_dimtext(d2), "."),
+  msg: sconcat(msg, wm_hinttext(d1, d2)),
+  wm_err(msg))$
+
+/* a hint applies when the expression uses the unit and swapping it for the other unit would fix the
+   mismatch (lb instead of lbf: the dimensions differ by n accelerations) */
+wm_hinttext(d1, d2) := block([s: "", delta, stp, k],
+  for h in wm_hints do
+    if not freeof(wm_sym(h[1]), wm_top) then (
+      delta: d1 - d2, stp: wm_dim[wm_lookup(h[2])] - wm_dim[h[1]],
+      if some(lambda([k], delta = k*stp), [1, -1, 2, -2]) then s: sconcat(s, " ", h[3])),
+  s)$
+
+/* dimension names for messages */
+wm_dimnamelist: [
+  [[1,0,0,0,0,0,0], "a length"], [[0,1,0,0,0,0,0], "a mass"], [[0,0,1,0,0,0,0], "a time"],
+  [[0,0,0,1,0,0,0], "a current"], [[0,0,0,0,1,0,0], "a temperature"], [[0,0,0,0,0,1,0], "an amount of substance"],
+  [[0,0,0,0,0,0,1], "a luminous intensity"], [[2,0,0,0,0,0,0], "an area"], [[3,0,0,0,0,0,0], "a volume"],
+  [[1,0,-1,0,0,0,0], "a velocity"], [[1,0,-2,0,0,0,0], "an acceleration"], [[1,1,-2,0,0,0,0], "a force"],
+  [[-1,1,-2,0,0,0,0], "a pressure or stress"], [[2,1,-2,0,0,0,0], "an energy or moment"],
+  [[2,1,-3,0,0,0,0], "a power"], [[0,0,-1,0,0,0,0], "a frequency"], [[-3,1,0,0,0,0,0], "a density"],
+  [[0,1,-2,0,0,0,0], "a force per length"], [[3,0,-1,0,0,0,0], "a volume flow"], [[0,1,-1,0,0,0,0], "a mass flow"],
+  [[1,1,-1,0,0,0,0], "a momentum"], [[0,0,1,1,0,0,0], "a charge"], [[2,1,-3,-1,0,0,0], "a voltage"],
+  [[0,0,0,0,0,0,0], "dimensionless"]]$
+
+wm_dimtext(d) := block([r: assoc(d, wm_dimnamelist)],
+  if r = false then sconcat("[", wm_unitstr(wm_basemono(d)), "]")
+  elseif d = wm_dimzero then "a dimensionless number"
+  else sconcat(r, " [", wm_unitstr(wm_simono(d)), "]"))$
+
+/* coherent SI monomial for a dimension: a named unit if one matches, else base units */
+wm_basemono(d) := block([M: [], k],
+  for k: 1 thru 7 do if d[k] # 0 then M: endcons([wm_dimkeys[k], d[k]], M),
+  M)$
+wm_simono(d) := block([r: false],
+  for n in wm_named do if r = false and wm_dim[n] = d then r: [[n, 1]],
+  if r = false then wm_basemono(d) else r)$
+
+/* ---------------------------------------------------------------- monomials */
+wm_mergenames(M) := block([R: [], p, found],
+  for p in M do (
+    found: false,
+    R: map(lambda([q], if q[1] = p[1] then (found: true, [q[1], q[2] + p[2]]) else q), R),
+    if not found then R: endcons(p, R)),
+  sublist(R, lambda([q], q[2] # 0)))$
+
+/* combine units of the same dimension (m and mm, kN and N, h and min) into the larger one */
+wm_merge(M) := block([R, changed: true, i, j, a, b],
+  R: wm_mergenames(M),
+  while changed do (
+    changed: false,
+    catch(
+      for i: 1 thru length(R) do
+        for j: i + 1 thru length(R) do
+          if wm_dim[R[i][1]] = wm_dim[R[j][1]] and wm_dim[R[i][1]] # wm_dimzero then (
+            if is(float(wm_fac[R[i][1]]) >= float(wm_fac[R[j][1]])) then (a: i, b: j) else (a: j, b: i),
+            R: endcons([R[a][1], R[a][2] + R[b][2]], sublist(R, lambda([q], q[1] # R[a][1] and q[1] # R[b][1]))),
+            R: sublist(R, lambda([q], q[2] # 0)),
+            changed: true,
+            throw(0)))),
+  R)$
+
+/* the monomial of units in an evaluated expression; for a sum, the term with the largest unit */
+wm_monoof(e) := block([inflag: true, o, ms, best, bf, m, f],
+  if wm_isunit(e) then return([[wm_nameof(e), 1]]),
+  if atom(e) or numberp(e) or subvarp(e) then return([]),
+  o: op(e),
+  if o = 'wmabs then return([[wm_off[part(e, 2)][3], 1]]),
+  if o = "*" then return(wm_mergenames(apply(append, map(wm_monoof, args(e))))),
+  if o = "^" then (if numberp(part(e, 2)) then return(wm_mscale(wm_monoof(part(e, 1)), part(e, 2))) else return([])),
+  if o = "+" or member(o, ['abs, 'max, 'min, 'floor, 'ceiling, 'round]) then (
+    best: [], bf: -1,
+    for m in map(wm_monoof, args(e)) do (
+      f: float(abs(wm_monofac(m))),
+      if m # [] and is(f > bf) then (best: m, bf: f)),
+    return(best)),
+  [])$
+
+wm_chainof(n) := wm_chain[n]$
+
+/* rule 1: cancel through definitions while the unit gets simpler */
+wm_cancel(M) := block([best, bc, improved: true, cand, c, p, rest, D],
+  best: wm_merge(M), bc: wm_cx(best),
+  while improved do (
+    improved: false,
+    M: best,
+    for p in M do (
+      rest: sublist(M, lambda([q], q[1] # p[1])),
+      for D in wm_chainof(p[1]) do (
+        cand: wm_merge(append(rest, wm_mscale(D, p[2]))),
+        c: wm_cx(cand),
+        if c < bc then (best: cand, bc: c, improved: true)))),
+  best)$
+
+/* mixed SI and imperial input: imperial units become SI (named unit of the same dimension, or base units) */
+wm_tosi(M) := apply(append, map(lambda([p],
+  if wm_sys[wm_root(p[1])] = "imp" then wm_mscale(wm_simono(wm_dim[p[1]]), p[2]) else [p]), M))$
+
+/* system of the units in an expression: "SI", "imp", "mixed" or "none" */
+wm_unitnames(e) := block([L: []],
+  for v in listofvars(e) do if wm_isunit(v) then L: cons(wm_nameof(v), L),
+  append(L, wm_absnames(e)))$
+wm_absnames(e) := block([inflag: true],
+  if atom(e) or numberp(e) or subvarp(e) then []
+  elseif op(e) = 'wmabs then [part(e, 2)]
+  else apply(append, map(wm_absnames, args(e))))$
+wm_system(e) := block([L, si: false, imp: false, any: false],
+  L: wm_unitnames(e),
+  for n in L do (
+    any: true,
+    if wm_sys[wm_root(n)] = "SI" then si: true,
+    if wm_sys[wm_root(n)] = "imp" then imp: true),
+  if not any then "none" elseif si and imp then "mixed" elseif imp then "imp" else "SI")$
+
+/* the display unit for an auto-filled ("= ?") result: rules 1-4 of CLAUDE.md "Output units" */
+wm_display(M, sys, v) := block([d, r, best, bf, f, fam, u, cand],
+  d: wm_monodim(M),
+  if sys = "mixed" then M: wm_tosi(M),
+  M: wm_cancel(M),
+  /* rule 2: only base units (any prefix) -> a named SI unit */
+  if sys # "imp" and length(M) >= 2 and every(lambda([p], wm_baselike[p[1]] = true), M) then (
+    r: wm_simono(wm_monodim(M)),
+    if length(r) = 1 then M: r),
+  /* rule 4: automatic prefix (SI) or conventional size (imperial) for a single unit */
+  if length(M) = 1 and M[1][2] = 1 and numberp(float(v)) and float(v) # 0.0 then (
+    u: M[1][1],
+    if sys # "imp" and wm_auto[wm_root(u)] # [] then
+      M: [[wm_bestprefix(wm_root(u), v), 1]]
+    else for fam in wm_families do
+      if member(u, fam) then (
+        best: fam[1],
+        for cand in fam do if is(abs(float(v / wm_fac[cand])) >= 1) then best: cand,
+        M: [[best, 1]])),
+  /* safety: if anything went wrong, fall back to SI */
+  if wm_monodim(M) # d then M: wm_simono(d),
+  M)$
+
+wm_bestprefix(r, v) := block([best: false, x, pv, p, L],
+  L: wm_auto[r],
+  x: abs(float(v / wm_fac[r])),
+  for p in L do (
+    pv: if p = "" then 1 else assoc(p, wm_prefixes),
+    if best = false or is(x >= float(pv)) then best: p),
+  if best = "" then r else wm_lookup(sconcat(best, r)))$
+
+/* "kN*m", "N/mm^2", "kg/(m*s^2)", "1/s"; derived units before base units */
+wm_unitstr(M) := block([num, den, f, s],
+  num: wm_sortunits(sublist(M, lambda([p], p[2] > 0))),
+  den: wm_sortunits(sublist(M, lambda([p], p[2] < 0))),
+  f: lambda([p], if p[2] = 1 or p[2] = -1 then p[1]
+                 elseif integerp(abs(p[2])) then sconcat(p[1], "^", abs(p[2]))
+                 else sconcat(p[1], "^(", string(abs(p[2])), ")")),
+  s: if num = [] then "1" else simplode(map(f, num), "*"),
+  if length(den) = 1 then s: sconcat(s, "/", f(den[1]))
+  elseif length(den) > 1 then s: sconcat(s, "/(", simplode(map(f, den), "*"), ")"),
+  s)$
+wm_sortunits(L) := block([R: [], p, i],
+  for p in L do (
+    i: 1,
+    while i <= length(R) and wm_ndims(R[i][1]) >= wm_ndims(p[1]) do i: i + 1,
+    R: append(firstn(R, i - 1), [p], rest(R, i - 1))),
+  R)$
+
+/* ---------------------------------------------------------------- number formatting */
+/* [sign, text]: sign "=" if the text is exact, "~" if rounded to NoSigFig significant digits */
+wm_fmt(x) := block([n, xf, ax, e, d, s, m, val],
+  n: if integerp(NoSigFig) and NoSigFig > 0 then NoSigFig else 7,
+  xf: errcatch(float(x)),
+  if xf = [] or not numberp(xf[1]) then return(["=", string(x)]),
+  xf: xf[1],
+  if xf = 0.0 then return(["=", "0"]),
+  ax: abs(xf),
+  e: floor(log(ax) / log(10.0)),
+  while 10.0^(e + 1) <= ax do e: e + 1,
+  while 10.0^e > ax do e: e - 1,
+  if ax >= 1.0e-4 and ax < 10.0^n then (
+    d: max(0, n - 1 - e),
+    s: wm_trimzeros(printf(false, concat("~,", d, "f"), xf)),
+    val: parse_string(s))
+  else (
+    m: wm_trimzeros(printf(false, concat("~,", n - 1, "f"), xf / 10.0^e)),
+    if parse_string(m) >= 10 or parse_string(m) <= -10 then (e: e + 1, m: wm_trimzeros(printf(false, concat("~,", n - 1, "f"), xf / 10.0^e))),
+    s: if e < 0 then sconcat(m, "*10^(", e, ")") else sconcat(m, "*10^", e),
+    val: parse_string(m) * 10^e),
+  [if is(abs(float(val) - xf) <= 1.0e-12 * ax) then "=" else "~", s])$
+
+wm_trimzeros(s) := block([],
+  s: strim(" ", s),
+  if ssearch(".", s) # false then (s: strimr("0", s), s: strimr(".", s)),
+  if s = "-0" then "0" else s)$
+
+/* ---------------------------------------------------------------- offset (absolute) analysis */
+/* ["none"|"abs"|"diff"|"warn", unit name of the first absolute term, degree] */
+wm_offsetinfo(e) := block([r: wm_deg(e)],
+  if r[2] = "" then ["none", "", 0]
+  elseif r[1] = 1 then ["abs", r[2], 1]
+  elseif r[1] = 0 then ["diff", r[2], 0]
+  else ["warn", r[2], r[1]])$
+
+/* [degree, unit]: how many absolute values a linear combination holds (20 degC + 5 DdegC: 1; T1 - T2: 0;
+   (T1 + T2)/2: 1; T1 + T2: 2). Absolute values used multiplicatively (p*V/T) don't count. */
+wm_deg(e) := block([inflag: true, deg: 0, u: "", r, abss, others, c, t],
+  if wm_isabs(e) then return([1, part(e, 2)]),
+  if atom(e) or numberp(e) or subvarp(e) then return([0, ""]),
+  if op(e) = "+" then (
+    for t in args(e) do (r: wm_deg(t), deg: deg + r[1], if u = "" then u: r[2]),
+    return([deg, u])),
+  if op(e) = "*" then (
+    others: sublist(args(e), lambda([a], numberp(a))),
+    abss: sublist(args(e), lambda([a], not numberp(a))),
+    c: apply("*", cons(1, others)),
+    if length(abss) = 1 then (r: wm_deg(abss[1]), return([c*r[1], r[2]]))),
+  [0, ""])$
+
+wm_tempkind(u) := if wm_dim[u] = wm_dim["K"] then "temperature" else "pressure"$
+
+/* ---------------------------------------------------------------- public entry points */
+WMUnitCheck(e) := (wm_top: e, wm_an(e), e)$
+WMUnitSI(e) := (wm_top: e, wm_an(e))$
+WMUnitInfo(n) := block([u: wm_lookup(n)], [wm_fac[u], wm_dim[u], wm_sys[wm_root(u)], wm_pfx[u], wm_off[u]])$
+
+WMUnitResult(e, req) := block([inflag: true, r, v, d, oi, tag, au, sys, M, R, RM, c, rn, val, ustr, msg: "", f, kind],
+  if req = "" and freeof('wmabs, e) and lfreeof(map(wm_sym, wm_names), e) then return("WMU@@NONE"),
+  wm_top: e,
+  r: wm_an(e), v: r[1], d: r[2],
+  oi: wm_offsetinfo(e), tag: oi[1], au: oi[2],
+  sys: wm_system(e),
+  if tag # "none" and sys = "mixed" then au: wm_off[au][4],
+  if req # "" then (
+    R: wm_parse(req),
+    if wm_isunit(R) and wm_off[wm_nameof(R)] # false then (
+      rn: wm_nameof(R),
+      if d # wm_dim[rn] then wm_mismatch("convert", d, wm_dim[rn]),
+      if tag = "diff" then
+        wm_err(sconcat("The result is a ", wm_tempkind(rn), " difference (absolute - absolute). Ask for [",
+                       wm_off[rn][2], "] instead of [", rn, "].")),
+      val: (v - wm_off[rn][1]) / wm_fac[rn])
+    else (
+      if wm_hasoffset(R) then wm_err(sconcat("[", req, "] combines an absolute (offset) unit with other units.")),
+      RM: wm_monoof(R), c: R / wm_monoexpr(RM),
+      if wm_monodim(RM) # d then (
+        msg: sconcat("Unit mismatch: the result is ", wm_dimtext(d), ", but [", req, "] is ",
+                     wm_dimtext(wm_monodim(RM)), ".", wm_hinttext(d, wm_monodim(RM))),
+        wm_err(msg)),
+      if tag = "abs" and member(req, ["DdegC", "DdegF"]) then
+        wm_err(sconcat("The result is an absolute temperature. Ask for [", au, "], [K] or [degR] instead of [", req, "].")),
+      val: v / (c * wm_monofac(RM))),
+    ustr: req)
+  else if tag = "abs" then (
+    val: (v - wm_off[au][1]) / wm_fac[au], ustr: au)
+  else if tag = "diff" then (
+    ustr: wm_off[au][2], val: v / wm_fac[ustr])
+  else if tag = "warn" then (
+    ustr: wm_off[au][3], val: v / wm_fac[ustr],
+    kind: wm_tempkind(au),
+    msg: if kind = "temperature" then
+           sconcat("Warning: absolute temperatures were added (", oi[3], " x an absolute value such as [", au,
+                   "]); the sum is not a temperature on the [", au, "] scale, so the result is given in [", ustr,
+                   "]. Use [", wm_off[au][2], "] for a temperature difference.")
+         else sconcat("Warning: gauge pressures were added (", oi[3], " x a value in [", au,
+                   "]); the result is given as an absolute pressure in [", ustr, "]. Use [", wm_off[au][2],
+                   "] for a pressure difference."))
+  else (
+    M: wm_display(wm_monoof(e), sys, v),
+    val: v / wm_monofac(M),
+    ustr: if M = [] then "" else wm_unitstr(M)),
+  f: wm_fmt(val),
+  sconcat("WMU@@", f[1], "@@", f[2], "@@", ustr, "@@", msg, "@@", tag))$
+
+/* ---------------------------------------------------------------- the table */
+block([dir],
+  dir: if stringp(load_pathname) then load_pathname else "",
+  dir: if ssearch("/", dir) # false or ssearch("\\", dir) # false then
+         substring(dir, 1, 1 + lmax(cons(0, sublist(makelist(i, i, 1, slength(dir)),
+                                                    lambda([i], charat(dir, i) = "/" or charat(dir, i) = "\\")))))
+       else "",
+  load(sconcat(dir, "WMUnitTable.mac")))$
+
+wmunits_loaded: true$
