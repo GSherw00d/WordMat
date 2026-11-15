@@ -1602,6 +1602,12 @@ Sub beregn()
     Set Oundo = Application.UndoRecord
     Oundo.StartCustomRecord
     
+    ' word_math: a Maxima error (e.g. division by zero) leaves WordMat's marker "fejl" as the last output.
+    ' Report it as an error instead of writing "=fejl" (or the approximate form) into the document.
+    If Mid$(Trim$(omax.MaximaOutput), 2) = "fejl" Then
+        omax.MaximaOutput = vbNullString
+        If omax.KommentarOutput = vbNullString Then omax.KommentarOutput = "Maxima could not evaluate the expression (for example a division by zero)."
+    End If
     If Len(omax.MaximaOutput) > 0 And Trim$(omax.MaximaOutput) <> "=res1" Then
         InsertOutput omax.MaximaOutput, False
         RestartIndex = 0
