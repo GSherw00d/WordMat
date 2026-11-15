@@ -68,8 +68,7 @@ Function GetTempDir() As String
 End Function
 
 Sub ChangeAutoHyphen()
-    Options.AutoFormatAsYouTypeReplaceFarEastDashes = False
-    Options.AutoFormatAsYouTypeReplaceSymbols = False
+    ' word_math: disabled. It switched off the user's global AutoFormat-as-you-type options.
 End Sub
 
 Sub ShowCustomizationContext()
@@ -597,12 +596,12 @@ End Sub
 Sub TurnUnitsOn()
     On Error Resume Next
     MaximaUnits = True
-    Application.OMathAutoCorrect.Functions("min").Delete  ' otherwise mine cannot be used as a unit
+    ' word_math: no longer deletes "min" from Word's global maths autocorrect functions.
 End Sub
 Sub TurnUnitsOff()
     On Error Resume Next
     MaximaUnits = False
-    Application.OMathAutoCorrect.Functions.Add "min"
+    ' word_math: no longer changes Word's global maths autocorrect functions.
 End Sub
 Sub ToggleNum()
     Dim ufq As New UserFormExactNum
@@ -1548,16 +1547,7 @@ Function ExtractTag(s As String, StartTag As String, EndTag As String) As String
 End Function
 
 Sub SetMathAutoCorrect()
-' cant be run from automacros
-    On Error Resume Next
-    If MaximaGangeTegn = ChrW$(183) Or MaximaGangeTegn = vbNullString Then
-        Application.OMathAutoCorrect.Entries.Add Name:="*", value:=VBA.ChrW$(183)
-    ElseIf MaximaGangeTegn = ChrW$(215) Then
-        Application.OMathAutoCorrect.Entries.Add Name:="*", value:=VBA.ChrW$(215)
-    Else
-        On Error Resume Next
-        Application.OMathAutoCorrect.Entries("*").Delete
-    End If
+    ' word_math: disabled. It added "*" to Word's global maths autocorrect entries.
 End Sub
 
 Function ConvertNumber(ByVal n As String) As String

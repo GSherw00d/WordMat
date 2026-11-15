@@ -18,43 +18,14 @@ Sub RunFirst()
           ' Should be run on startup of WordMat
           Dim s As String
           
-10        If Abs(GetTimerSeconds() - WMRunTime) > 24# * 3600 Then
-20            On Error Resume Next
-30            Err.Clear
-40            Application.Run macroname:="Popstart"
-50            If Err.Number = -2147352573 Then
-60                If TT.LangNo = 1 Then
-70                    OpenLink "https://wordmat.dk/da/partnerskab"
-80                Else
-90                    OpenLink "https://wordmat.dk/en/partnership"
-100               End If
-110           End If
-120           Err.Clear
-130           On Error GoTo TheEnd
-140           DoEvents
-150           WMRunTime = GetTimerSeconds()
-160       End If
-          
 170       If HasStarted Then Exit Sub
-          
-180       On Error Resume Next
-190       Err.Clear
-200       Application.Run macroname:="Popstart"
-210       If Err.Number = -2147352573 Then
-220           If TT.LangNo = 1 Then
-230               OpenLink "https://wordmat.dk/da/partnerskab"
-240           Else
-250               OpenLink "https://wordmat.dk/en/partnership"
-260           End If
-270       End If
-280       Err.Clear
+          ' word_math: removed the WordMatP "Popstart" call, which opened the wordmat.dk partnership page in the
+          ' browser when WordMatP was missing, and the 24-hour repeat of it.
 290       On Error GoTo TheEnd
-300       DoEvents
 310       WMRunTime = GetTimerSeconds()
 320       AntalB = Antalberegninger
-
-330       SetMathAutoCorrect
-340       ChangeAutoHyphen ' so 1-(-1) does not translate to 1--1 dash
+          ' word_math: SetMathAutoCorrect and ChangeAutoHyphen are no longer called; they changed the user's
+          ' global Word settings (maths autocorrect and AutoFormat-as-you-type).
 
 350       Set oAppClass.oApp = Word.Application
 #If Mac Then
@@ -113,7 +84,7 @@ Sub RunFirst()
 820           End If
 830           RegAppVersion = AppVersion
 840       End If
-850       If SettCheckForUpdate Then CheckForUpdateSilent
+          ' word_math: no automatic update check at start-up (it contacted wordmat.dk / eduap.com).
 
 860       GoTo slut
 TheEnd:
