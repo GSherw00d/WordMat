@@ -728,7 +728,7 @@
 727#£Seta Excel-ark innlagt
 728#£Funkti—nin kundi ikki œtinnast, t’ WordMat+ er ikki uppsett.
 729#£Specificera vilka enheter som ska vara i utdata separerade med komma\nexempel:\n\ncm , kJ, Timer\neV , nm, mV\naJ , AU, Bq\n\nOm inget Šr specificerat, returneras allar eindir som grund-SI-eindir ella avleiddar SI-eindir uttan forskeyt.
-730#£D¿mi um stulaar eindir:\n(S’ handb—k fyri meira)\n\nLongd: cm , AU, ly, pc\nMassi: u , G, mg\nT’: min , T’mar, dagar, ‡r\nFrekvens: Hz , Bq\nOrka: kWh , eV, aJ\nTrst: Bar , mmHg, atm, turt
+730#£D¿mi um stulaar eindir:\n(S’ handb—k fyri meira)\n\nLongd: cm , AU, ly, pc\nMassi: u , g, mg\nT’: min , T’mar, dagar, ‡r\nFrekvens: Hz , Bq\nOrka: kWh , eV, aJ\nTrst: bar , mmHg, atm, turt
 731#£Trignonometriskar l’kningar
 732#£Allar loysnir
 733#£Bert 1 loysn

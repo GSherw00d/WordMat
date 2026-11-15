@@ -728,7 +728,7 @@
 727#£Insertar hoja Excel
 728#£Unidades de salida
 729#£Establece unidades de salida \n separadas por coma ejemplos:\n\ncm , kJ\neV , nm, mV\naJ , AU, Bq\n\nSi no se indican las unidades se devuelve en unidades básicas del SI o unidades del SI derivadas sin prefijo.
-730#£Ejemplos de unidades compatibles:\n(Para mayor información consulte el manual)\n\nLongitud: cm , AU, ly, pc\nMasa: u , G, mg\nFrecuencia: Hz , Bq\nEnergía: kWh , eV, aJ\nPresión: Bar , mmHg, atm, torr
+730#£Ejemplos de unidades compatibles:\n(Para mayor información consulte el manual)\n\nLongitud: cm , AU, ly, pc\nMasa: u , g, mg\nFrecuencia: Hz , Bq\nEnergía: kWh , eV, aJ\nPresión: bar , mmHg, atm, torr
 731#£Ecuaciones trigonométricas
 732#£Todas las soluciones
 733#£Sólo una solución
