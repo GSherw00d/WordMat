@@ -288,7 +288,11 @@ wm_an(e) := block([inflag: true, o, r, rs, v, d, k, a],
   if o = 'wmabs then return([part(e, 1), wm_dim[part(e, 2)]]),
   if o = "*" then (
     v: 1, d: wm_dimzero,
-    for a in args(e) do (r: wm_an(a), v: v*r[1], d: d + r[2]),
+    /* gauge pressures count as their gauge value only when another factor has a unit (x area, / density);
+       plain numbers (-1 in a subtraction, 2 x) keep the absolute behaviour */
+    k: some(lambda([a], not (wm_isabs(a) or (not atom(a) and op(a) = "^" and wm_isabs(part(a, 1))))
+                        and wm_an(a)[2] # wm_dimzero), args(e)),
+    for a in args(e) do (r: if k then wm_anfactor(a) else wm_an(a), v: v*r[1], d: d + r[2]),
     return([v, d])),
   if o = "+" then (
     rs: map(wm_an, args(e)),
@@ -320,6 +324,18 @@ wm_an(e) := block([inflag: true, o, r, rs, v, d, k, a],
                      wm_dimtext(r[2]), ".")),
   if freeof('wmabs, e) and lfreeof(map(wm_sym, wm_names), e) then [e, wm_dimzero]
   else [apply(o, map(first, rs)), wm_dimzero])$
+
+/* A factor in a product or quotient (decided by the user 2026-11-15): a GAUGE pressure (barg, psig) counts
+   as its gauge value, i.e. the pressure difference to the atmosphere, so 2 [barg]*1 [m^2] = 200 [kN] (force on
+   a wall). Absolute temperatures keep the Mathcad model and count as absolute (K). Everything else as wm_an. */
+wm_isgauge(n) := is(wm_off[n] # false and wm_dim[n][5] = 0)$
+wm_anfactor(a) := block([inflag: true],
+  if wm_isabs(a) and wm_isgauge(part(a, 2)) then [part(a, 1) - wm_off[part(a, 2)][1], wm_dim[part(a, 2)]]
+  elseif not atom(a) and op(a) = "^" and wm_isabs(part(a, 1)) and wm_isgauge(part(part(a, 1), 2))
+    then block([b: wm_anfactor(part(a, 1)), k: wm_an(part(a, 2))],
+      if k[2] # wm_dimzero then wm_err("An exponent can't have a unit."),
+      [b[1]^part(a, 2), b[2]*part(a, 2)])
+  else wm_an(a))$
 
 wm_mismatch(how, d1, d2) := block([msg, h],
   msg: sconcat("Unit mismatch: can't ", how, " ", wm_dimtext(d1), " and ", wm_dimtext(d2), "."),
