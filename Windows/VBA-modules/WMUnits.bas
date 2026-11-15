@@ -70,8 +70,8 @@ End Function
 ' Input: [ ... ] -> placeholders -> wmq/wmu calls
 ' ---------------------------------------------------------------------------------------------------------
 Public Function WMU_Protect(ByVal s As String) As String
-' Called first thing in CMaxima.CodeForMaxima. Brackets holding "," or ";" (lists, intervals) and nested
-' brackets are left alone, as before.
+' Called first thing in CMaxima.CodeForMaxima. Brackets holding "," or ";" (lists, intervals), matrices
+' (Word's U+25A0 matrix with & and @) and nested brackets are left alone, as before.
     Dim out As String, i As Long, j As Long, c As String, u As String, k As Long, numStart As Long
     Dim numTxt As String, prev As String, a As String, e As String, code As String, sgnPos As Long
     If InStr(s, "[") = 0 Then WMU_Protect = s: Exit Function
@@ -82,7 +82,8 @@ Public Function WMU_Protect(ByVal s As String) As String
             j = InStr(i + 1, s, "]")
             If j = 0 Then out = out & Mid$(s, i): Exit Do
             u = Mid$(s, i + 1, j - i - 1)
-            If InStr(u, "[") > 0 Or InStr(u, ",") > 0 Or InStr(u, ";") > 0 Then
+            ' not a unit: nested brackets, lists and intervals (, ;) and matrices in square brackets (U+25A0, & and @)
+            If InStr(u, "[") > 0 Or InStr(u, ",") > 0 Or InStr(u, ";") > 0 Or InStr(u, ChrW$(9632)) > 0 Or InStr(u, "&") > 0 Or InStr(u, "@") > 0 Then
                 out = out & c
                 i = i + 1
                 GoTo nxt
@@ -130,6 +131,9 @@ Public Function WMU_Protect(ByVal s As String) As String
             End If
             mCode(mCount) = code
             WMU_Used = True
+            ' "5 [m]x" or "[m](a+b)": multiply explicitly, so the placeholder name doesn't run into what follows
+            c = Mid$(s, j + 1, 1)
+            If IsLetterOrDigit(c) Or c = "(" Or c = ChrW$(12310) Then out = out & "*"
             i = j + 1
         Else
             out = out & c
@@ -385,8 +389,8 @@ End Function
 Public Function WMU_DebugCode(ByVal s As String) As String
 ' What CodeForMaxima makes of s (placeholders restored).
     RunFirst ' the user's settings (decimal separator, angle mode)
-    WMU_BeginCommand
     If omax Is Nothing Then Set omax = New CMaxima
+    omax.PrepareNewCommand False ' resets per-command state (also WMU_BeginCommand)
     WMU_DebugCode = omax.CodeForMaxima(s)
 End Function
 
