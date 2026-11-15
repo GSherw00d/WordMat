@@ -2,17 +2,21 @@ Attribute VB_Name = "WMTest"
 ' word_math test mode: automated test entry point for the .docx test documents, plus the switch that stops
 ' WordMat's interactive UI from blocking an automated run.
 '
-' Called by C:\Dev\word_math\tests\run_docx_tests.ps1 from a private, hidden Word:
+' Called by C:\Dev\word_math\tests\run_docx_tests.ps1 (via tests\lib\run_docx_worker.ps1) from a private,
+' hidden Word:
 '     Application.Run "WMTest_RunDocument", docPath, resultPath
 ' Test document format and Notes keywords: C:\Dev\word_math\tests\cases\README.md.
 '
 ' While WMTestMode is True:
-'   - MsgBox and InputBox (shadowed below for the whole project), MsgBox2, the UserFormError paths,
-'     the sign question in CMaxima.AnswerQuestion and SaveBackup do not show anything; each message is
-'     recorded with WMTestRecord and appears in the result file.
-'   - MsgBox returns OK for OK/OKCancel and No for Yes/No questions (so e.g. "try GeoGebra?" is declined).
-'   - InputBox returns its default value.
-' With WMTestMode False (normal use) all of this passes straight through to the original behaviour.
+'   - MsgBox and InputBox (shadowed below for the whole project), MsgBox2, the UserFormError paths, the sign
+'     questions (CMaxima.AnswerQuestion, CMaxima.RunMaximaFile), the "choose CAS" form after a failed solve,
+'     the variable picker of MaximaSolvePar and SaveBackup show nothing; each message is recorded with
+'     WMTestRecord and appears in the result file.
+'   - MsgBox returns OK for OK/OKCancel, No for Yes/No (so e.g. "try GeoGebra?" is declined), Cancel for
+'     Retry/Cancel and Abort for Abort/Retry/Ignore. InputBox returns its default value.
+'   - The free-text module's own silent flag (WMFreeTextSilent) is switched on for the run, and its log is
+'     added to each case's messages.
+' With WMTestMode False (normal use) everything passes straight through to the original behaviour.
 Option Explicit
 
 Public WMTestMode As Boolean            ' word_math test mode
@@ -41,10 +45,11 @@ Public Function WMTestDefaultAnswer(ByVal Buttons As Long) As VbMsgBoxResult
     End Select
 End Function
 
-' Shadows VBA.MsgBox for every unqualified MsgBox call in this project. Outside test mode it simply calls
-' VBA.MsgBox with the same arguments.
-Public Function MsgBox(Prompt As Variant, Optional Buttons As VbMsgBoxStyle = vbOKOnly, Optional Title As Variant, _
-                       Optional HelpFile As Variant, Optional Context As Variant) As VbMsgBoxResult
+' Shadows VBA.MsgBox for every unqualified MsgBox call in this project. Outside test mode it calls VBA.MsgBox
+' with the same arguments.
+Public Function MsgBox(ByVal Prompt As Variant, Optional ByVal Buttons As VbMsgBoxStyle = vbOKOnly, _
+                       Optional ByVal Title As Variant, Optional ByVal HelpFile As Variant, _
+                       Optional ByVal Context As Variant) As VbMsgBoxResult
     If WMTestMode Then
         WMTestRecord "MsgBox", CStr(Prompt)
         MsgBox = WMTestDefaultAnswer(Buttons)
@@ -58,9 +63,9 @@ Public Function MsgBox(Prompt As Variant, Optional Buttons As VbMsgBoxStyle = vb
 End Function
 
 ' Shadows VBA.InputBox in the same way. In test mode it returns the default value.
-Public Function InputBox(Prompt As Variant, Optional Title As Variant, Optional Default As Variant, _
-                         Optional XPos As Variant, Optional YPos As Variant, Optional HelpFile As Variant, _
-                         Optional Context As Variant) As String
+Public Function InputBox(ByVal Prompt As Variant, Optional ByVal Title As Variant, Optional ByVal Default As Variant, _
+                         Optional ByVal XPos As Variant, Optional ByVal YPos As Variant, _
+                         Optional ByVal HelpFile As Variant, Optional ByVal Context As Variant) As String
     If WMTestMode Then
         WMTestRecord "InputBox", CStr(Prompt)
         If Not IsMissing(Default) Then InputBox = CStr(Default)
@@ -76,18 +81,24 @@ Public Function InputBox(Prompt As Variant, Optional Title As Variant, Optional 
 End Function
 
 ' ---------------------------------------------------------------------------------------------------------
-' Entry point
+' Entry points
 ' ---------------------------------------------------------------------------------------------------------
+Public Function WMTest_Ping() As String
+    WMTest_Ping = "WMTest OK"
+End Function
+
 Public Function WMTest_RunDocument(ByVal docPath As String, ByVal resultPath As String) As String
 ' Runs every row of the first ID | Input | Expected | Notes table in docPath (which must be a copy: it is
 ' changed and saved) and writes one tab-separated line per case to resultPath (UTF-8).
 ' Returns "OK <n> cases" or "ERROR <description>".
     Dim doc As Document, tbl As Table, r As Long, nCases As Long
     Dim cId As Long, cIn As Long, cExp As Long, cNotes As Long, c As Long, h As String
-    Dim sv As Variant, found As Table
+    Dim sv As Variant, found As Table, prevSilent As Boolean
 
     On Error GoTo fejl
     WMTestMode = True
+    prevSilent = WMFreeTextSilent
+    WMFreeTextSilent = True       ' the free-text module's own silent flag (messages go to WMFreeTextLog)
     RunFirst                      ' loads WordMat's settings, so the snapshot below sees the real values
     sv = SaveTestSettings()
     CASengine = 0                 ' Maxima
@@ -101,6 +112,7 @@ Public Function WMTest_RunDocument(ByVal docPath As String, ByVal resultPath As 
     Set doc = Documents.Open(FileName:=docPath, AddToRecentFiles:=False, Visible:=True)
     doc.Activate
     Set mScratch = Documents.Add(Visible:=False)
+    doc.Activate
 
     For Each tbl In doc.Tables
         cId = 0: cIn = 0: cExp = 0: cNotes = 0
@@ -137,6 +149,7 @@ slut:
         doc.Save
         doc.Close wdDoNotSaveChanges
     End If
+    WMFreeTextSilent = prevSilent
     WMTestMode = False
 End Function
 
@@ -144,69 +157,103 @@ Private Sub RunCase(doc As Document, tbl As Table, ByVal r As Long, ByVal cId As
                     ByVal cExp As Long, ByVal cNotes As Long)
     Dim id As String, notes As String, action As String, var As String, inputText As String
     Dim expected As String, actual As String, output As String, t As Single
-    Dim cellR As Range, om As OMath, i As Long, s As String, first As String
+    Dim cellR As Range, om As OMath, i As Long, s As String, first As String, isFree As Boolean
+    Dim rg As Range, p As Long
 
     On Error GoTo fejl
     mMessages = ""
+    WMFreeTextLog = ""
     t = Timer
+    doc.Activate
     id = CellText(tbl.Cell(r, cId))
     If cNotes > 0 Then notes = CellText(tbl.Cell(r, cNotes))
     expected = RangeLinear(CellRange(tbl.Cell(r, cExp)))
     Set cellR = CellRange(tbl.Cell(r, cIn))
     inputText = RangeLinear(cellR)
+    isFree = (cellR.OMaths.Count = 0 And InStr(inputText, "~~") > 0)
     action = LCase$(NoteValue(notes, "action"))
     var = NoteValue(notes, "var")
-
-    If action = "" Then
-        If InStr(inputText, "~~") > 0 Then
-            action = "freetext"
-        ElseIf Right$(Replace(inputText, " ", ""), 2) = "=?" Then
-            action = "agreed"
-        End If
-    End If
+    If action = "" Then action = "evaluate"
 
     ApplyCaseSettings notes
 
-    Select Case action
-    Case "evaluate", "solve"
-        If cellR.OMaths.Count = 0 Then
-            WMTestRecord "WMTest", "action=" & action & " needs a Word equation in the Input cell"
-        ElseIf action = "solve" And var = "" Then
-            WMTestRecord "WMTest", "action=solve needs var=<name> in Notes (the variable picker cannot be shown)"
+    If isFree Then
+        ' free-typed ~~...~~: the cursor is put just after the first ~~ and the normal ribbon action runs
+        Set rg = cellR.Duplicate
+        rg.TextRetrievalMode.IncludeHiddenText = True
+        With rg.Find
+            .ClearFormatting
+            .text = "~~"
+            .MatchWildcards = False
+            .Forward = True
+            .Wrap = wdFindStop
+        End With
+        If Not rg.Find.Execute Then
+            WMTestRecord "WMTest", "no ~~ marker found in the Input cell"
         Else
-            Set om = cellR.OMaths(1)
-            first = RangeLinear(om.Range)
-            om.Range.Select
-            If action = "evaluate" Then
+            Select Case action
+            Case "evaluate"
+                doc.Range(rg.End, rg.End).Select
                 beregn
-            Else
+            Case "solve"
+                doc.Range(rg.End, rg.End).Select
                 MaximaSolvePar var
-            End If
-            Set cellR = CellRange(tbl.Cell(r, cIn))
-            If action = "evaluate" Then
-                s = RangeLinear(cellR.OMaths(1).Range)
-                If Left$(s, Len(first)) = first Then s = Mid$(s, Len(first) + 1)
-                s = Trim$(s)
-                If Left$(s, 1) = "=" Or Left$(s, 1) = ChrW$(8776) Then s = Trim$(Mid$(s, 2))
-                actual = s
-            ElseIf cellR.OMaths.Count > 1 Then
-                actual = RangeLinear(cellR.OMaths(cellR.OMaths.Count).Range)
-            End If
+            Case "define", "none"
+                ' nothing to run: the row only supplies a definition for later rows
+            Case Else
+                WMTestRecord "WMTest", "unknown action '" & action & "' (use evaluate, solve var=x or define)"
+            End Select
         End If
-    Case "freetext"
-        WMTestRecord "WMTest", "free-typed ~~...~~ equations are not implemented yet"
-    Case "agreed"
-        WMTestRecord "WMTest", "the '= ?' syntax is not implemented yet"
-    Case Else
-        WMTestRecord "WMTest", "unknown or missing action '" & action & "' (use action=evaluate or action=solve var=x)"
-    End Select
+        s = RangeLinear(CellRange(tbl.Cell(r, cIn)))
+        i = InStr(s, "~~")
+        p = InStrRev(s, "~~")
+        If i > 0 And p > i Then actual = Trim$(Mid$(s, i + 2, p - i - 2)) Else actual = s
+    ElseIf cellR.OMaths.Count = 0 Then
+        WMTestRecord "WMTest", "the Input cell holds neither a Word equation nor a ~~...~~ equation"
+    Else
+        Select Case action
+        Case "evaluate", "solve"
+            If action = "solve" And var = "" Then
+                WMTestRecord "WMTest", "action=solve needs var=<name> in Notes (the variable picker cannot be shown)"
+            Else
+                Set om = cellR.OMaths(1)
+                first = RangeLinear(om.Range)
+                om.Range.Select
+                If action = "evaluate" Then
+                    beregn
+                Else
+                    MaximaSolvePar var
+                End If
+                Set cellR = CellRange(tbl.Cell(r, cIn))
+                If action = "evaluate" Then
+                    s = RangeLinear(cellR.OMaths(1).Range)
+                    If Left$(s, Len(first)) = first Then
+                        s = Mid$(s, Len(first) + 1)
+                    Else
+                        p = LastSignPos(s)
+                        If p > 0 Then s = Mid$(s, p)
+                    End If
+                    s = Trim$(s)
+                    If Left$(s, 1) = "=" Or Left$(s, 1) = ChrW$(8776) Then s = Trim$(Mid$(s, 2))
+                    actual = s
+                ElseIf cellR.OMaths.Count > 1 Then
+                    actual = RangeLinear(cellR.OMaths(cellR.OMaths.Count).Range)
+                End If
+            End If
+        Case Else
+            WMTestRecord "WMTest", "unknown action '" & action & "' for a Word equation (use evaluate or solve var=x)"
+        End Select
+    End If
 
     Set cellR = CellRange(tbl.Cell(r, cIn))
-    For i = 1 To cellR.OMaths.Count
-        If i > 1 Then output = output & " | "
-        output = output & RangeLinear(cellR.OMaths(i).Range)
-    Next
-    If cellR.OMaths.Count = 0 Then output = RangeLinear(cellR)
+    If isFree Or cellR.OMaths.Count = 0 Then
+        output = RangeLinear(cellR)
+    Else
+        For i = 1 To cellR.OMaths.Count
+            If i > 1 Then output = output & " | "
+            output = output & RangeLinear(cellR.OMaths(i).Range)
+        Next
+    End If
     GoTo slut
 fejl:
     WMTestRecord "WMTest", "VBA error " & Err.Number & ": " & Err.Description
@@ -214,11 +261,23 @@ fejl:
 slut:
     On Error Resume Next
     WMTestMode = True             ' in case something switched it off
-    If action = "" Then action = "?"
+    WMFreeTextSilent = True
+    If Len(WMFreeTextLog) > 0 Then WMTestRecord "FreeText", WMFreeTextLog
     mResult = mResult & Clean(id) & vbTab & Clean(action) & vbTab & Clean(inputText) & vbTab & Clean(expected) & _
               vbTab & Clean(notes) & vbTab & Clean(actual) & vbTab & Clean(output) & vbTab & Clean(mMessages) & _
               vbTab & CLng((Timer - t) * 1000) & vbCrLf
 End Sub
+
+Private Function LastSignPos(ByVal s As String) As Long
+' Position of the last top-level "=" or approx sign (outside brackets), 0 if none.
+    Dim i As Long, d As Long, ch As String
+    For i = 1 To Len(s)
+        ch = Mid$(s, i, 1)
+        If ch = "(" Or ch = "[" Or ch = "{" Then d = d + 1
+        If ch = ")" Or ch = "]" Or ch = "}" Then d = d - 1
+        If d = 0 And (ch = "=" Or ch = ChrW$(8776)) Then LastSignPos = i
+    Next
+End Function
 
 ' ---------------------------------------------------------------------------------------------------------
 ' Settings: everything a case may change is saved first and restored at the end (WordMat writes these
@@ -240,15 +299,20 @@ Private Sub RestoreTestSettings(sv As Variant)
 End Sub
 
 Private Sub ApplyCaseSettings(ByVal notes As String)
-' units=on|off (default off), outunits=km,h (default none), exact=auto|exact|num, digits=n
+' Per case, from Notes: units=on|off (default off), outunits=kN (default none), exact=auto|exact|num
+' (default auto), digits=n (default: the user's setting)
     Dim v As String
     v = LCase$(NoteValue(notes, "units"))
-    MaximaUnits = (v = "on" Or v = "true" Or v = "1")
+    If MaximaUnits <> (v = "on" Or v = "true" Or v = "1") Then MaximaUnits = (v = "on" Or v = "true" Or v = "1")
     OutUnits = NoteValue(notes, "outunits")
     v = LCase$(NoteValue(notes, "exact"))
-    If v = "auto" Then MaximaExact = 0
-    If v = "exact" Then MaximaExact = 1
-    If v = "num" Then MaximaExact = 2
+    If v = "exact" Then
+        MaximaExact = 1
+    ElseIf v = "num" Then
+        MaximaExact = 2
+    Else
+        MaximaExact = 0
+    End If
     v = NoteValue(notes, "digits")
     If Len(v) > 0 Then MaximaCifre = CInt(v)
 End Sub
@@ -286,17 +350,18 @@ Private Function CellText(c As Cell) As String
 End Function
 
 Private Function RangeLinear(rg As Range) As String
-' Copies the range into a hidden scratch document, linearises any equations there and returns the text.
-' The source range is never modified.
-    Dim s As String, om As OMath
+' Copies the range into a hidden scratch document, linearises any equations there and returns the text
+' (hidden text included). The source range is never modified.
+    Dim s As String, om As OMath, sr As Range
     If mScratch Is Nothing Then Set mScratch = Documents.Add(Visible:=False)
     mScratch.Content.Delete
-    mScratch.Content.InsertParagraphAfter
     mScratch.Range(0, 0).FormattedText = rg.FormattedText
     For Each om In mScratch.OMaths
         om.Linearize
     Next
-    s = mScratch.Content.text
+    Set sr = mScratch.Content
+    sr.TextRetrievalMode.IncludeHiddenText = True
+    s = sr.text
     s = Replace(s, Chr$(7), "")
     Do While Right$(s, 1) = vbCr Or Right$(s, 1) = vbLf
         s = Left$(s, Len(s) - 1)

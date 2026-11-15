@@ -210,7 +210,7 @@ Public Sub RunMaxima(Optional StopTime As Integer, Optional Reset As Boolean = T
         Exit Sub
     ElseIf StopTime < 0 Then
         Set UFwait2 = New UserFormWaitForMaxima
-        UFwait2.Show vbModeless
+        If Not WMTestMode Then UFwait2.Show vbModeless ' word_math test mode: no wait window during automated runs
         DoEvents
         MaxProc.ExecuteMaximaCommand InputStreng, 1
         FindLastMaximaOutput
@@ -385,7 +385,7 @@ Sub WaitForMaximaForm(StopTime As Integer)
     If MaxProc.Finished = 0 Then
         '    ufwait2.omax = omax
         On Error Resume Next
-        UFwait2.Show vbModeless
+        If Not WMTestMode Then UFwait2.Show vbModeless ' word_math test mode: no wait window during automated runs
         DoEvents
         On Error GoTo fejl
         i = 0
@@ -597,8 +597,12 @@ start:
             pos2 = InStr(s, "Is ")
             Var = Mid$(s, pos2 + 3, pos - pos2 - 4)
             UF.Label_udtryk.Caption = Var
-            UF.Show
-            If UF.OptionButton_positiv.value = True Then
+            If WMTestMode Then ' word_math test mode: answer "positive" without showing the form, and record it
+                WMTestRecord "AskSign", "assumed " & Var & " > 0"
+            Else
+                UF.Show
+            End If
+            If WMTestMode Or UF.OptionButton_positiv.value = True Then ' word_math test mode: "WMTestMode Or" added
                 Assume = "assume(" & Var & ">0)$"
             ElseIf UF.OptionButton_negativ.value = True Then
                 Assume = "assume(" & Var & "<0)$"

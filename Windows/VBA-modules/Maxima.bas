@@ -493,6 +493,10 @@ newcas:
             End If
         End If
         If variabel = vbNullString Then
+            If WMTestMode Then ' word_math test mode: the variable picker can't be shown; the test must pass the variable
+                WMTestRecord "UserFormSelectVar", "no variable given (variables: " & omax.Vars & ")"
+                GoTo slut
+            End If
             UFSelectVar.Vars = omax.Vars
             UFSelectVar.DefS = omax.DefString
             UFSelectVar.Show
@@ -723,6 +727,10 @@ stophop:
         UFSelectVar.DefS = omax.DefString
         UFSelectVar.Frame_solvemethod.visible = False
         If variabel = vbNullString Then
+            If WMTestMode Then ' word_math test mode: the variable picker can't be shown; the test must pass the variable
+                WMTestRecord "UserFormSelectVar", "no variable given (variables: " & omax.Vars & ")"
+                GoTo slut
+            End If
             UFSelectVar.Width = UFSelectVar.Width - UFSelectVar.Frame_solvemethod.Width - 5
             UFSelectVar.Show
             variabel = UFSelectVar.SelectedVar
@@ -793,6 +801,10 @@ newcassys:
         variabel = Replace(omax.ConvertToWordSymbols(variabel), ";", ",")
         
         If omax.MaximaOutput = "?" Or omax.MaximaOutput = "" Or InStr(omax.KommentarOutput, "Lisp error") > 0 Then
+            If WMTestMode Then ' word_math test mode: don't offer another CAS; record and stop
+                WMTestRecord "UserFormChooseCAS", "Maxima gave no solution: " & omax.MaximaOutput & " " & omax.KommentarOutput
+                GoTo slut
+            End If
             UserFormChooseCAS.Show
             If UserFormChooseCAS.ChosenCAS = 2 Then ' maxima num
                 GoTo stophop
