@@ -75,6 +75,7 @@ Public Function PrepareNewCommand(Optional FindDef As Boolean = True) As Boolean
     Dim DefS As String
     On Error Resume Next
     StopNow = False
+    WMU_BeginCommand ' word_math units: placeholders and flags for this command
     DefFejl = False
     DiffEqVar = vbNullString
     Kommando = vbNullString
@@ -1382,6 +1383,63 @@ Sub SolveSystemNumeric(ByVal Variable As String, ByVal guess As String, Optional
 
 slut:
 End Sub
+Private Function WMUnitsBeregn() As Boolean
+' word_math units: evaluates Kommando (already translated, with wmq/wmu calls) with the unit engine
+' WMUnitResult(expr, "requested unit") in WordMat's normal Maxima process. Sets MaximaOutput to
+' "=value [unit]" (or the approximately-equal sign), WMU_LastError on a unit error (nothing is written) and
+' WMU_LastWarning for warnings. Returns False only when the expression turned out to have no units and none
+' was requested: then the normal path evaluates it as before.
+    Dim saveIn As String, raw As String, e As String, res As String, parts() As String, req As String
+    Dim reqAscii As String, valW As String, unitW As String
+    WMUnitsBeregn = True
+    saveIn = MaximaInputStreng
+    req = WMU_Request
+    If req <> vbNullString Then
+        reqAscii = WMU_ToAscii(req, e)
+        If e <> vbNullString Then WMU_LastError = e: Exit Function
+    End If
+#If Mac Then
+    WMU_LastError = "Units in [ ] are not supported on the Mac."
+    Exit Function
+#Else
+    ' wm_lasterror is cleared before the definitions, so unit errors in them are reported too
+    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitResult(" & Kommando & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();"
+    RunMaxima 0, False, False ' no Reset: the legacy units mode must not post-process this output
+    If StopNow Then Exit Function
+    raw = MaxProc.LastMaximaOutput
+    e = WMU_ErrorFromOutput(raw)
+    If e <> vbNullString Then
+        WMU_LastError = e
+        ResetMaxima
+        Exit Function
+    End If
+    res = WMU_ResultString(raw)
+    If res = "WMU@@NONE" Then
+        MaximaInputStreng = saveIn ' definitions only: the normal path runs (and resets) them again
+        WMUnitsBeregn = False
+        Exit Function
+    End If
+    ResetMaxima
+    parts = Split(res, "@@")
+    If res = vbNullString Or UBound(parts) < 5 Then
+        If InStr(raw, "WMUnitResult(") > 0 Or WMU_MacPath() = vbNullString Then
+            WMU_LastError = "Units in [ ] need the word_math unit engine (WMUnits.mac in %AppData%\WordMat), which could not be loaded."
+        Else
+            e = Trim$(Replace(Replace(raw, vbCr, " "), vbLf, " "))
+            If Len(e) > 300 Then e = Left$(e, 300) & " ..."
+            WMU_LastError = "The expression could not be calculated. " & e
+        End If
+        Exit Function
+    End If
+    valW = ConvertToWordSymbols(parts(2))
+    If req <> vbNullString Then unitW = req Else unitW = WMU_FromAscii(parts(3))
+    If parts(1) = "~" Then MaximaOutput = ChrW$(8776) Else MaximaOutput = "="
+    MaximaOutput = MaximaOutput & valW
+    If unitW <> vbNullString Then MaximaOutput = MaximaOutput & " [" & unitW & "]"
+    KommentarOutput = vbNullString
+    If parts(4) <> vbNullString Then WMU_LastWarning = WMU_MessageText(parts(4))
+#End If
+End Function
 Sub beregn()
     Dim inkom As String, pkommando As String, StartKommando3 As String
     Dim posca As Integer, posligmed As Integer, possumtegn As Integer
@@ -1406,6 +1464,10 @@ start:
     Kommando = CodeForMaxima(Kommando)
     If Kommando = vbNullString Then 'And ConvertErrorText <> vbNullString Then
         GoTo slut
+    End If
+    ' word_math units: [unit] brackets here or in a definition, or "= ? [unit]": the unit engine answers
+    If WMU_Used Or WMU_Request <> vbNullString Then
+        If WMUnitsBeregn() Then GoTo slut
     End If
     inkom = "%"    ' save command
 
@@ -2649,6 +2711,7 @@ Function CodeForMaxima(ByVal text As String, Optional CAStype As Integer = 0) As
     ea2.EndBracket = ChrW$(12311)
 
     text = Trim$(text)
+    If CAStype = 0 Then text = WMU_Protect(text) ' word_math units: [unit] -> placeholder before any other pass
 
     '    For j = 1 To Len(text)
     '    i = AscW(mid$(text, j, 1))
@@ -4002,7 +4065,7 @@ slut:
         MsgBox2 ConvertErrorText, vbOKOnly, TT.Error
         CodeForMaxima = ""
     Else
-      CodeForMaxima = text
+      CodeForMaxima = WMU_Restore(text) ' word_math units: placeholder -> wmq(...)/wmu(...)
     End If
 End Function
 Function ConvertDifferentials(text As String, DiffChr As String) As String
@@ -6477,7 +6540,7 @@ Function GetMaximaSettingsString() As String
 
     Dim SettingsString As String, Arr() As String, i As Integer
     
-    SettingsString = "["
+    SettingsString = "[" & WMU_LoadStatement() ' word_math units: loads WMUnits.mac once per Maxima process
     If MaximaUnits Then
         SettingsString = SettingsString & "keepfloat:false,setunits([N,J,W,Pa,C,V,F,Ohm,T,H,K]),"
         If Not OutUnits = vbNullString Then

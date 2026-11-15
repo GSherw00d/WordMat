@@ -1446,6 +1446,7 @@ End Sub
 
 Sub beregn()
     Dim fejlm As String, RemoveEqual As Boolean
+    Dim wmAsk As Boolean, wmCmd As String ' word_math units
     On Error GoTo fejl
     If WMFT_HandleEvaluate() Then Exit Sub ' word_math free text: cursor/selection in a ~~...~~ span (no OMath selected)
    ' Application.ScreenUpdating = False
@@ -1513,6 +1514,12 @@ Sub beregn()
         MsgBox TT.A(48), vbOKOnly, TT.Error
         GoTo slut
     End If
+    
+    ' word_math units: "= ? [unit]" asks for the value (and unit); the "?" is replaced by the result
+    WMU_Request = vbNullString
+    wmCmd = omax.Kommando
+    wmAsk = WMU_TakeAsk(wmCmd)
+    If wmAsk Then omax.Kommando = wmCmd
     
     If Right$(omax.Kommando, 1) = "=" Then
         omax.Kommando = Trim$(Left$(omax.Kommando, Len(omax.Kommando) - 1))
@@ -1588,6 +1595,10 @@ Sub beregn()
     
 
     
+    If WMU_LastError <> vbNullString Then ' word_math units: unit errors are shown; nothing is written
+        MsgBox2 WMU_LastError, vbOKOnly, TT.Error
+        GoTo slut
+    End If
     If omax.StopNow Then GoTo slut
 '    If CheckForError Then Exit Sub ' do not scroll down if there is an error, deffejl is selected
     If CheckForError Then
@@ -1609,8 +1620,10 @@ Sub beregn()
         If omax.KommentarOutput = vbNullString Then omax.KommentarOutput = "Maxima could not evaluate the expression (for example a division by zero)."
     End If
     If Len(omax.MaximaOutput) > 0 And Trim$(omax.MaximaOutput) <> "=res1" Then
+        If wmAsk And Selection.OMaths.Count > 0 Then WMU_DeleteAskTail Selection.OMaths(1) ' word_math units
         InsertOutput omax.MaximaOutput, False
         RestartIndex = 0
+        If WMU_LastWarning <> vbNullString Then MsgBox2 WMU_LastWarning, vbOKOnly, "WordMat" ' word_math units
     ElseIf omax.KommentarOutput <> vbNullString Then
         fejlm = TT.A(128) & vbCrLf
 #If Mac Then
@@ -1637,6 +1650,7 @@ slut:
     D.Activate
 #End If
     On Error Resume Next
+    WMU_Request = vbNullString ' word_math units
     If Not Oundo Is Nothing Then
         If Oundo.IsRecordingCustomRecord Then Oundo.EndCustomRecord
     End If

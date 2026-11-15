@@ -341,10 +341,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
 
     lin = ToLinear(p.Expr, e)
     If e <> "" Then msg = e: GoTo slut
-    If p.OutUnit <> "" Then
-        req = OutUnitsFromRequest(p.OutUnit, e)
-        If e <> "" Then msg = e: GoTo slut
-    End If
+    WMU_Request = p.OutUnit ' word_math units: "= ? [unit]" (or the old answer's unit) goes to the unit engine
     inVars = "," & Join(IdentifierList(OutsideBrackets(p.Expr)), ",") & ","
 
     ' FindDefinitions uses the cursor position: definitions before the equation apply
@@ -354,11 +351,6 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
     If CASengine <> 0 Then
         msg = "Free-typed equations need WordMat's Maxima engine (choose Maxima as the CAS in the settings)."
         GoTo slut
-    End If
-    If req <> "" Then
-        saveOut = OutUnits
-        changedOut = True
-        OutUnits = req
     End If
     If Not PrepareMaxima Then
         If msg = "" Then msg = "The definitions before this equation could not be read."
@@ -381,6 +373,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
     omax.Kommando = cmd
     omax.beregn
     If omax.StopNow Then msg = "The calculation was stopped.": GoTo slut
+    If WMU_LastError <> vbNullString Then msg = WMU_LastError: GoTo slut ' word_math units: nothing is written
 
     ED = GetErrorDefinition(omax.MaximaOutput, omax.KommentarOutput)
     If ED.Title <> vbNullString Then
@@ -429,6 +422,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
     delta = Len(newText) - (p.ReplEnd - p.ReplStart)
     LogMsg "OK " & Snippet(sp) & " -> " & newText
     EvaluateSpan = True
+    If WMU_LastWarning <> vbNullString Then ShowMsg WMU_LastWarning, "WordMat" ' word_math units (result written)
     GoTo slut
 fejl:
     msg = "Unexpected error " & Err.Number & ": " & Err.Description
@@ -437,6 +431,7 @@ fejl:
 slut:
     On Error Resume Next
     If changedOut Then OutUnits = saveOut
+    WMU_Request = vbNullString
     Application.ScreenUpdating = True
 End Function
 
@@ -475,7 +470,7 @@ Private Function FormatResult(ByVal res As String, ByVal spaced As Boolean, ByVa
     For i = 1 To n
         s = Trim$(parts(i))
         If s = "" Then errMsg = "Maxima returned an empty result.": Exit Function
-        If MaximaUnits Then s = WrapResultUnit(s)
+        If MaximaUnits And InStr(res, "[") = 0 Then s = WrapResultUnit(s) ' legacy units mode only
         s = PowersToSuperscript(s)
         If spaced Then
             out = out & IIf(i > 1, " ", "") & signs(i) & " " & s
@@ -489,7 +484,7 @@ Private Function FormatResult(ByVal res As String, ByVal spaced As Boolean, ByVa
     For k = LBound(ids) To UBound(ids)
         If ids(k) <> "" And Not IsKnownName(CStr(ids(k))) Then bad = bad & IIf(bad = "", "", ", ") & ids(k)
     Next
-    If MaximaUnits Then ' a variable from the input that comes back inside a unit was never defined
+    If MaximaUnits And InStr(res, "[") = 0 Then ' legacy units mode: a variable from the input that comes back inside a unit was never defined
         ids = IdentifierList(out)
         For k = LBound(ids) To UBound(ids)
             If ids(k) <> "" Then
@@ -505,8 +500,8 @@ Private Function FormatResult(ByVal res As String, ByVal spaced As Boolean, ByVa
 End Function
 
 Private Function WrapResultUnit(ByVal s As String) As String
-' word_math units bridge (output side): "100000 N" -> "100000 [N]", "1.5*10^5 kg*m/s^2" -> "1.5*10^5 [kg*m/s^2]".
-' FUTURE UNIT ENGINE: replace this together with BridgeUnits/OutUnitsFromRequest.
+' WordMat's legacy units mode only (units switched on, no [ ] in the equation): "100000 N" -> "100000 [N]",
+' "1.5*10^5 kg*m/s^2" -> "1.5*10^5 [kg*m/s^2]". Results of the unit engine already have their [unit].
     Dim i As Long, c As String, numEnd As Long, rest As String, numPart As String, k As Long
     i = 1
     If Mid$(s, 1, 1) = "-" Or Mid$(s, 1, 1) = ChrW$(8722) Then i = 2
@@ -708,77 +703,22 @@ Private Function ToLinear(ByVal s As String, ByRef errMsg As String) As String
 End Function
 
 Private Function BridgeUnits(ByVal s As String, ByRef errMsg As String) As String
-' word_math units bridge (input side).
-' FUTURE UNIT ENGINE: this is the single place where bracketed units ("5 [kg]", "[m/s^2]") are turned into
-' what WordMat's current units mode understands. Today the brackets are dropped and the unit names are
-' handed to Maxima's unit package: "5 [kg]" -> "(5*(kg))", "x [m]" -> "x*(m)". The real unit engine
-' (dimension checks, auto-filled units, prefixes) will replace BridgeUnits, OutUnitsFromRequest and
-' WrapResultUnit.
-    Dim out As String, i As Long, j As Long, c As String, u As String, k As Long, numStart As Long
-    Dim prev As String, isQty As Boolean
-    i = 1
-    Do While i <= Len(s)
+' word_math units: [unit] brackets are passed through unchanged. CMaxima.CodeForMaxima hands them to the unit
+' engine (WMUnits.bas -> WMUnits.mac), exactly as for equation-editor equations, so both input modes share one
+' path (aim 2). Only the bracket structure is checked here; the engine checks the contents.
+    Dim i As Long, depth As Long, c As String
+    For i = 1 To Len(s)
         c = Mid$(s, i, 1)
         If c = "[" Then
-            j = InStr(i + 1, s, "]")
-            If j = 0 Then errMsg = "A unit bracket [ is not closed with ].": Exit Function
-            u = Trim$(Mid$(s, i + 1, j - i - 1))
-            If InStr(u, "[") > 0 Then errMsg = "Unit brackets [ ] can't be nested.": Exit Function
-            If Not MaximaUnits Then
-                errMsg = "[" & u & "] is a unit, but units are switched off in WordMat. Switch units on, or remove the [ ]."
-                Exit Function
-            End If
-            If u = "" Or Not IsUnitText(u) Then
-                errMsg = "[" & u & "] is not a valid unit. Square brackets are reserved for units; use ( ) for grouping."
-                Exit Function
-            End If
-            out = RTrim$(out)
-            prev = Right$(out, 1)
-            ' a number directly before the unit forms one quantity with it: "2 [s]" -> "(2*(s))"
-            k = Len(out)
-            Do While k >= 1
-                If IsDigitCh(Mid$(out, k, 1)) Or Mid$(out, k, 1) = "." Or Mid$(out, k, 1) = DecSeparator Then k = k - 1 Else Exit Do
-            Loop
-            numStart = k + 1
-            isQty = (numStart <= Len(out))
-            If isQty And k > 0 Then
-                If Mid$(out, k, 1) = "^" Or IsLetterCh(Mid$(out, k, 1)) Or Mid$(out, k, 1) = "_" Then isQty = False
-            End If
-            If isQty Then
-                out = Left$(out, numStart - 1) & "(" & Mid$(out, numStart) & ChrW$(183) & "(" & u & "))"
-            ElseIf prev <> "" And Not IsOperatorCh(prev) Then
-                out = out & ChrW$(183) & "(" & u & ")"
-            Else
-                out = out & "(" & u & ")"
-            End If
-            i = j + 1
+            depth = depth + 1
+            If depth > 1 Then errMsg = "Unit brackets [ ] can't be nested.": Exit Function
         ElseIf c = "]" Then
-            errMsg = "A unit bracket ] has no matching [."
-            Exit Function
-        Else
-            out = out & c
-            i = i + 1
+            depth = depth - 1
+            If depth < 0 Then errMsg = "A unit bracket ] has no matching [.": Exit Function
         End If
-    Loop
-    BridgeUnits = out
-End Function
-
-Private Function OutUnitsFromRequest(ByVal u As String, ByRef errMsg As String) As String
-' word_math units bridge (requested output unit). "= ? [kN]" -> WordMat's OutUnits "kN" for this one
-' evaluation; compound units are passed as their unit names ("kN*m" -> "kN,m").
-' FUTURE UNIT ENGINE: replace (see BridgeUnits).
-    Dim ids As Variant, k As Long, s As String
-    If Not MaximaUnits Then
-        errMsg = "[" & u & "] asks for an output unit, but units are switched off in WordMat. Switch units on, or remove the [ ]."
-        Exit Function
-    End If
-    If Not IsUnitText(u) Then errMsg = "[" & u & "] is not a valid unit.": Exit Function
-    ids = IdentifierList(NormaliseChars(u))
-    For k = LBound(ids) To UBound(ids)
-        If ids(k) <> "" Then s = s & IIf(s = "", "", ",") & ids(k)
     Next
-    If s = "" Then errMsg = "[" & u & "] is not a valid unit.": Exit Function
-    OutUnitsFromRequest = s
+    If depth > 0 Then errMsg = "A unit bracket [ is not closed with ].": Exit Function
+    BridgeUnits = s
 End Function
 
 Private Function NormaliseChars(ByVal s As String) As String

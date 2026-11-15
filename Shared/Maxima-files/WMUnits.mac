@@ -25,7 +25,9 @@
      WMUnitCheck(expr)          expr if it is dimensionally consistent, else an error
      WMUnitSI(expr)             [SI value, base-dimension vector]
      WMUnitInfo(name)           [factor, dimension vector, system, prefixes allowed, offset data]
-   Errors are raised with error("WMUNIT: ..."); WordMat shows the text after "WMUNIT: ".
+     WMUnitLastError()          "WMUERR@@<message>": the first unit error since wm_lasterror was set to ""
+   Errors are raised with error("WMUNIT: ...") and kept in wm_lasterror; WordMat sends
+   wm_lasterror:""$ <definitions> WMUnitResult(...); WMUnitLastError(); and shows the message if there is one.
    ========================================================================================================== */
 
 wmunits_loaded: false$
@@ -47,7 +49,11 @@ wm_defaultauto: ["p", "n", "u", "m", "", "k", "M", "G"]$
 wm_top: 0$
 
 /* ---------------------------------------------------------------- small helpers */
-wm_err(msg) := error(sconcat("WMUNIT: ", msg))$
+/* Errors: the message is also kept in wm_lasterror (the first one since it was last cleared), because
+   WordMat's Maxima bridge does not pass error messages on; WordMat asks for it with WMUnitLastError(). */
+wm_lasterror: ""$
+wm_err(msg) := (if wm_lasterror = "" then wm_lasterror: msg, error(sconcat("WMUNIT: ", msg)))$
+WMUnitLastError() := sconcat("WMUERR@@", wm_lasterror)$
 wm_sym(n) := concat('wmu_, n)$
 wm_isunit(x) := symbolp(x) and is(slength(string(x)) > 4) and is(substring(string(x), 1, 5) = "wmu_")$
 wm_nameof(x) := substring(string(x), 5)$
