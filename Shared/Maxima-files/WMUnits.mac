@@ -418,18 +418,22 @@ wm_monoof(e) := block([inflag: true, o, ms, best, bf, m, f],
 
 wm_chainof(n) := wm_chain[n]$
 
-/* rule 1: cancel through definitions while the unit gets simpler */
-wm_cancel(M) := block([best, bc, improved: true, cand, c, p, rest, D],
+/* rule 1: cancel through definitions while the unit gets simpler, or when a unit of the SAME name cancels
+   (N/kg -> m/s^2: N = kg*m/s^2 and the kg cancels; allowed to cost at most one more point of wm_cx).
+   Units that only merge with a differently prefixed unit (N/mm^2) don't count, so rule 3 still holds. */
+wm_cancels(rest, E) := some(lambda([q], some(lambda([r], is(r[1] = q[1]) and is(sign(r[2]) # sign(q[2]))), E)), rest)$
+wm_cancel(M) := block([best, bc, improved: true, cand, c, p, rest, D, E, rounds: 0],
   best: wm_merge(M), bc: wm_cx(best),
-  while improved do (
-    improved: false,
+  while improved and rounds < 10 do (
+    improved: false, rounds: rounds + 1,
     M: best,
     for p in M do (
       rest: sublist(M, lambda([q], q[1] # p[1])),
       for D in wm_chainof(p[1]) do (
-        cand: wm_merge(append(rest, wm_mscale(D, p[2]))),
+        E: wm_mscale(D, p[2]),
+        cand: wm_merge(append(rest, E)),
         c: wm_cx(cand),
-        if c < bc then (best: cand, bc: c, improved: true)))),
+        if c < bc or (c <= bc + 1 and wm_cancels(rest, E)) then (best: cand, bc: c, improved: true)))),
   best)$
 
 /* mixed SI and imperial input: imperial units become SI (named unit of the same dimension, or base units) */
@@ -461,6 +465,8 @@ wm_display(M, sys, v) := block([d, r, best, bf, f, fam, u, cand],
   if sys # "imp" and length(M) >= 2 and every(lambda([p], wm_baselike[p[1]] = true), M) then (
     r: wm_simono(wm_monodim(M)),
     if length(r) = 1 then M: r),
+  /* all-imperial input: never show SI units that only came from a definition (lbf = lb*9.80665*m/s^2) */
+  if sys = "imp" and some(lambda([p], wm_sys[wm_root(p[1])] = "SI"), M) then M: wm_impmono(wm_monodim(M)),
   /* rule 4: automatic prefix (SI) or conventional size (imperial) for a single unit */
   if length(M) = 1 and M[1][2] = 1 and numberp(float(v)) and float(v) # 0.0 then (
     u: M[1][1],
@@ -474,6 +480,12 @@ wm_display(M, sys, v) := block([d, r, best, bf, f, fam, u, cand],
   /* safety: if anything went wrong, fall back to SI */
   if wm_monodim(M) # d then M: wm_simono(d),
   M)$
+
+/* an imperial monomial for dimension d: a preferred unit of that dimension, else imperial base units */
+wm_impmono(d) := block([r: false, P],
+  for u in wm_imppref do if r = false then (P: wm_merge(wm_monoof(ev(wm_parse(u)))), if wm_monodim(P) = d then r: P),
+  if r = false then r: sublist(makelist([wm_impbase[i], d[i]], i, 1, length(d)), lambda([q], q[2] # 0)),
+  r)$
 
 wm_bestprefix(r, v) := block([best: false, x, pv, p, L],
   L: wm_auto[r],
@@ -615,5 +627,31 @@ block([dir],
                                                     lambda([i], charat(dir, i) = "/" or charat(dir, i) = "\\")))))
        else "",
   load(sconcat(dir, "WMUnitTable.mac")))$
+
+/* ---------------------------------------------------------------- solving with units (2026-11-15)
+   WMUnitSolve(eq, v, req): rearrange eq for the unknown v with Maxima's solve. Unit symbols (wmu_...) are opaque
+   positive constants, so they are carried through the algebra. Each real solution is then checked by
+   substituting it back (both sides must have the same dimension) and evaluated with WMUnitResult, so
+   auto-fill, prefixes and '= ? [unit]' requests work exactly as for evaluation.
+   Returns a list with one string per real solution: WMU@@... as WMUnitResult, or WMUVAL@@<expr> when no units
+   are involved (WordMat then formats the value as usual). Errors go through wm_err. */
+WMUnitSolve(eq, v, req) := block([inflag: true, sols, out: [], L, R, r],
+  if not freeof('wmabs, eq) then
+    wm_err("Absolute (offset) units such as [degC] or [barg] can't be used in an equation that is solved for an unknown yet. Use [K] or [bara] instead."),
+  if atom(eq) or op(eq) # "=" then eq: (eq = 0),
+  if freeof(v, eq) then wm_err(sconcat("The equation doesn't contain ", string(v), ".")),
+  sols: errcatch(solve(eq, v)),
+  if sols = [] then wm_err(sconcat("Maxima could not rearrange the equation for ", string(v), ".")),
+  sols: sublist(first(sols), lambda([s], not atom(s) and op(s) = "=" and lhs(s) = v
+                                          and freeof(v, rhs(s)) and freeof(%i, rhs(s)))),
+  if sols = [] then wm_err(sconcat("No real solution for ", string(v), ".")),
+  for s in sols do (
+    wm_top: eq,
+    L: wm_an(subst(s, lhs(eq))), R: wm_an(subst(s, rhs(eq))),
+    if L[2] # R[2] then wm_mismatch("equate", L[2], R[2]),
+    r: WMUnitResult(rhs(s), req),
+    if r = "WMU@@NONE" then r: sconcat("WMUVAL@@", string(rhs(s))),
+    out: endcons(r, out)),
+  out)$
 
 wmunits_loaded: true$

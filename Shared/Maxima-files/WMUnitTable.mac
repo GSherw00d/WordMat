@@ -123,6 +123,11 @@ wm_defunit("ton_long",  "2240*lb",   "imp", [])$
 /* imperial units chosen by size for auto-filled results (proposal: psi vs ksi, lbf vs kip) */
 wm_deffamily(["psi", "ksi"])$
 wm_deffamily(["lbf", "kip"])$
+/* all-imperial input whose simplified unit still contains SI units (e.g. lbf/(ft/s^2), because lbf is defined
+   through m/s^2): the result is shown in the first of these with the same dimension, otherwise built from the
+   imperial base units below (length, mass, time, current, temperature, amount, luminous intensity) */
+wm_imppref: ["lbf", "lb", "ft", "psi", "ft^2", "ft^3", "ft/s", "ft/s^2", "lbf*ft"]$
+wm_impbase: ["ft", "lb", "s", "A", "degR", "mol", "cd"]$
 
 /* ---------------- names that must be explicit ---------------- */
 wm_defambiguous("gal",  "[gal] is ambiguous. Write [gal_US] (US gallon, 3.785 L) or [gal_UK] (imperial gallon, 4.546 L).")$
