@@ -754,10 +754,9 @@ start:
     KommandoForklaring = "Solve(" & Kommando & "," & variabel & ")"    ' only for output of command explanation
 
     ckommando = CodeForMaxima(ikommando)    ' coded command
-    If WMU_Used Then ' word_math units: solving with [unit] brackets is not supported yet (clear message, no wmu_ symbols)
-        MaximaOutput = vbNullString
-        KommentarOutput = vbNullString
-        WMU_LastError = "Solving equations with units in [ ] isn't supported yet. Evaluate them instead (= ?), or solve the equation without units."
+    If WMU_Used Then ' word_math units: solve with the unit engine (WMUnitSolve), units carried through the algebra
+        If TempDefs <> "" Then MaximaInputStreng = AddDefinition("definer:" & TempDefs) & MaximaInputStreng
+        WMUnitsSolve ckommando, variabel
         Exit Sub
     End If
 '    variabel = ReplaceFakeVarNames(variabel)
@@ -1388,6 +1387,65 @@ Sub SolveSystemNumeric(ByVal Variable As String, ByVal guess As String, Optional
     End If
 
 slut:
+End Sub
+Public Sub WMUnitsSolve(ByVal ck As String, ByVal variabel As String)
+' word_math units: solves ck (already translated, with wmq/wmu calls) for variabel with the unit engine
+' WMUnitSolve(eq, v, requested unit). Sets MaximaOutput to v=value [unit], several real solutions joined
+' with the logical-or sign as WordMat does, or WMU_LastError on a unit error (nothing is written).
+    Dim raw As String, e As String, req As String, reqAscii As String, out As String
+    Dim p As Long, q As Long, item As String, parts() As String, valW As String, unitW As String, sg As String
+    MaximaOutput = vbNullString
+    KommentarOutput = vbNullString
+    req = WMU_Request
+    If req <> vbNullString Then
+        reqAscii = WMU_ToAscii(req, e)
+        If e <> vbNullString Then WMU_LastError = e: Exit Sub
+    End If
+#If Mac Then
+    WMU_LastError = "Units in [ ] are not supported on the Mac."
+#Else
+    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitSolve(" & ck & "," & variabel & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();"
+    RunMaxima 0, False, False ' no Reset: the legacy units mode must not post-process this output
+    If StopNow Then Exit Sub
+    raw = MaxProc.LastMaximaOutput
+    e = WMU_ErrorFromOutput(raw)
+    ResetMaxima
+    If e <> vbNullString Then WMU_LastError = e: Exit Sub
+    ' collect every "WMU@@..." / "WMUVAL@@..." string of the result list
+    p = InStr(raw, Chr$(34) & "WMU")
+    Do While p > 0
+        q = InStr(p + 1, raw, Chr$(34))
+        If q = 0 Then Exit Do
+        item = Mid$(raw, p + 1, q - p - 1)
+        If Left$(item, 8) = "WMUVAL@@" Then
+            sg = "=": valW = ConvertToWordSymbols(Mid$(item, 9)): unitW = vbNullString
+        ElseIf Left$(item, 5) = "WMU@@" And item <> "WMU@@NONE" Then
+            parts = Split(item, "@@")
+            If UBound(parts) < 5 Then Exit Do
+            If parts(1) = "~" Then sg = ChrW$(8776) Else sg = "="
+            valW = ConvertToWordSymbols(parts(2))
+            If req <> vbNullString Then unitW = req Else unitW = WMU_FromAscii(parts(3))
+            If parts(4) <> vbNullString Then WMU_LastWarning = WMU_MessageText(parts(4))
+        Else
+            item = vbNullString
+        End If
+        If item <> vbNullString Then
+            If out <> vbNullString Then out = out & " " & ChrW$(8744) & " "
+            out = out & variabel & sg & valW
+            If unitW <> vbNullString Then out = out & " [" & unitW & "]"
+        End If
+        p = InStr(q + 1, raw, Chr$(34) & "WMU")
+    Loop
+    If out = vbNullString Then
+        If InStr(raw, "WMUnitSolve(") > 0 Or WMU_MacPath() = vbNullString Then
+            WMU_LastError = "Units in [ ] need the word_math unit engine (WMUnits.mac in %AppData%\WordMat), which could not be loaded."
+        Else
+            WMU_LastError = "The equation could not be solved for " & variabel & "."
+        End If
+        Exit Sub
+    End If
+    MaximaOutput = out
+#End If
 End Sub
 Private Function WMUnitsBeregn() As Boolean
 ' word_math units: evaluates Kommando (already translated, with wmq/wmu calls) with the unit engine
