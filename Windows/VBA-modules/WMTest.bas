@@ -240,8 +240,12 @@ Private Sub RunCase(doc As Document, tbl As Table, ByVal r As Long, ByVal cId As
                     actual = RangeLinear(cellR.OMaths(cellR.OMaths.Count).Range)
                 End If
             End If
+        Case "define", "none"
+            ' nothing to run: the equation only supplies a definition for later rows; Actual = the equation itself
+            Set cellR = CellRange(tbl.Cell(r, cIn))
+            If cellR.OMaths.Count > 0 Then actual = RangeLinear(cellR.OMaths(1).Range)
         Case Else
-            WMTestRecord "WMTest", "unknown action '" & action & "' for a Word equation (use evaluate or solve var=x)"
+            WMTestRecord "WMTest", "unknown action '" & action & "' for a Word equation (use evaluate, solve var=x or define)"
         End Select
     End If
 

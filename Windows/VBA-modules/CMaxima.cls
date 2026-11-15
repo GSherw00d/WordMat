@@ -6450,6 +6450,7 @@ Function IsSolved(ByVal Ligning As String, variabel As String) As Boolean
         ea.SetTuborgBrackets
     End If
     Ligning = RemoveBrackets(Trim(Ligning))
+    Ligning = Replace(Ligning, ChrW$(8776), "=") ' word_math: an approximate solution (x~...) counts as solved
     Arr = Split(Ligning, "=")
 
     If UBound(Arr) = 1 Then    ' there is exactly one = sign
