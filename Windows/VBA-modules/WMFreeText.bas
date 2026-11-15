@@ -334,7 +334,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
 ' msg holds the reason (msg is empty when a WordMat error form has already been shown).
     Dim lin As String, e As String, req As String, saveOut As String, changedOut As Boolean
     Dim cmd As String, res As String, sign As String, newText As String, inVars As String
-    Dim r As Range, ur As UndoRecord, ED As ErrorDefinition
+    Dim r As Range, ur As UndoRecord, ED As ErrorDefinition, lone As Boolean
     On Error GoTo fejl
     msg = ""
     delta = 0
@@ -370,6 +370,8 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
         msg = "The brackets ( ) don't match."
         GoTo slut
     End If
+    lone = IsLoneName(p.Expr) ' word_math free-text solving: "~~a = ?~~"
+    If lone Then WMU_Request = vbNullString ' first see whether the name has a value (a request could fail on it)
     omax.Kommando = cmd
     omax.beregn
     If omax.StopNow Then msg = "The calculation was stopped.": GoTo slut
@@ -398,10 +400,25 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
     End If
 
     newText = FormatResult(res, p.Spaced, inVars, e)
+    If e <> "" And lone And Left$(e, 7) = "Unknown" Then
+        ' "~~a = ?~~" with no definition of a: rearrange the nearest earlier equation that contains a
+        ' (option C, decided 2026-11-15)
+        e = vbNullString
+        If Not SolveForLoneName(sp, p, Trim$(NormaliseChars(p.Expr)), newText, e) Then msg = e: GoTo slut
+    ElseIf e = "" And lone And p.OutUnit <> "" Then
+        ' the name has a value and a unit was asked for: evaluate again with the request
+        ActiveDocument.Range(sp.OpenStart, sp.OpenStart).Select
+        If Not PrepareMaxima Then msg = "The definitions before this equation could not be read.": GoTo slut
+        omax.prevspr = ""
+        WMU_LastError = vbNullString
+        WMU_Request = p.OutUnit
+        omax.Kommando = cmd
+        omax.beregn
+        If omax.StopNow Then msg = "The calculation was stopped.": GoTo slut
+        If WMU_LastError <> vbNullString Then msg = WMU_LastError: GoTo slut
+        newText = FormatResult(omax.MaximaOutput, p.Spaced, inVars, e)
+    End If
     If e <> "" Then
-        ' "~~a = ?~~" with no definition of a is the agreed syntax for solving (rearranging an earlier
-        ' equation), which is not implemented yet
-        If Left$(e, 7) = "Unknown" And IsLoneName(p.Expr) Then e = MsgSolveNotSupported()
         msg = e
         GoTo slut
     End If
@@ -970,8 +987,168 @@ Private Function MsgUnbalanced() As String
 End Function
 
 Private Function MsgSolveNotSupported() As String
-    MsgSolveNotSupported = "Solving free-typed equations (~~ ... ~~) for an unknown isn't supported yet." & vbCrLf & vbCrLf & _
-        "You can evaluate them (= ?) when every symbol has a definition (:=), or use an equation-editor equation to solve."
+    MsgSolveNotSupported = "The Solve button doesn't work on free-typed equations (~~ ... ~~)." & vbCrLf & vbCrLf & _
+        "To solve for an unknown, write the equation, then ask for the unknown on its own:" & vbCrLf & _
+        "~~F = m" & ChrW$(183) & "a~~  and later  ~~a = ?~~  (or ~~a = ? [m/s^2]~~)." & vbCrLf & _
+        "Every other symbol needs a definition (:=)."
+End Function
+
+' ---------------------------------------------------------------------------------------------------------------
+' word_math free-text solving (option C, decided 2026-11-15): "~~a = ?~~" where a has no definition rearranges
+' the nearest earlier equation (free text or equation editor; not a definition, no "?") that contains a and whose
+' other symbols are all defined. The unit engine's WMUnitSolve does the algebra, so units work as for evaluation.
+' ---------------------------------------------------------------------------------------------------------------
+
+Private Function SolveForLoneName(sp As FTSpan, p As FTParsed, ByVal v As String, ByRef newText As String, ByRef msg As String) As Boolean
+    Dim cands() As String, n As Long, i As Long, ck As String, e As String, firstErr As String, res As String
+    n = CollectSourceEquations(sp.OpenStart, v, cands)
+    If n = 0 Then
+        msg = "No earlier equation contains " & v & ". Write the equation first, e.g. ~~F = m" & ChrW$(183) & "a~~, then ~~" & v & " = ?~~."
+        Exit Function
+    End If
+    For i = 1 To n
+        ActiveDocument.Range(sp.OpenStart, sp.OpenStart).Select
+        If Not PrepareMaxima Then msg = "The definitions before this equation could not be read.": Exit Function
+        omax.prevspr = ""
+        WMU_LastError = vbNullString
+        WMU_Request = p.OutUnit
+        ck = omax.CodeForMaxima(cands(i))
+        If ck = vbNullString Then GoTo nxt
+        omax.WMUnitsSolve ck, v
+        If omax.StopNow Then msg = "The calculation was stopped.": Exit Function
+        If WMU_LastError <> vbNullString Then
+            If firstErr = vbNullString Then firstErr = WMU_LastError & " (equation: " & cands(i) & ")"
+            GoTo nxt
+        End If
+        res = omax.MaximaOutput
+        If InStr(res, ChrW$(8744)) > 0 Then
+            msg = "The equation " & cands(i) & " has more than one solution for " & v & ": " & res & _
+                  ". Solve it with an equation-editor equation and choose the solution there."
+            Exit Function
+        End If
+        If Left$(res, Len(v)) = v Then res = Mid$(res, Len(v) + 1) ' "a=2 [m/s^2]" -> "=2 [m/s^2]"
+        e = vbNullString
+        newText = FormatResult(res, p.Spaced, "," & Join(IdentifierList(OutsideBrackets(cands(i))), ",") & ",", e)
+        If e = vbNullString Then
+            LogMsg "SOLVED " & v & " from " & cands(i)
+            SolveForLoneName = True
+            Exit Function
+        End If
+        If Left$(e, 7) <> "Unknown" Then msg = e: Exit Function
+nxt:
+    Next
+    If firstErr <> vbNullString Then
+        msg = firstErr
+    Else
+        msg = "No earlier equation with " & v & " can be solved yet: each one still has symbols without a definition (:=)."
+    End If
+End Function
+
+Private Function CollectSourceEquations(ByVal beforePos As Long, ByVal v As String, cands() As String) As Long
+' Earlier equations that contain the name v, nearest first (at most 30): plain free-text equations and
+' equation-editor equations, but no definitions and nothing with "?". Returns the count; cands() holds linear text.
+    Dim spans() As FTSpan, n As Long, i As Long, pp As FTParsed, body As String, e As String, lin As String
+    Dim pos() As Long, txt() As String, m As Long, j As Long, k As Long, tp As Long, tt As String, om As OMath
+    Dim para As Paragraph, pr As Range, prevStart As Long, oldMode As Boolean, t As String, a As Long, b As Long
+    Dim sp1 As FTSpan, nOm As Long, iOm As Long
+    ReDim pos(1 To 1): ReDim txt(1 To 1)
+    ' Walk the paragraphs one by one with .Next (a For Each over a range that ends inside a table can loop
+    ' forever in Word), and only look for spans in paragraphs that hold a marker.
+    Set para = ActiveDocument.Paragraphs.First
+    prevStart = -1
+    Do While Not para Is Nothing
+        Set pr = para.Range
+        If pr.Start >= beforePos Or pr.Start <= prevStart Then Exit Do
+        prevStart = pr.Start
+        oldMode = pr.TextRetrievalMode.IncludeHiddenText
+        pr.TextRetrievalMode.IncludeHiddenText = True
+        If InStr(pr.text, MARKER) > 0 Then
+            ' read the ~~...~~ pairs straight from the paragraph text: no Range enumeration (which can loop
+            ' inside table cells); positions are only used for ordering and the "before" test
+            t = pr.text
+            a = InStr(1, t, MARKER)
+            Do While a > 0
+                b = InStr(a + 2, t, MARKER)
+                If b = 0 Then Exit Do
+                sp1.OpenStart = pr.Start + a - 1
+                sp1.ContentStart = sp1.OpenStart + 2
+                sp1.ContentEnd = pr.Start + b - 1
+                sp1.CloseEnd = sp1.ContentEnd + 2
+                sp1.Content = Mid$(t, a + 2, b - a - 2)
+                sp1.Unbalanced = False
+                CollectOne sp1, beforePos, v, pos, txt, m
+                a = InStr(b + 2, t, MARKER)
+            Loop
+        End If
+        pr.TextRetrievalMode.IncludeHiddenText = oldMode
+        Set para = para.Next
+    Loop
+    ' by index, as WordMat's FindDefinitions does (For Each over OMaths can loop forever when one sits in a table)
+    nOm = ActiveDocument.Range.OMaths.Count
+    For iOm = 1 To nOm
+        Set om = ActiveDocument.Range.OMaths(iOm)
+        If om.Range.Start >= beforePos Then Exit For
+        If om.Range.End <= beforePos Then
+            lin = om.Range.text
+            If InStr(lin, "=") > 0 And InStr(lin, "?") = 0 And InStr(lin, ChrW$(8788)) = 0 And InStr(lin, ":=") = 0 Then
+                lin = omax.ReadEquation2(om.Range)
+                If InStr(lin, "?") = 0 And InStr(lin, ChrW$(8788)) = 0 And HasName(OutsideBrackets(NormaliseChars(lin)), v) Then
+                    m = m + 1: ReDim Preserve pos(1 To m): ReDim Preserve txt(1 To m)
+                    pos(m) = om.Range.Start: txt(m) = lin
+                End If
+            End If
+        End If
+    Next
+    ' nearest first: sort by position, descending
+    For j = 2 To m
+        tp = pos(j): tt = txt(j): k = j - 1
+        Do While k >= 1
+            If pos(k) >= tp Then Exit Do
+            pos(k + 1) = pos(k): txt(k + 1) = txt(k): k = k - 1
+        Loop
+        pos(k + 1) = tp: txt(k + 1) = tt
+    Next
+    If m > 30 Then m = 30
+    If m > 0 Then
+        ReDim cands(1 To m)
+        For j = 1 To m: cands(j) = txt(j): Next
+    End If
+    CollectSourceEquations = m
+End Function
+
+Private Sub CollectOne(sp As FTSpan, ByVal beforePos As Long, ByVal v As String, pos() As Long, txt() As String, m As Long)
+' Adds one free-text span to the candidates if it is a plain equation before beforePos that contains v
+    Dim pp As FTParsed, body As String, lin As String, e As String
+    If sp.Unbalanced Or sp.CloseEnd > beforePos Then Exit Sub
+    pp = ParseSpan(sp.Content)
+    If pp.Kind <> KIND_PLAIN Then Exit Sub
+    body = PlainBody(sp.Content)
+    If InStr(body, "=") = 0 Or InStr(body, "?") > 0 Then Exit Sub
+    If Not HasName(OutsideBrackets(body), v) Then Exit Sub
+    lin = ToLinear(body, e)
+    If e <> vbNullString Or lin = vbNullString Then Exit Sub
+    m = m + 1: ReDim Preserve pos(1 To m): ReDim Preserve txt(1 To m)
+    pos(m) = sp.OpenStart: txt(m) = lin
+End Sub
+
+Private Function PlainBody(ByVal content As String) As String
+' The text of a plain free-text equation without a "#(n)" number at the end
+    Dim k As Long
+    PlainBody = content
+    k = InStrRev(PlainBody, "#(")
+    If k > 0 Then
+        If Right$(RTrim$(PlainBody), 1) = ")" Then PlainBody = Left$(PlainBody, k - 1)
+    End If
+    PlainBody = Trim$(PlainBody)
+End Function
+
+Private Function HasName(ByVal s As String, ByVal v As String) As Boolean
+' True if the identifier v occurs in s
+    Dim ids As Variant, i As Long
+    ids = IdentifierList(NormaliseChars(s))
+    For i = LBound(ids) To UBound(ids)
+        If ids(i) = v Then HasName = True: Exit Function
+    Next
 End Function
 
 Private Function IsLoneName(ByVal s As String) As Boolean
