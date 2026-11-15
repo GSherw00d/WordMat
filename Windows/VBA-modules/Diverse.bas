@@ -1802,6 +1802,11 @@ Function MsgBox2(prompt As String, Optional Buttons As VbMsgBoxStyle = vbOKCance
 ' Buttons supported: vbYesNo, vbOKonly, vbOKCancel
 ' Example: MsgBox2 "This is a test", vbOKOnly, "Hello"
 
+    If WMTestMode Then ' word_math test mode: record instead of showing
+        WMTestRecord "MsgBox2", Title & ": " & prompt
+        MsgBox2 = WMTestDefaultAnswer(Buttons)
+        Exit Function
+    End If
     Dim UFMsgBox As New UserFormMsgBox
     
     UFMsgBox.MsgBoxStyle = Buttons

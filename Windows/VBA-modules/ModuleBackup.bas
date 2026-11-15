@@ -5,6 +5,7 @@ Dim BackupAnswer As Integer
 Dim SaveTime As Single
 
 Sub SaveBackup()
+    If WMTestMode Then Exit Sub ' word_math test mode: no backup prompt and no backup copy of test documents
     On Error GoTo fejl
     Dim path As String
     Dim UFbackup As UserFormBackup

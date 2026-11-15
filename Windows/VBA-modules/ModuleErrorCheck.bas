@@ -33,7 +33,11 @@ Function CheckForError() As Boolean
 '            UserFormError.TextBox_definitioner.text = FormatDefinitions(omax.DefString) 'DefinitionsNice
         End If
         UserFormError.SetErrorDefinition ED
-        UserFormError.Show
+        If WMTestMode Then ' word_math test mode: record instead of showing
+            WMTestRecord "UserFormError", ED.Title & ": " & ED.Description & " [" & ED.MaximaOutput & "]"
+        Else
+            UserFormError.Show
+        End If
         RestartWordMat
     End If
 End Function

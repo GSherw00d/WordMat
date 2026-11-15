@@ -481,6 +481,9 @@ Sub AnswerQuestion(StopTime As Integer, Optional ShowWaitForm As Boolean = True)
         If pos > 0 Or pos2 > 0 Then
             If MaximaUnits Then
                 svar = "pos"
+            ElseIf WMTestMode Then ' word_math test mode: answer "pos" (as units mode does) and record it
+                svar = "pos"
+                WMTestRecord "AskSign", "answered pos to: " & MaxProc.LastMaximaOutput
             Else
                 Dim UF As New UserFormAskSign
                 If pos <= 0 And pos2 > 0 Then pos = pos2

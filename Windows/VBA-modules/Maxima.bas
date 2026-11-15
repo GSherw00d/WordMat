@@ -2759,7 +2759,11 @@ Function ValidateInput(Expr, Optional MathObj As OMath) As Boolean
         End If
         
         UserFormError.SetErrorDefinition ED
-        UserFormError.Show
+        If WMTestMode Then ' word_math test mode: record instead of showing
+            WMTestRecord "UserFormError", ED.Title & ": " & ED.Description
+        Else
+            UserFormError.Show
+        End If
         ValidateInput = False
     End If
     
@@ -2847,7 +2851,11 @@ Function ValiderVariable() As Boolean
                 ED.DefFejl = False
                 ED.Description = TT.A(880) & Arr(i) & vbCrLf & vbCrLf & TT.A(881)
                 UserFormError.SetErrorDefinition ED
-                UserFormError.Show
+                If WMTestMode Then ' word_math test mode: record instead of showing
+                    WMTestRecord "UserFormError", ED.Title & ": " & ED.Description
+                Else
+                    UserFormError.Show
+                End If
                 Exit Function
             End If
         Next
