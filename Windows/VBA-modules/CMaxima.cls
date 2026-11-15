@@ -5912,7 +5912,12 @@ Function FindDefinitions() As String
     sslut = Selection.Range.End
     Set ra = ActiveDocument.Range
     ra.End = start
+    Dim wmft As Integer ' word_math free text: free-text ~~:=~~ definitions, merged in document order
+    WMFT_BeginDefinitions start ' word_math free text
     For i = ra.OMaths.Count To 1 Step -1
+        wmft = WMFT_AddDefinitionsAfter(Me, ActiveDocument.Range.OMaths(i).Range.End, FindDefinitions) ' word_math free text
+        If wmft = 2 Then FindDefinitions = "error": Exit Function ' word_math free text
+        If wmft = 1 Then GoTo wmft_stop ' word_math free text
         s = ActiveDocument.Range.OMaths(i).Range.text
         If InStr(s, ChrW$(8788)) > 0 Or InStr(s, ChrW$(8797)) > 0 Or InStr(s, ":") > 0 Or InStr(s, ChrW$(8801)) > 0 Then    ' only look at fields with : triple with def= and especially := characters
             s = ReadEquation2(ActiveDocument.Range.OMaths(i).Range)
@@ -5921,10 +5926,13 @@ Function FindDefinitions() As String
                 Exit Function
             End If
             t = AddDefinition(s, ActiveDocument.Range.OMaths(i)) 'ra.OMaths(i)
-            If t = "STOP" Then Exit For
+            If t = "STOP" Then GoTo wmft_stop ' word_math free text (was: Exit For)
             FindDefinitions = t & FindDefinitions
         End If
     Next
+    wmft = WMFT_AddDefinitionsAfter(Me, -1, FindDefinitions) ' word_math free text: definitions before the first OMath
+    If wmft = 2 Then FindDefinitions = "error": Exit Function ' word_math free text
+wmft_stop: ' word_math free text
     If defindex > 0 Then
         ReDim Preserve ldefname(defindex - 1)
         ReDim Preserve ldefvalue(defindex - 1)

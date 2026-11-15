@@ -379,6 +379,7 @@ Sub MaximaSolve()
 End Sub
 Sub MaximaSolvePar(Optional variabel As String)
     Dim Arr As Variant, s As String, t As String, v As String
+    If WMFT_HandleSolve() Then Exit Sub ' word_math free text: solving ~~...~~ spans is not supported yet
     Dim fejlm As String
     On Error GoTo fejl
     Application.ScreenUpdating = False
@@ -1434,6 +1435,7 @@ End Sub
 Sub beregn()
     Dim fejlm As String, RemoveEqual As Boolean
     On Error GoTo fejl
+    If WMFT_HandleEvaluate() Then Exit Sub ' word_math free text: cursor/selection in a ~~...~~ span (no OMath selected)
    ' Application.ScreenUpdating = False
 '    Dim Tid As Single
 '    Tid = Timer
