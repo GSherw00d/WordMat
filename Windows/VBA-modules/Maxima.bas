@@ -547,6 +547,7 @@ newcas:
                 omax.MaximaInputStreng = omax.MaximaInputStreng & "autonsolve:true$"
             End If
             omax.MaximaSolve (variabel)
+            If WMU_LastError <> vbNullString Then MsgBox2 WMU_LastError, vbOKOnly, TT.Error: GoTo slut ' word_math units
         ElseIf CASengine = 1 Then ' GeoGebra web
             If MaximaForklaring Then
                 omax.GoToEndOfSelectedMaths

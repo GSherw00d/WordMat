@@ -754,6 +754,12 @@ start:
     KommandoForklaring = "Solve(" & Kommando & "," & variabel & ")"    ' only for output of command explanation
 
     ckommando = CodeForMaxima(ikommando)    ' coded command
+    If WMU_Used Then ' word_math units: solving with [unit] brackets is not supported yet (clear message, no wmu_ symbols)
+        MaximaOutput = vbNullString
+        KommentarOutput = vbNullString
+        WMU_LastError = "Solving equations with units in [ ] isn't supported yet. Evaluate them instead (= ?), or solve the equation without units."
+        Exit Sub
+    End If
 '    variabel = ReplaceFakeVarNames(variabel)
     '    kommando = "CSolve(" & ckommando & "," & variabel & ")"
     If TempDefs <> "" Then
