@@ -661,6 +661,8 @@ block([dir],
          substring(dir, 1, 1 + lmax(cons(0, sublist(makelist(i, i, 1, slength(dir)),
                                                     lambda([i], charat(dir, i) = "/" or charat(dir, i) = "\\")))))
        else "",
+  /* word_math security: refuse system( ), Lisp entry and file writing (research 08) */
+  load(sconcat(dir, "WMSecurity.lisp")),
   load(sconcat(dir, "WMUnitTable.mac")),
   /* principal stresses and matrices with units (research 07) */
   load(sconcat(dir, "WMMatrix.mac")))$
