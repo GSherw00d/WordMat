@@ -366,6 +366,24 @@ Public Function WMU_TakeAsk(ByRef cmd As String) As Boolean
     WMU_TakeAsk = True
 End Function
 
+Public Sub WMU_DeleteAnswerTail(om As OMath, ByVal tail As String)
+' word_math recalculation: removes the old answer (tail = "=10 [N]" as read, starting with its sign) from the end
+' of the equation, so the new result (which starts with its own sign) can be appended. Linearised for this and
+' built up again. If the exact tail is not found, the text from the last = or approximately-equal sign is removed.
+    Dim r As Range, t As String, k As Long, k2 As Long
+    On Error Resume Next
+    om.Linearize
+    Set r = om.Range
+    t = r.text
+    k = InStrRev(t, tail)
+    If k = 0 Or tail = "" Then
+        k = InStrRev(t, "=")
+        k2 = InStrRev(t, ChrW$(8776))
+        If k2 > k Then k = k2
+    End If
+    If k > 1 Then ActiveDocument.Range(r.Start + k - 1, r.End).Delete
+    om.BuildUp
+End Sub
 Public Sub WMU_DeleteAskTail(om As OMath)
 ' Removes the final "= ? [unit]" from the equation, so the result (which starts with its own sign) can be
 ' appended. The equation is linearised for this and built up again.

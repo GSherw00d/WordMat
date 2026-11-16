@@ -1448,6 +1448,7 @@ End Sub
 Sub beregn()
     Dim fejlm As String, RemoveEqual As Boolean
     Dim wmAsk As Boolean, wmCmd As String ' word_math units
+    Dim wmRecalc As Boolean, wmCut As Long, wmOldUnit As String, wmTail As String ' word_math recalculation
     On Error GoTo fejl
     If WMFT_HandleEvaluate() Then Exit Sub ' word_math free text: cursor/selection in a ~~...~~ span (no OMath selected)
    ' Application.ScreenUpdating = False
@@ -1521,6 +1522,16 @@ Sub beregn()
     wmCmd = omax.Kommando
     wmAsk = WMU_TakeAsk(wmCmd)
     If wmAsk Then omax.Kommando = wmCmd
+    ' word_math recalculation (decided 2026-11-16): an equation that already ends with WordMat's answer
+    ' ("F=m*a=10") is evaluated again and the old answer replaced; its unit is kept as the unit check
+    If Not wmAsk Then
+        If WMFT_AnswerCut(wmCmd, wmCut, wmOldUnit) Then
+            wmRecalc = True
+            wmTail = Mid$(wmCmd, wmCut)
+            omax.Kommando = Trim$(Left$(wmCmd, wmCut - 1))
+            WMU_Request = wmOldUnit
+        End If
+    End If
     
     If Right$(omax.Kommando, 1) = "=" Then
         omax.Kommando = Trim$(Left$(omax.Kommando, Len(omax.Kommando) - 1))
@@ -1622,6 +1633,7 @@ Sub beregn()
     End If
     If Len(omax.MaximaOutput) > 0 And Trim$(omax.MaximaOutput) <> "=res1" Then
         If wmAsk And Selection.OMaths.Count > 0 Then WMU_DeleteAskTail Selection.OMaths(1) ' word_math units
+        If wmRecalc And Selection.OMaths.Count > 0 Then WMU_DeleteAnswerTail Selection.OMaths(1), wmTail ' word_math recalculation
         InsertOutput omax.MaximaOutput, False
         RestartIndex = 0
         If WMU_LastWarning <> vbNullString Then MsgBox2 WMU_LastWarning, vbOKOnly, "WordMat" ' word_math units

@@ -656,17 +656,53 @@ Private Function ParseSpan(ByVal content As String) As FTParsed
             If lhs = "" Then Exit For
             ' with only one sign before the answer (no "F = m*a = ..." chain), the left side must be
             ' a pure number expression, so that a plain equation such as "x = 5" is never overwritten
-            If i = 1 And IdentifierCount(OutsideBrackets(lhs)) > 0 Then Exit For
-            p.Kind = KIND_ANSWERED
-            p.Expr = lhs
-            p.ReplStart = relPos(i)
-            p.ReplEnd = bodyLen + 1
-            p.Spaced = (Mid$(body, relPos(i) + 1, 1) = " ") Or (Mid$(body, relPos(i) - 1, 1) = " ")
-            p.OutUnit = LastBracketUnit(tail)
-            Exit For
+            ' (word_math recalculation, decided 2026-11-16: a lone name followed by a result, "~~a = 2 [m/s^2]~~",
+            ' is an answer too, so calculate re-solves or re-evaluates it; accepted trade-off: "~~x = 5~~" typed by
+            ' the user is recalculated when something gives x a value)
+            ' a name on the left of the FIRST sign: not an answer there, unless it is a lone name and the only
+            ' sign; otherwise try the next sign ("y = 2*3 = 99" is answered at the second sign)
+            If Not (i = 1 And IdentifierCount(OutsideBrackets(lhs)) > 0 And Not (IsLoneName(lhs) And nRel = 1)) Then
+                p.Kind = KIND_ANSWERED
+                p.Expr = lhs
+                p.ReplStart = relPos(i)
+                p.ReplEnd = bodyLen + 1
+                p.Spaced = (Mid$(body, relPos(i) + 1, 1) = " ") Or (Mid$(body, relPos(i) - 1, 1) = " ")
+                p.OutUnit = LastBracketUnit(tail)
+                Exit For
+            End If
         End If
     Next
     ParseSpan = p
+End Function
+
+Public Function WMFT_AnswerCut(ByVal t As String, ByRef cutPos As Long, ByRef oldUnit As String) As Boolean
+' word_math recalculation for Word equations: True if the linear text t already ends with an answer written by
+' WordMat, e.g. "F=m*a=10" or "2+3=5" or "1 [bar]*1 [m^2]=100 [kN]". cutPos is the 1-based position of the sign
+' where the answer starts; oldUnit is the answer's [unit] (empty if none), used as the unit request so that
+' recalculation doubles as a unit check. With only one sign the left side must be pure numbers (a typed equation
+' such as "x^2=4" is never treated as answered).
+    Dim i As Long, c As String, depth As Long, nRel As Long, relPos() As Long, lhs As String, tail As String
+    ReDim relPos(1 To Len(t) + 1)
+    For i = 1 To Len(t)
+        c = Mid$(t, i, 1)
+        If c = "(" Or c = "[" Or c = "{" Then depth = depth + 1
+        If c = ")" Or c = "]" Or c = "}" Then depth = depth - 1
+        If depth = 0 And (c = "=" Or c = ChrW$(8776)) Then nRel = nRel + 1: relPos(nRel) = i
+    Next
+    For i = 1 To nRel
+        tail = Mid$(t, relPos(i) + 1)
+        If IsResultText(tail) Then
+            lhs = Trim$(Left$(t, relPos(i) - 1))
+            If lhs = "" Then Exit Function
+            ' a name on the left of the first sign: try the next sign ("y=2*3=99" is answered at the second)
+            If Not (i = 1 And IdentifierCount(OutsideBrackets(lhs)) > 0) Then
+                cutPos = relPos(i)
+                oldUnit = LastBracketUnit(tail)
+                WMFT_AnswerCut = True
+                Exit Function
+            End If
+        End If
+    Next
 End Function
 
 Private Function IsResultText(ByVal t As String) As Boolean
