@@ -20,7 +20,7 @@ Private Const DENY_NAMES As String = "|system|to_lisp|eval_string_lisp|eval_stri
     "read_binary_matrix|read_binary_array|read_binary_list|" & _
     "delete_file|rename_file|copy_file|mkdir|rmdir|chdir|" & _
     "compile_file|translate_file|compfile|" & _
-    "file_name|user_preamble|png_file|svg_file|pdf_file|ps_file|eps_file|" & _
+    "file_name|png_file|svg_file|pdf_file|ps_file|eps_file|" & _
     "maxima_tempdir|maxima_userdir|geomview_command|xmaxima_plot_command|mgnuplot_command|"
 ' Name prefixes refused (plot settings that name programs or files, and Maxima's file search lists)
 Private Const DENY_PREFIXES As String = "|gnuplot_|file_search|"
@@ -39,12 +39,15 @@ Private Function WMSec_NameRefused(ByVal nm As String) As Boolean
 End Function
 
 Private Function WMSec_StripOwn(ByVal s As String) As String
-' Removes the exact statements WordMathEng itself adds that use load( ): numeric solving, direction fields
-' and the user's own code file (always %AppData%\WordMat\WordMatCodeFile.mac).
+' Removes the exact statements WordMathEng itself adds that use load( ) or file_name: numeric solving, direction
+' fields, graphs and the user's own code file (always %AppData%\WordMat\WordMatCodeFile.mac).
     s = Replace(s, "load(""newton1"")", "")
     s = Replace(s, "load(""mnewton"")", "")
     s = Replace(s, "load(drawdf)", "")
     s = Replace(s, "load(""" & Replace(GetCodeFileName, "\", "/") & """)", "")
+    ' the graph forms (CMaxima.Plot2D, Draw2D) write their picture to %TEMP%\WordMatGraf
+    s = Replace(s, "file_name=""" & Replace(GetTempDir(), "\", "/") & "WordMatGraf""", "")
+    s = Replace(s, "file_name=""" & Replace(Environ("TEMP"), "\", "/") & "/WordMatGraf""", "")
     WMSec_StripOwn = s
 End Function
 
