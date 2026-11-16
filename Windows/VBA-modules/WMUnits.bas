@@ -90,7 +90,7 @@ Public Function WMU_Protect(ByVal s As String) As String
             End If
             a = WMU_ToAscii(u, e)
             If e <> vbNullString Then
-                code = "wm_err(""" & Replace(e, """", "'") & """)"
+                code = "wm_err(""" & Replace(Replace(e, "\", "/"), """", "'") & """)" ' word_math security: no \ or " can end the string early
             Else
                 code = vbNullString
             End If

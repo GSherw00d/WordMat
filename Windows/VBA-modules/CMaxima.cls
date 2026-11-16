@@ -149,12 +149,22 @@ Public Sub ResetMaxima()
         kd = kd & "forget([" & ForgetList & "])"
         ForgetList = ""
     End If
-    If kd <> vbNullString Then MaxProc.Reset kd
+    If kd <> vbNullString Then
+        If WMSec_Allow(kd, False) Then MaxProc.Reset kd ' word_math security
+    End If
 #End If
 End Sub
 Public Sub RunMaxima(Optional StopTime As Integer, Optional Reset As Boolean = True, Optional ConvertWordSymbols As Boolean = True)
 ' starts maxima sends input and receives output
 
+    ' word_math security: refuse input that could run commands, Lisp or file access (research 08)
+    If Not WMSec_Allow(MaximaInputStreng) Then
+        StopNow = True
+        MaximaOutput = vbNullString
+        KommentarOutput = vbNullString
+        MaximaInputStreng = vbNullString
+        Exit Sub
+    End If
     IncreaseCalcCounter
 #If Mac Then
     RunMaximaFile StopTime, ConvertWordSymbols
@@ -326,8 +336,10 @@ Function ConvertMaximaUnits(Expr As String, Optional basedim As Boolean = True) 
     Dim i As Integer, k As String, Arr As Variant, s As String
     
     Expr = Replace(Expr, """", "") ' The answer will typically be run through the num function which adds "" to numbers
+    ' word_math security: not sent to the units process; RunMaxima then refuses the command with a message
+    If Not WMSec_Allow(Expr, False) Then ConvertMaximaUnits = Expr: Exit Function
     
-    k = "fpprintprec:" & MaximaCifre & "$NoSigFig:" & MaximaCifre & "$" ' there are problems with dectalallNum, so this fppprintprec method is used here with units
+    k = WMSec_LoadStatement() & "fpprintprec:" & MaximaCifre & "$NoSigFig:" & MaximaCifre & "$" ' word_math security: WMSecurity.lisp in the units process too. there are problems with dectalallNum, so this fppprintprec method is used here with units
     If basedim Then ' all units are reverted to base SI-units
         k = k & Expr & ",numer;applyb1(%,unitrule),numer;dectalallNum(%),numer;"
     Else
