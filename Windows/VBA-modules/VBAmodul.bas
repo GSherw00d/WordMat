@@ -1,5 +1,6 @@
 Attribute VB_Name = "VBAmodul"
 Option Explicit
+Option Private Module ' word_math security: developer tools (import/remove modules), not callable from documents (MACROBUTTON fields) or other projects
 ' To run these macros you need these two settings:
 ' * add reference 'Microsoft Visual Basic for Applications Extensibility 5.3'
 ' * Settings | Trust center | Settings for macros | always trust VBA project object model
