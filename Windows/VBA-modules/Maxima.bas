@@ -583,6 +583,7 @@ newcas:
         End If
                 
         
+        If WMSec_Refused Then GoTo slut ' word_math security: refused input, no numeric retry
         If omax.StopNow Then
             If omax.AntalVars > 1 Then
                 GoTo slut

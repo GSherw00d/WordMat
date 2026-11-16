@@ -158,7 +158,9 @@ Public Sub RunMaxima(Optional StopTime As Integer, Optional Reset As Boolean = T
 ' starts maxima sends input and receives output
 
     ' word_math security: refuse input that could run commands, Lisp or file access (research 08)
+    WMSec_Refused = False
     If Not WMSec_Allow(MaximaInputStreng) Then
+        WMSec_Refused = True
         StopNow = True
         MaximaOutput = vbNullString
         KommentarOutput = vbNullString
@@ -843,7 +845,7 @@ start:
     '    FindLastMaximaOutput
 
     If StopNow Then
-        If MaximaExact < 2 Then
+        If MaximaExact < 2 And Not WMSec_Refused Then ' word_math security: no numeric retry after a refusal
             If MsgBox(TT.A(839), vbRetryCancel, "Stop") = vbRetry Then
                 gemMaxExct = MaximaExact
                 MaximaExact = 2
@@ -1625,7 +1627,7 @@ start:
     Call RunMaxima
     '
     If StopNow Then
-        If MaximaExact < 2 Then
+        If MaximaExact < 2 And Not WMSec_Refused Then ' word_math security: no numeric retry after a refusal
             If MsgBox(TT.A(839), vbRetryCancel, "Stop") = vbRetry Then
                 gemMaxExct = MaximaExact
                 MaximaExact = 2

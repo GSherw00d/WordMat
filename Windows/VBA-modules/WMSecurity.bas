@@ -8,6 +8,7 @@ Attribute VB_Name = "WMSecurity"
 Option Explicit
 
 Public WMSec_LastRefusal As String
+Public WMSec_Refused As Boolean      ' set by CMaxima.RunMaxima: the last command was refused
 
 ' Maxima names refused anywhere outside a string (Maxima is case-sensitive, so only these exact spellings
 ' are the dangerous functions; "Load" or "load1" are ordinary names).
