@@ -421,3 +421,49 @@ Public Function WMU_DebugMaxima(ByVal cmd As String) As String
     omax.RunMaxima 0, False, False
     WMU_DebugMaxima = MaxProc.LastMaximaOutput
 End Function
+' ---------------------------------------------------------------- word_math matrices (research 07)
+' eigenval( ), eigenvec( ) and principalangle( ) are defined in Shared\Maxima-files\WMMatrix.mac (loaded by
+' WMUnits.mac). CMaxima.beregn sends commands that use them through the unit branch (WMUnitsBeregn), so their
+' errors (wm_err) and warnings (WMMatrixWarning) reach the user; a result without units falls back to the
+' normal evaluation, which handles exact and numeric output as usual.
+Public Function WMM_Uses(ByVal code As String) As Boolean
+    WMM_Uses = WMM_HasName(code, "eigenval") Or WMM_HasName(code, "eigenvec") Or WMM_HasName(code, "principalangle")
+End Function
+Private Function WMM_HasName(ByVal code As String, ByVal nm As String) As Boolean
+' nm as a whole name (so Maxima's eigenvalues( ) is not matched)
+    Dim p As Long, c As String
+    p = InStr(code, nm)
+    Do While p > 0
+        c = Mid$(code, p + Len(nm), 1)
+        If Not (c Like "[A-Za-z0-9_]") Then
+            If p = 1 Then WMM_HasName = True: Exit Function
+            If Not (Mid$(code, p - 1, 1) Like "[A-Za-z0-9_]") Then WMM_HasName = True: Exit Function
+        End If
+        p = InStr(p + 1, code, nm)
+    Loop
+End Function
+Public Function WMM_IsAngleCall(ByVal s As String) As Boolean
+' True when s (the command as typed) is one call principalangle(...) and nothing else.
+    Dim i As Long, d As Long
+    s = Replace(Replace(Replace(s, ChrW$(8289), ""), " ", ""), ChrW$(160), "")
+    If Left$(s, 15) <> "principalangle(" Or Right$(s, 1) <> ")" Then Exit Function
+    For i = 15 To Len(s)
+        Select Case Mid$(s, i, 1)
+        Case "(": d = d + 1
+        Case ")": d = d - 1
+            If d = 0 And i < Len(s) Then Exit Function
+        End Select
+    Next
+    WMM_IsAngleCall = (d = 0)
+End Function
+Public Function WMM_WarningFromOutput(ByVal raw As String) As String
+' The warning from WMMatrixWarning() ("WMMWARN@@<message>") in Maxima's output, or "".
+    Dim p As Long, q As Long
+    p = InStrRev(raw, "WMMWARN@@")
+    If p = 0 Then Exit Function
+    p = p + 9
+    q = InStr(p, raw, """")
+    If q = 0 Then q = InStr(p, raw, vbLf)
+    If q = 0 Then q = Len(raw) + 1
+    WMM_WarningFromOutput = Trim$(Replace(Mid$(raw, p, q - p), vbCr, ""))
+End Function

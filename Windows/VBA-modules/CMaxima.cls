@@ -1467,7 +1467,7 @@ Private Function WMUnitsBeregn() As Boolean
     Exit Function
 #Else
     ' wm_lasterror is cleared before the definitions, so unit errors in them are reported too
-    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitResult(" & Kommando & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();"
+    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$wm_lastwarning:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitResult(" & Kommando & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();WMMatrixWarning();"
     RunMaxima 0, False, False ' no Reset: the legacy units mode must not post-process this output
     If StopNow Then Exit Function
     raw = MaxProc.LastMaximaOutput
@@ -1477,6 +1477,8 @@ Private Function WMUnitsBeregn() As Boolean
         ResetMaxima
         Exit Function
     End If
+    e = WMM_WarningFromOutput(raw) ' word_math matrices: e.g. a non-symmetric matrix in eigenval( )
+    If e <> vbNullString Then WMU_LastWarning = e
     res = WMU_ResultString(raw)
     If res = "WMU@@NONE" Then
         MaximaInputStreng = saveIn ' definitions only: the normal path runs (and resets) them again
@@ -1531,7 +1533,8 @@ start:
         GoTo slut
     End If
     ' word_math units: [unit] brackets here or in a definition, or "= ? [unit]": the unit engine answers
-    If WMU_Used Or WMU_Request <> vbNullString Then
+    ' word_math matrices: eigenval/eigenvec/principalangle also go this way, so their errors and warnings are shown
+    If WMU_Used Or WMU_Request <> vbNullString Or WMM_Uses(Kommando) Then
         If WMUnitsBeregn() Then GoTo slut
     End If
     inkom = "%"    ' save command
@@ -1711,6 +1714,10 @@ start:
     If ListSeparator = "," Then MaximaOutput = Replace(MaximaOutput, ",", ", ") ' primarily necessary for lists
     If InStr(MaximaOutput, "[") > 0 Then MaximaOutput = WMFT_ArraySeparators(MaximaOutput) ' word_math arrays: "[2; 4; 6]" (matrices are written as Word matrices, not [ ])
         
+    ' word_math matrices: a principal angle in degree mode is written with the degree sign
+    If Not Radians And MaximaOutput <> vbNullString Then
+        If WMM_IsAngleCall(StartKommando) Then MaximaOutput = MaximaOutput & ChrW$(176)
+    End If
     If gemMaxExct >= 0 Then MaximaExact = gemMaxExct
 slut:
 End Sub
@@ -6503,6 +6510,7 @@ Function GetMaximaSettingsString() As String
     Dim SettingsString As String, Arr() As String, i As Integer
     
     SettingsString = "[" & WMU_LoadStatement() ' word_math units: loads WMUnits.mac once per Maxima process
+    SettingsString = SettingsString & "wm_radians:" & IIf(Radians, "true", "false") & "," ' word_math: principalangle( )
     If MaximaUnits Then
         SettingsString = SettingsString & "keepfloat:false,setunits([N,J,W,Pa,C,V,F,Ohm,T,H,K]),"
         If Not OutUnits = vbNullString Then
