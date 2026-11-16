@@ -121,3 +121,30 @@ Public Function WMSec_LoadStatement() As String
     If Dir(p) = vbNullString Then Exit Function
     WMSec_LoadStatement = "errcatch(load(""" & Replace(p, "\", "/") & """))$"
 End Function
+
+Public Function WMSec_SafeLinkArg(ByVal Link As String) As String
+' A link passed to the browser on its command line (Diverse.OpenLink with Script, used by the GeoGebra graph
+' buttons with the equations in the URL). A " in the equations would end the quoted argument and could add
+' browser options such as --gpu-launcher (which runs a program). Percent-encodes " and control characters,
+' spaces, and backslashes in the query, so the link stays one argument.
+    Dim i As Long, c As String, out As String, q As Long, w As Long
+    q = InStr(Link, "?")
+    For i = 1 To Len(Link)
+        c = Mid$(Link, i, 1)
+        w = AscW(c)
+        If c = """" Then
+            out = out & "%22"
+        ElseIf w >= 0 And w < 32 Then
+            out = out & "%" & Right$("0" & Hex$(w), 2)
+        ElseIf c = " " Then
+            out = out & "%20"
+        ElseIf c = "\" And q > 0 And i > q Then
+            out = out & "%5C"
+        Else
+            out = out & c
+        End If
+    Next
+    ' a backslash just before the closing quote would escape it
+    If Right$(out, 1) = "\" Then out = Left$(out, Len(out) - 1) & "%5C"
+    WMSec_SafeLinkArg = out
+End Function

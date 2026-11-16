@@ -175,6 +175,7 @@ On Error Resume Next
 #Else
 ' ActiveDocument.FollowHyperlink removes parameters such as ?command=... Therefore it may be necessary to use script
     If Script Then
+        Link = WMSec_SafeLinkArg(Link) ' word_math security: the link must stay one command-line argument
         If Dir("C:\Program Files\Google\Chrome\Application\chrome.exe") <> vbNullString Then
             MaxProc.RunFile "C:\Program Files\Google\Chrome\Application\chrome.exe", """" & Link & """"
         Else
