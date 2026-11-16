@@ -411,7 +411,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
     If lone Then WMU_Request = vbNullString ' first see whether the name has a value (a request could fail on it)
     omax.Kommando = cmd
     omax.beregn
-    If omax.StopNow Then msg = "The calculation was stopped.": GoTo slut
+    If omax.StopNow Then msg = WMSec_StopMessage(): GoTo slut
     If WMU_LastError <> vbNullString Then msg = WMU_LastError: GoTo slut ' word_math units: nothing is written
 
     ED = GetErrorDefinition(omax.MaximaOutput, omax.KommentarOutput)
@@ -451,7 +451,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
         WMU_Request = p.OutUnit
         omax.Kommando = cmd
         omax.beregn
-        If omax.StopNow Then msg = "The calculation was stopped.": GoTo slut
+        If omax.StopNow Then msg = WMSec_StopMessage(): GoTo slut
         If WMU_LastError <> vbNullString Then msg = WMU_LastError: GoTo slut
         newText = FormatResult(omax.MaximaOutput, p.Spaced, inVars, e)
     End If
@@ -1128,7 +1128,7 @@ Private Function SolveForLoneName(sp As FTSpan, p As FTParsed, ByVal v As String
         ck = omax.CodeForMaxima(cands(i))
         If ck = vbNullString Then GoTo nxt
         omax.WMUnitsSolve ck, v
-        If omax.StopNow Then msg = "The calculation was stopped.": Exit Function
+        If omax.StopNow Then msg = WMSec_StopMessage(): Exit Function
         If WMU_LastError <> vbNullString Then
             If firstErr = vbNullString Then firstErr = WMU_LastError & " (equation: " & cands(i) & ")"
             GoTo nxt
@@ -1457,4 +1457,13 @@ Public Function WMFT_DebugParse(ByVal content As String) As String
     Dim p As FTParsed
     p = ParseSpan(content)
     WMFT_DebugParse = "kind=" & p.Kind & "|expr=" & p.Expr & "|repl=" & p.ReplStart & "-" & p.ReplEnd & "|unit=" & p.OutUnit & "|err=" & p.ErrMsg
+End Function
+
+Private Function WMSec_StopMessage() As String
+' word_math security: the reason a calculation stopped (a refusal, or the user/time limit)
+    If WMSec_Refused Then
+        WMSec_StopMessage = "Not calculated: it contains """ & WMSec_LastRefusal & """, which is not allowed for security reasons."
+    Else
+        WMSec_StopMessage = "The calculation was stopped."
+    End If
 End Function
