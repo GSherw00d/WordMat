@@ -9,7 +9,7 @@
 8#£Infoga taxering Avsnitt nr.
 9#£Uppdatera skatteregistreringsnummer
 10#£Befintliga namn på ekvationer
-11#£För att infoga referens till ekvationen senare, välj "Infoga referens till ekvation" från WordMat-menyn under "Infoga ekvation".
+11#£För att infoga referens till ekvationen senare, välj "Infoga referens till ekvation" från WordMathEng-menyn under "Infoga ekvation".
 12#£Namnet finns redan
 13#£Namnet får inte innehålla blanksteg
 14#£Referens för taxering
@@ -18,8 +18,8 @@
 17#£Höger
 18#£Numrering
 19#£Fråga efter namnet på referensen när du infogar
-20#£Med WordMat kan du utföra matematiska beräkningar i Word. WordMat-kärnan är öppen källkod och finns tillgänglig utan kostnad.\r\nMed WordMat-kärnan installeras följande andra program:\r\nMaxima, GeoGebra math-apps-bundle, Math fonts.\r\nValfria komponenter: GeoGebra 5, Graph, WordMat+. Se mer under licens\r\nWordMat är gjord av Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
-21#£Det finns en ny version av WordMat redo för nedladdning.\r\nNyheter: \r\n
+20#£Med WordMathEng kan du utföra matematiska beräkningar i Word. WordMathEng-kärnan är öppen källkod och finns tillgänglig utan kostnad.\r\nMed WordMathEng-kärnan installeras följande andra program:\r\nMaxima, GeoGebra math-apps-bundle, Math fonts.\r\nValfria komponenter: GeoGebra 5, Graph, WordMat+. Se mer under licens\r\nWordMat är gjord av Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
+21#£Det finns en ny version av WordMathEng redo för nedladdning.\r\nNyheter: \r\n
 22#£Du kommer nu att omdirigeras till nedladdningssidan
 23#£Ny version
 24#£Ange ett antal punkter och en tabell skapas automatiskt som kan fyllas i med punkterna. När du har fyllt i den aktiverar du den önskade regressionen.
@@ -27,12 +27,12 @@
 26#£Ett misstag har begåtts. Det finns förmodligen ett fel i de inmatade siffrorna.
 27#£Du måste skapa en tabell med två kolumner. X-värden i den vänstra kolumnen och Y-värden i den högra kolumnen. Bokstäver ignoreras. Regression utförs på de markerade siffrorna. Om ingen är markerad utförs regression på alla tal i tabellen.
 28#£Den önskade regressionen kan inte utföras på dessa punkter.
-29#£Linjär regression utförd med WordMat: $Tab
-30#£Exponentiell regression utförd med WordMat: $Tab
-31#£Effektregression utförd med WordMat: $Tab
+29#£Linjär regression utförd med WordMathEng: $Tab
+30#£Exponentiell regression utförd med WordMathEng: $Tab
+31#£Effektregression utförd med WordMathEng: $Tab
 32#£Potensregression kan inte utföras på dessa punkter. Alla ska vara positiva och får inte vara 0.
 33#£Anpassad regression med funktionen
-34#£Utförs med hjälp av WordMat (på engelska)
+34#£Utförs med hjälp av WordMathEng (på engelska)
 35#£Ange ordningen för polynomregressionen (1-
 36#£(Den maximala ordningen bestäms av antalet poäng)
 37#£ordning
@@ -47,15 +47,15 @@
 46#£Precisionen är ogiltig. Välj ett positivt heltal.
 47#£Placera markören i ett matematiskt fält
 48#£Beräkningar kan inte utföras på definitionsfält. Du kan använda din definition nedan för en beräkning.
-49#£Uttrycket särskiljs med hjälp av WordMat.
+49#£Uttrycket särskiljs med hjälp av WordMathEng.
 50#£Termen kunde inte särskiljas
 51#£Ange variabel
-52#£En huvudfunktion är tillgänglig med hjälp av WordMat:s "Master-funktion"-funktion
+52#£En huvudfunktion är tillgänglig med hjälp av WordMathEng:s "Master-funktion"-funktion
 53#£Termen kunde inte integreras
-54#£Ett misstag har begåtts. WordMat är förmodligen inte korrekt installerat. Försök att installera om, eventuellt med antivirusprogrammet inaktiverat. Om din skola har partnerskap kan problemet lösas genom att använda inställningen "dll-anslutningsmetod" i Inställningar/Avancerat
+54#£Ett misstag har begåtts. WordMathEng är förmodligen inte korrekt installerat. Försök att installera om, eventuellt med antivirusprogrammet inaktiverat. Om din skola har partnerskap kan problemet lösas genom att använda inställningen "dll-anslutningsmetod" i Inställningar/Avancerat
 55#£Ett fel uppstod när Maxima skulle startas
 56#£Ojämlikhet är löst för
-57#£med hjälp av WordMat.
+57#£med hjälp av WordMathEng.
 58#£Ojämlikhet har alla siffror som en lösning.
 59#£Ojämlikhet hade inga lösningar i $C för variabel
 60#£Ojämlikhet hade inga lösningar inom $R för variabel
@@ -63,7 +63,7 @@
 62#£Definiera
 63#£Ingen internetuppkoppling
 64#£Klicka på OK för att starta uppdateringen.
-65#£Kortkommandon för WordMat
+65#£Kortkommandon för WordMathEng
 66#£Genvägar för matematiska fält i Word
 67#£Du kan skapa dina egna genvägar till matematiska fält i Word eller ändra de befintliga. När du är i ett matematiskt område hittar du fliken Ekvationsfunktion/Design. Under funktioner klickar du på den lilla pilen i det nedre högra hörnet. Välj sedan "matematisk autokorrigering"
 68#£Formler
@@ -96,7 +96,7 @@
 95#£Ett misstag har begåtts. Titta på siffrorna vid xmin och xmax
 96#£Inget partnerskap
 97#£Ett fel uppstod när Graph skulle infogas. Det finns förmodligen ett syntaxfel någonstans i en definition eller liknande
-98#£Ett fel uppstod vid försöket att infoga Excel-ark. Det kan bero på att Excel har kraschat tidigare. Om det behövs, stäng öppna Excel-ark och öppna Excel innan du försöker via WordMat igen.
+98#£Ett fel uppstod vid försöket att infoga Excel-ark. Det kan bero på att Excel har kraschat tidigare. Om det behövs, stäng öppna Excel-ark och öppna Excel innan du försöker via WordMathEng igen.
 99#£Ett fel uppstod när kommandot skulle översättas till Maxima-syntax.
 100#£Ett fel uppstod när Maxima-utdata skulle översättas till Word-synkronisering.
 101#£Lösningen är osäker. Prova om det behövs. Numerisk lösning
@@ -108,7 +108,7 @@
 107#£Varning: Du har bett om att lösa ett ekvationssystem, men angett färre variabler än ekvationer. Endast de första ekvationerna har lösts. Kontrollera själv om de sista ekvationerna passar.
 108#£Följande felmeddelande kom från Maxima:
 109#£Felmeddelande för Maxima
-110#£WordMat kunde inte hitta mappen "Programfiler"
+110#£WordMathEng kunde inte hitta mappen "Programfiler"
 111#£Ett fel uppstod när du försökte öppna:
 112#£Det går inte att ansluta till servern
 113#£I det här läget i dokumentet definieras följande:
@@ -129,11 +129,11 @@
 128#£Termen kunde inte beräknas.
 129#£Ekvationen hade inga lösningar inom $C för variabel
 130#£Ekvationen hade inga lösningar inom $R för variabel
-131#£Tyvärr kunde WordMat inte lösa ekvationen.
+131#£Tyvärr kunde WordMathEng inte lösa ekvationen.
 132#£Alla siffror är lösningen på ekvationen
 133#£Du bad att lösa ekvationen för en variabel som redan har definierats. Infoga kommandot "delete def:" före ekvationen.
 134#£Taxeringssystemet är löst för
-135#£med hjälp av WordMat's 'Solve Equations'-funktion,
+135#£med hjälp av WordMathEng's 'Solve Equations'-funktion,
 136#£WordMat+ aktiverat för
 137#£Ekvationssystemet hade inga lösningar inom $C för variablerna
 138#£Ekvationssystemet hade inga lösningar inom $R för variablerna
@@ -141,27 +141,27 @@
 140#£WordMat+ ej aktiverat
 141#£Detta är inte en ekvation. En ekvation kommer alltid att ha ett =-tecken.
 142#£Följande variabler elimineras från ekvationssystemet:
-143#£med hjälp av WordMat's 'Eliminera variabel'-funktion,
+143#£med hjälp av WordMathEng's 'Eliminera variabel'-funktion,
 144#£sand
 145#£falsk
 146#£okänd
 147#£
 148#£En lösning hittades. Det kan dock lätt finnas flera lösningar.
 149#£Välj endast ett uttryck
-150#£Termen parafraseras med hjälp av S. WordMat med hjälp av metoderna:
+150#£Termen parafraseras med hjälp av S. WordMathEng med hjälp av metoderna:
 151#£Automatisk minskning,
 152#£Trigonometrisk reduktion,
 153#£Löptiden kunde inte förkortas
-154#£Uttrycket reduceras med hjälp av WordMat.
-155#£Uttrycket faktoriseras med hjälp av WordMat.
+154#£Uttrycket reduceras med hjälp av WordMathEng.
+155#£Uttrycket faktoriseras med hjälp av WordMathEng.
 156#£Termen kunde inte faktoriseras
-157#£Uttrycket utökas med hjälp av WordMat.
+157#£Uttrycket utökas med hjälp av WordMathEng.
 158#£Termen kunde inte utvidgas
 159#£Du måste stänga av enheter för att lösa differentialekvationer
 160#£Differentialekvationen kunde inte lösas
-161#£Skolor kan samarbeta med Eduap för att se till att WordMat uppdateras. Partnerskap ger tillgång till support, WordMat+ och mer. Klicka för att se mer...
+161#£Skolor kan samarbeta med Eduap för att se till att WordMathEng uppdateras. Partnerskap ger tillgång till support, WordMat+ och mer. Klicka för att se mer...
 162#£Binomial fördelning
-163#£Sanningsvärdet för påståendet bestäms med hjälp av WordMat.
+163#£Sanningsvärdet för påståendet bestäms med hjälp av WordMathEng.
 164#£Resultatet är baserat på numerisk jämförelse
 165#£Det gick inte att avgöra om påståendet var sant/falskt
 166#£Enheter från
@@ -171,13 +171,13 @@
 170#£Automatisk säkerhetskopiering?
 171#£Hur många säkerhetskopior ska lagras max?
 172#£Tid mellan varje säkerhetskopiering
-173#£Word gör inte en automatisk säkerhetskopiering, utan skapar endast återställningsdata som kan användas för att återställa en förlorad fil.\n\nWordMat kan ta automatiska säkerhetskopior av hela dokumentet varje gång det beräknas och spara det i flera versioner, så att du alltid kan gå tillbaka och hitta något som fungerar. (Säkerhetskopieringen går snabbast om dokumentet inte finns på OneDrive)\n\nSäkerhetskopian lagras i mappen: documents/WordMat backup
+173#£Word gör inte en automatisk säkerhetskopiering, utan skapar endast återställningsdata som kan användas för att återställa en förlorad fil.\n\nWordMat kan ta automatiska säkerhetskopior av hela dokumentet varje gång det beräknas och spara det i flera versioner, så att du alltid kan gå tillbaka och hitta något som fungerar. (Säkerhetskopieringen går snabbast om dokumentet inte finns på OneDrive)\n\nSäkerhetskopian lagras i mappen: documents/WordMathEng backup
 174#£Visa säkerhetskopior
 175#£Fråga
 176#£Alltid
 177#£Aldrig
 178#£Ett säkerhetskopieringsfel uppstod
-179#£Vill du aktivera WordMat's automatiska backup-system?\n\n(Se mer under inställningar | Säkerhetskopiering)
+179#£Vill du aktivera WordMathEng's automatiska backup-system?\n\n(Se mer under inställningar | Säkerhetskopiering)
 180#£Normalfördelning
 181#£Låg
 182#£Normal
@@ -204,7 +204,7 @@
 203#£Ja
 204#£Nej
 205#£Kom ihåg det här valet
-206#£När WordMat:s säkerhetskopieringsfunktion är aktiverad kommer WordMat att göra en säkerhetskopia av dokumentet före varje beräkning. Säkerhetskopior tas inte om den senaste säkerhetskopieringen görs inom 5 minuter. 10 backupversioner lagras, varefter de skrivs över." & vbLf & vbLf & "Du kan ändra dessa inställningar under: inställningar | Säkerhetskopia. Det är också här du kan hitta dina säkerhetskopior om det behövs.
+206#£När WordMathEng:s säkerhetskopieringsfunktion är aktiverad kommer WordMathEng att göra en säkerhetskopia av dokumentet före varje beräkning. Säkerhetskopior tas inte om den senaste säkerhetskopieringen görs inom 5 minuter. 10 backupversioner lagras, varefter de skrivs över." & vbLf & vbLf & "Du kan ändra dessa inställningar under: inställningar | Säkerhetskopia. Det är också här du kan hitta dina säkerhetskopior om det behövs.
 207#£Du kan ändra det här alternativet när som helst i inställningarna | Säkerhetskopia
 208#£Säkerhetskopia
 209#£Vinkelsumman är över 180
@@ -291,7 +291,7 @@
 290#£Månens massa
 291#£Månens medelradie
 292#£GeoGebra 5 är inte installerat
-293#£Knappen tar dig till hemsidan där du kan installera GeoGebra. WordMat på Windows har stöd för GeoGebra classic 5, GeoGebra Calculator Suite, GeoGebra Classic 6 och de flesta andra appversioner av GeoGebra.
+293#£Knappen tar dig till hemsidan där du kan installera GeoGebra. WordMathEng på Windows har stöd för GeoGebra classic 5, GeoGebra Calculator Suite, GeoGebra Classic 6 och de flesta andra appversioner av GeoGebra.
 294#£GeoGebra Calculator Suite är redan installerat. Den körs i en webbläsare och behöver inte internet. Startar snabbt.
 295#£Installera GeoGebra
 296#£Kör GeoGebra Calculator Suite
@@ -335,7 +335,7 @@
 334#£Du kan själv spara ändringar i formelsamlingarna och formdokumentet.
 335#£Excel-ark kan infogas inbäddade i dokumentet eller öppnas i Excel
 336#£Snabbare och bättre riktning av uppgifter? Prova WordMark - www.eduap.com
-337#£Antal beräkningar med WordMat:
+337#£Antal beräkningar med WordMathEng:
 338#£Under Definitioner kan du definiera fysiska konstanter och tabellvärden
 339#£Word körs snabbare i utkastvyn, särskilt för ekvationer.
 340#£Infoga dina egna beskrivningar i Excel-diagram med hjälp av Excel-diagram. Infoga/textruta
@@ -351,7 +351,7 @@
 350#£Signifikansnivå
 351#£Ange dimensionen för korstabellen\r\nrader x kolumner
 352#£Chi i det andra testet för koherens
-353#£Ett $X^2 - test för koherens utförs med hjälp av S&P-projektet. WordMat (på engelska)
+353#£Ett $X^2 - test för koherens utförs med hjälp av S&P-projektet. WordMathEng (på engelska)
 354#£P-värde
 355#£På signifikansnivå
 356#£%, kan 0-hypotesen att det inte finns någon korrelation förkastas. Dvs. Det finns ett samband mellan de två variablerna.
@@ -388,7 +388,7 @@
 387#£Intervallmetoden används i intervallmetoden
 388#£Misslyckande med att hitta en lösning
 389#£Ingen lösning
-390#£Differentialekvationen löses med hjälp av WordMat's funktion 'Solve differential equation'
+390#£Differentialekvationen löses med hjälp av WordMathEng's funktion 'Solve differential equation'
 391#£med randvillkoren
 392#£med utgångspunkterna
 393#£med startvillkoret
@@ -632,11 +632,11 @@
 631#£Tabell $ArrowRight Lista
 632#£Lista $ArrowRight Tabell
 633#£Bord
-634#£WordMat kan manipulera data i listor. Du kan till exempel enkelt lägga till ett nummer till många nummer i en lista. Vanligtvis har du dock data i tabeller i Word, men här finns funktioner som kan förvandla listor till tabeller och vice versa.
+634#£WordMathEng kan manipulera data i listor. Du kan till exempel enkelt lägga till ett nummer till många nummer i en lista. Vanligtvis har du dock data i tabeller i Word, men här finns funktioner som kan förvandla listor till tabeller och vice versa.
 635#£Infoga Excel-ark
 636#£Infogar kapslade Excel-ark i dokumentet. Kan öppnas genom att dubbelklicka.
 637#£Konvertera till lista
-638#£Konverterar en tabell till en lista i ett matematiskt fält, som sedan kan manipuleras i WordMat. Exempel: [1, 2, 3]+1 = [2, 3, 4] Se manual för mer info
+638#£Konverterar en tabell till en lista i ett matematiskt fält, som sedan kan manipuleras i WordMathEng. Exempel: [1, 2, 3]+1 = [2, 3, 4] Se manual för mer info
 639#£Konvertera till tabell
 640#£Konverterar en lista i ett matematiskt fält, eller just skriven, till en tabell. t.ex.  (1 , 2),(3 , 4),(5 , 6)
 641#£Lösare av triangel
@@ -646,19 +646,19 @@
 645#£Handbok för webben
 646#£Öppnar manualen på internet i en webbläsare.
 647#£Maxima manuell
-648#£Maxima är CAS-programmet som utför många av de matematiska funktionerna i WordMat. Maxima har byggt in en hel del funktioner som inte syns direkt i WordMat, men de kan utföras om du känner till funktionsnamnen. Här kan du öppna en sammanfattning av maxima-kommandon.
+648#£Maxima är CAS-programmet som utför många av de matematiska funktionerna i WordMathEng. Maxima har byggt in en hel del funktioner som inte syns direkt i WordMathEng, men de kan utföras om du känner till funktionsnamnen. Här kan du öppna en sammanfattning av maxima-kommandon.
 649#£Om
-650#£Vem skapade WordMat?
+650#£Vem skapade WordMathEng?
 651#£Sök efter uppdateringar
-652#£Kontrollera automatiskt online om det finns en uppdatering av WordMat.
+652#£Kontrollera automatiskt online om det finns en uppdatering av WordMathEng.
 653#£Översikt över genvägar
-654#£Översikt över vilka kortkommandon som är tillgängliga i WordMat och genvägar till matematiska fält i Word.
+654#£Översikt över vilka kortkommandon som är tillgängliga i WordMathEng och genvägar till matematiska fält i Word.
 655#£LaTex-mall
 656#£LaTex-mall
 657#£Öppnar Word-dokument som är en nästan trogen kopia av LaTex-dokumentet.
 658#£Precisionen är mycket högt satt. Beräkningstiden kan vara mycket lång eller misslyckas. Försök igen med en lägre inställning.
-659#£WordMat har en utmärkt funktion för att konvertera till LaTex, men det går även att använda den som är inbyggd i Maxima
-660#£Enheter ska normalt inte skrivas i kursiv stil. Med den här funktionen försöker WordMat identifiera enheter och infogar Latex-kod som skriver enheter i normalt teckensnitt
+659#£WordMathEng har en utmärkt funktion för att konvertera till LaTex, men det går även att använda den som är inbyggd i Maxima
+660#£Enheter ska normalt inte skrivas i kursiv stil. Med den här funktionen försöker WordMathEng identifiera enheter och infogar Latex-kod som skriver enheter i normalt teckensnitt
 661#£Stänga
 662#£Genererar riktiga LaTex-dokument med hjälp av e-post. MikTex, som måste installeras. Bör endast användas för enkla dokument eftersom inte allt stöds.
 663#£Visar hur LaTex-utdata kommer att förstås
@@ -679,7 +679,7 @@
 678#£Om Newton-Raphson
 679#£Säkerhetskopior kan inte göras förrän du har sparat ditt dokument!
 680#£Polära notationsutdata
-681#£Problem med filen 'normal.dotm' kan bryta kortkommandona i WordMat. Om du tar bort filen löser du problemet, eftersom en ny genereras automatiskt när Word startas om. Filen kan dock inte raderas medan Word är öppet, så du måste göra det själv. \r\n\r\n- När du trycker på OK öppnas mappen där filen finns. \r\n- Spara ditt arbete och stäng Word \r\n- Ta bort normal.dotm \r\n- Starta om Word och öppna och stäng WordMat-inställningarna
+681#£Problem med filen 'normal.dotm' kan bryta kortkommandona i WordMathEng. Om du tar bort filen löser du problemet, eftersom en ny genereras automatiskt när Word startas om. Filen kan dock inte raderas medan Word är öppet, så du måste göra det själv. \r\n\r\n- När du trycker på OK öppnas mappen där filen finns. \r\n- Spara ditt arbete och stäng Word \r\n- Ta bort normal.dotm \r\n- Starta om Word och öppna och stäng WordMathEng-inställningarna
 682#£Beräkning gjord med hjälp av GeoGebra
 683#£pil
 684#£Startar Safari
@@ -687,14 +687,14 @@
 686#£CAS-motor
 687#£Signifikanta siffror
 688#£Slå på/av enheter
-689#£Om enheter är aktiverade kan WordMat förstå och konvertera enheter. På SI-knappen kan du ange vilka enheter du vill konvertera till. Som standard är utdata i SI-enheter. Slå inte på enheter om du inte specifikt behöver det. Det kan påverka WordMats beteende och reserverar många variabler.
+689#£Om enheter är aktiverade kan WordMathEng förstå och konvertera enheter. På SI-knappen kan du ange vilka enheter du vill konvertera till. Som standard är utdata i SI-enheter. Slå inte på enheter om du inte specifikt behöver det. Det kan påverka WordMathEng's beteende och reserverar många variabler.
 690#£Infoga kodfält
 691#£Ange vilka enheter som ska konverteras till för beräkningar. Som standard är utdata i SI-enheter
 692#£s.s.
 693#£Ett kodfält är ett område där du kan programmera Maxima direkt. Du kan till exempel definiera mer avancerade funktioner, som sedan kan användas längre ner i dokumentet. Se mer i manualen.
 694#£Antal siffror
 695#£Nummeravrundning
-696#£Välj hur tal ska skrivas och avrundas. I exemplen nedan är WordMat satt till 3 siffror.\r\n\r\nAntal decimaler: 12,345\r\nSignifikanta siffror: 12,3\r\nVid. Notation: 1.23*10^1
+696#£Välj hur tal ska skrivas och avrundas. I exemplen nedan är WordMathEng satt till 3 siffror.\r\n\r\nAntal decimaler: 12,345\r\nSignifikanta siffror: 12,3\r\nVid. Notation: 1.23*10^1
 697#£Kvadratisk komplettering
 698#£Använder kvadratsatsen för att faktorisera. t.ex. för cirkelns ekvation
 699#£Ett försök har gjorts att ta bort fakulteten från ett negativt tal.
@@ -734,12 +734,12 @@
 733#£Endast 1 lösning
 734#£Sök automatiskt efter uppdateringar
 735#£Reparera kortkommandon
-736#£Starta om WordMat
+736#£Starta om WordMathEng
 737#£Antal beräkningar
 738#£Försök har nu gjorts att reparera kortkommandon.\nOm det inte fungerar, ta bort filen 'normal.dotm' i mappen "~/Library/Group Containers/UBF8T346G9. Office/User Content/Templates" och starta om Word
 739#£Det görs nu ett försök att reparera kortkommandon.\nOm det inte fungerar, ta bort filen 'normal.dotm' i mappen "%appdata%/Microsoft/Templates" och starta om Word
-740#£GeoGebra Calculator Suite installeras tillsammans med WordMat. Den körs i en webbläsare, men kräver inte internet. Det fungerar på samma sätt på Windows och Mac, och startar snabbt.\nGeoGebra 5 fungerar likadant på Windows och Mac, men kräver separat installation.\nWindows stöder också andra appversioner av GeoGebra såsom GeoGebra 6, Graphing calculator med flera. Dessa kommer att tillämpas om GeoGebra 5 inte är installerat.
-741#£Det verkar som om genvägarna inte är korrekt inställda i den här versionen av WordMat. Det kräver förmodligen ett felmeddelande
+740#£GeoGebra Calculator Suite installeras tillsammans med WordMathEng. Den körs i en webbläsare, men kräver inte internet. Det fungerar på samma sätt på Windows och Mac, och startar snabbt.\nGeoGebra 5 fungerar likadant på Windows och Mac, men kräver separat installation.\nWindows stöder också andra appversioner av GeoGebra såsom GeoGebra 6, Graphing calculator med flera. Dessa kommer att tillämpas om GeoGebra 5 inte är installerat.
+741#£Det verkar som om genvägarna inte är korrekt inställda i den här versionen av WordMathEng. Det kräver förmodligen ett felmeddelande
 742#£Resultatet av beräkningen beror på tecknet för följande
 743#£Ställ in tecken
 744#£Differentialekvation
@@ -750,7 +750,7 @@
 749#£Felmeddelande för Maxima
 750#£Matematiska fel
 751#£Syntaxfel
-752#£Det har uppstått ett syntaxfel. Dvs WordMat har inte förstått vad du har sagt.
+752#£Det har uppstått ett syntaxfel. Dvs WordMathEng har inte förstått vad du har sagt.
 753#£Det saknas en
 754#£Det finns för många
 755#£Ett fel har inträffat i körningen av programmet.
@@ -766,7 +766,7 @@
 765#£Varning: Enheter är påslagna.\r\nEkvationslösning påverkas negativt.\r\nSe också upp för variabler som är enheter, t.ex. A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Lösa ekvationssystem
 767#£Välj variabler
-768#£WordMat startar upp
+768#£WordMathEng startar upp
 769#£Snälla vänta
 770#£Lösare av triangel
 771#£Höger
@@ -780,7 +780,7 @@
 779#£Visa mellanliggande konton i Word
 780#£Infoga de kända sidorna och vinklarna, så kommer de återstående sidorna och vinklarna att beräknas, och infogas på figuren i Word.\r\nDet är också möjligt att ändra namnen på figuren. Klicka bara på bokstäverna.
 781#£Figuren visar inte rätt storlekar, men det gör den när den infogas i Word.
-782#£WordMat's triangellösare används med indata:
+782#£WordMathEng's triangellösare används med indata:
 783#£Observera att det finns två möjliga trianglar baserat på din information
 784#£Det finns inte tillräckligt med information för att beräkna de återstående sidorna och vinklarna.
 785#£Två trekanter
@@ -829,7 +829,7 @@
 828#£Stanna
 829#£Ekvationen är löst för
 830#£Ekvationen löses numeriskt för
-831#£med hjälp av WordMat.
+831#£med hjälp av WordMathEng.
 832#£Reglemente
 833#£Ekvation
 834#£Ekvationer
@@ -861,7 +861,7 @@
 860#£Du har inte fått tillstånd för GeoGebra. Klicka på "Försök igen" för att försöka igen.
 861#£Nedladdningen tar lång tid. Kontrollera i Safari om det ser ut som att det pågår en nedladdning. Du kan klicka på stopp om det inte finns några framsteg.
 862#£Fel vid nedladdning av GeoGebra
-863#£Filen kunde inte hittas i nedladdningar.\r\nDu kan klicka på "Försök igen" längst ner om du vill att WordMat ska leta igen.
+863#£Filen kunde inte hittas i nedladdningar.\r\nDu kan klicka på "Försök igen" längst ner om du vill att WordMathEng ska leta igen.
 864#£Ge tillstånd till GeoGebra
 865#£Ett fönster som heter 'Tillåt åtkomst till fil' bör nu öppnas.\r\n\r\n1. Klicka på "Välj..." \r\n2. Klicka på "Tilldela åtkomst"
 866#£Flytta GeoGebra till appar
@@ -876,7 +876,7 @@
 875#£Ekvationen löstes grafiskt med GeoGebra:
 876#£Antalet parenteser får inte plats i uttrycket
 877#£Fel vid inställning
-878#£Du har en felaktig inställning i Word.\r\nI menyn Ekvationer, byt från Latex till Unicode för att WordMat ska fungera
+878#£Du har en felaktig inställning i Word.\r\nI menyn Ekvationer, byt från Latex till Unicode för att WordMathEng ska fungera
 879#£Syntaxfel - Inte korrekt matematik.
 880#£Du har matat in något som inte är korrekt matematisk notation.\r\nFelet är relaterat till en variabel:
 881#£Det kan till exempel bero på att du har sänkt typsnittet på en siffra. \r\nK_0 ska ersättas med ett nummer och inte med t.ex. 5000_0. Det behöver bara stå 5000.
@@ -884,9 +884,9 @@
 883#£Ekvationssystemet löstes med GeoGebra:
 884#£Beräkningen avbröts eftersom det tog mycket lång tid. Det kan ibland hjälpa att prova beräkningen med alternativet "Numerisk" istället för Exakt eller Auto
 885#£Det går inte att ansluta till Maxima. Vill du använda 'WSH'-metoden istället?\r\n(Flaggan kan hittas under avancerat i Inställningar)
-886#£WordMat kan inte kommunicera med GeoGebra. Det beror förmodligen på att du inte har ställt in rätt säkerhetsinställningar i Safari. Klicka på ok för att få instruktionerna
+886#£WordMathEng kan inte kommunicera med GeoGebra. Det beror förmodligen på att du inte har ställt in rätt säkerhetsinställningar i Safari. Klicka på ok för att få instruktionerna
 887#£Lösa numeriska
-888#£WordMat kunde inte hitta Maxima-installationen. Prova att installera om.
+888#£WordMathEng kunde inte hitta Maxima-installationen. Prova att installera om.
 889#£Fel vid anslutning till Maxima med WSH
 890#£Stannar automatiskt i
 891#£Det lyckades inte. Stannar.
@@ -904,13 +904,13 @@
 903#£Kodfil
 904#£Tillämpa kodfil
 905#£Tillåt kodfält
-906#£Texten i kodfilen körs i Maxima vid varje uppstart. Du kan till exempel använda den för att definiera funktioner som du alltid vill ha tillgängliga i WordMat, eller för att ändra inställningar i Maxima. Om du använder kodfilen blir beräkningarna lite långsammare. \nKodfält kan infogas via definitionsmenyn och är fält i Word-dokumentet där du kan infoga den maximala koden, som körs vid varje beräkning. Kod i kodfilen och kodfälten skickas direkt till Maxima obearbetad. Alla kodfel kommer att göra att WordMat misslyckas med alla beräkningar, så se upp. Titta i menyn under Hjälp > Manuell > Hjälp med Maxima-kommandon för korrekt Maxima-syntax.
+906#£Texten i kodfilen körs i Maxima vid varje uppstart. Du kan till exempel använda den för att definiera funktioner som du alltid vill ha tillgängliga i WordMathEng, eller för att ändra inställningar i Maxima. Om du använder kodfilen blir beräkningarna lite långsammare. \nKodfält kan infogas via definitionsmenyn och är fält i Word-dokumentet där du kan infoga den maximala koden, som körs vid varje beräkning. Kod i kodfilen och kodfälten skickas direkt till Maxima obearbetad. Alla kodfel kommer att göra att WordMathEng misslyckas med alla beräkningar, så se upp. Titta i menyn under Hjälp > Manuell > Hjälp med Maxima-kommandon för korrekt Maxima-syntax.
 907#£Ange Maxima-koden här
 908#£Du har inte aktiverat kodfält i Inställningar > kod. Kodfältet infogas, men kommer inte att användas i beräkningar förrän det är aktiverat.
 909#£Kod
 910#£Det gick inte att infoga ett kodfält här.
 911#£Riktningsfält kan endast ritas för 1:a ordningens differentialekvationer på formen y'=...
-912#£WordMat's inställning är inställd på att beräkna i grader. Är det meningen?
+912#£WordMathEng's inställning är inställd på att beräkna i grader. Är det meningen?
 913#£Det är inte tillåtet att använda operatorn hat i definitionsnamn.
 914#£Det är inte tillåtet att använda numeriska tecken i definitionsnamn.
 915#£Du har ställt in för många parametrar för funktionen:
@@ -918,7 +918,7 @@
 917#£Kolla efter WordMat+
 918#£Köp WordMat+
 919#£Aktivera WordMat+ med kod
-920#£WordMat+ är inte korrekt installerat på denna dator. Du kan inte fortsätta. Försök installera om WordMat.
+920#£WordMat+ är inte korrekt installerat på denna dator. Du kan inte fortsätta. Försök installera om WordMathEng.
 921#£WordMat+ är redan aktivt på den här datorn.
 922#£Du kan också köpa enskilda licenser för WordMat+. Klicka här för att se mer...
 923#£Utdata

@@ -1636,7 +1636,7 @@ Sub beregn()
         If wmRecalc And Selection.OMaths.Count > 0 Then WMU_DeleteAnswerTail Selection.OMaths(1), wmTail ' word_math recalculation
         InsertOutput omax.MaximaOutput, False
         RestartIndex = 0
-        If WMU_LastWarning <> vbNullString Then MsgBox2 WMU_LastWarning, vbOKOnly, "WordMat" ' word_math units
+        If WMU_LastWarning <> vbNullString Then MsgBox2 WMU_LastWarning, vbOKOnly, "WordMathEng" ' word_math units
     ElseIf omax.KommentarOutput <> vbNullString Then
         fejlm = TT.A(128) & vbCrLf
 #If Mac Then

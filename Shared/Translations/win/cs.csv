@@ -9,7 +9,7 @@
 8#£Vlozte cást rovnice c.
 9#£Aktualizace císel rovnic
 10#£Existující názvy rovnic
-11#£Chcete-li vlozit odkaz na rovnici pozdeji, vyberte "Vlozit odkaz na rovnici" z nabídky WordMat pod "Vlozit rovnici"
+11#£Chcete-li vlozit odkaz na rovnici pozdeji, vyberte "Vlozit odkaz na rovnici" z nabídky WordMathEng pod "Vlozit rovnici"
 12#£Název jiz existuje
 13#£Název nesmí obsahovat mezery
 14#£Referencní prírucka k rovnicím
@@ -18,7 +18,7 @@
 17#£Líc
 18#£Císlování
 19#£Pri vkládání se ptejte na jméno reference
-20#£WordMath umoznuje provádet matematické výpocty v aplikaci Word. Jádro WordMath je open source a je zdarma\r\nWordMat také instaluje následující programy: Maxima, GeoGebra, Math fonts.\r\nVolitelné komponenty: GeoGebra 5, Graph, WordMath+. Více informací naleznete pod licencí \r\nWordMath vytvoril Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
+20#£WordMathEng umoznuje provádet matematické výpocty v aplikaci Word. Jádro WordMathEng je open source a je zdarma\r\nWordMat také instaluje následující programy: Maxima, GeoGebra, Math fonts.\r\nVolitelné komponenty: GeoGebra 5, Graph, WordMath+. Více informací naleznete pod licencí \r\nWordMath vytvoril Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
 21#£Ke stazení je pripravena nová verze WordMathu.\r\nNovinky: \r\n
 22#£Nyní budete presmerováni na stránku stahování
 23#£Nová verze
@@ -27,12 +27,12 @@
 26#£Doslo k chybe. Pravdepodobne doslo k chybe ve vstupních císlech
 27#£Musíte vytvorit tabulku se dvema sloupci. Hodnoty x v levém sloupci a hodnoty y v pravém sloupci. Písmena se ignorují. Regrese se provádí na vybraných císlech. Pokud nejsou vybrána zádná, provede se regrese u vsech císel v tabulce
 28#£V techto bodech nelze provést regresi
-29#£Lineární regrese provedená aplikací WordMat: $Tab
-30#£Exponenciální regrese provádená WordMat: $Tab
-31#£Regrese výkonu provedená aplikací WordMat: $Tab
+29#£Lineární regrese provedená aplikací WordMathEng: $Tab
+30#£Exponenciální regrese provádená WordMathEng: $Tab
+31#£Regrese výkonu provedená aplikací WordMathEng: $Tab
 32#£V techto bodech nelze provést regresi výkonu. Vsechna císla musí být kladná (a ne nulová).
 33#£Uzivatelsky definovaná regrese s funkcí
-34#£v podání WordMath
+34#£v podání WordMathEng
 35#£Uvedte poradí polynomiální regrese (1-
 36#£(Maximální poradí je urceno poctem bodu)
 37#£objednávka
@@ -47,15 +47,15 @@
 46#£Presnost neplatí. Zvolte kladné celé císlo.
 47#£Umístete kurzor do rovnice
 48#£Není mozné provádet výpocty podle definic
-49#£Výraz se lisí podle WordMat.
+49#£Výraz se lisí podle WordMathEng.
 50#£Tento výraz nemohl být rozlisen
 51#£Stavová promenná
-52#£Primitivní vlastnost je nalezena pomocí WordMat
+52#£Primitivní vlastnost je nalezena pomocí WordMathEng
 53#£Výraz nebylo mozné integrovat
-54#£Doslo k chybe. Aplikace WordMat pravdepodobne není správne nainstalována. Zkuste ji preinstalovat, prípadne s deaktivovaným antivirem. Pokud má vase skola partnerství, muze problém vyresit nastavení "dll connection method" v cásti Nastavení/Pokrocilé
+54#£Doslo k chybe. Aplikace WordMathEng pravdepodobne není správne nainstalována. Zkuste ji preinstalovat, prípadne s deaktivovaným antivirem. Pokud má vase skola partnerství, muze problém vyresit nastavení "dll connection method" v cásti Nastavení/Pokrocilé
 55#£Pri pokusu o spustení aplikace Maxima doslo k chybe
 56#£Nerovnost je resena pro
-57#£podle WordMat.
+57#£podle WordMathEng.
 58#£Vsechna císla resí tuto nerovnost
 59#£Nerovnost nemela resení v oblasti $C pro promennou
 60#£Nerovnost nemela resení v doméne $R pro promennou
@@ -63,7 +63,7 @@
 62#£Definovat
 63#£Zádné pripojení k internetu
 64#£Kliknutím na tlacítko OK spustte aktualizaci
-65#£Klávesové zkratky WordMat
+65#£Klávesové zkratky WordMathEng
 66#£Zkratky pro rovnice aplikace Word
 67#£V aplikaci Word si muzete vytvorit vlastní klávesové zkratky pro psaní nebo zmenit stávající klávesové zkratky. Umístete kurzor do rovnice. Otevrete nabídku Návrh. Vyhledejte skupinu s názvem funkce. Kliknete na malou sipku v pravém dolním rohu. Vyberte moznost "Matematické automatické zápisy"
 68#£Formulace
@@ -96,7 +96,7 @@
 95#£Doslo k chybe. Zkontrolujte císla podle xmin a xmax
 96#£Zádné partnerství
 97#£Pri pokusu o vlození aplikace Graph doslo k chybe. V definici muze dojít k chybe syntaxe
-98#£Pri pokusu o vlození listu aplikace Excel doslo k chybe. Prícinou muze být predchozí chybové ukoncení aplikace Excel. Zavrete vsechny otevrené listy aplikace Excel a poté znovu otevrete aplikaci Excel, nez to budete znovu zkouset s aplikací WordMat.
+98#£Pri pokusu o vlození listu aplikace Excel doslo k chybe. Prícinou muze být predchozí chybové ukoncení aplikace Excel. Zavrete vsechny otevrené listy aplikace Excel a poté znovu otevrete aplikaci Excel, nez to budete znovu zkouset s aplikací WordMathEng.
 99#£Pri pokusu o prevod príkazu do syntaxe Maxima doslo k chybe.
 100#£Pri pokusu o prevod výstupu Maxima do syntaxe aplikace Word doslo k chybe.
 101#£Resení není jisté. Muzete zkusit pouzít i numerické metody
@@ -108,7 +108,7 @@
 107#£Upozornení: Pozádali jste o vyresení soustavy rovnic, ale uvedli jste méne promenných nez rovnic. Resí se pouze první rovnice. Zkontrolujte rucne poslední rovnici (rovnice).
 108#£Spolecnost Maxima nahlásila následující chybu:
 109#£Chyba Maxima
-110#£Aplikace WordMat nemohla najít slozku "Program files"
+110#£Aplikace WordMathEng nemohla najít slozku "Program files"
 111#£Pri pokusu o otevrení doslo k chybe:
 112#£Nelze se pripojit k serveru
 113#£Na tomto míste dokumentu je definováno následující
@@ -129,11 +129,11 @@
 128#£Výraz nebylo mozné vypocítat.
 129#£Rovnice nemela zádné resení v oblasti $C pro promennou
 130#£Rovnice nemela zádné resení v oboru $R pro promennou
-131#£WordMat nedokázal vyresit rovnici
+131#£WordMathEng nedokázal vyresit rovnici
 132#£Vsechna císla jsou resením rovnice
 133#£Pozádali jste o vyresení rovnice pro promennou, která je jiz definována. Pred rovnici vlozte príkaz 'delete def:'.
 134#£Soustava rovnic je resena pro
-135#£pomocí funkce "vyresit rovnici" aplikace WordMat,
+135#£pomocí funkce "vyresit rovnici" aplikace WordMathEng,
 136#£WordMat+ povolen pro
 137#£Soustava rovnic nemela resení v oboru $C pro promenné
 138#£Soustava rovnic nemela resení v oblasti $R pro promenné
@@ -141,29 +141,29 @@
 140#£WordMat+ není povolen
 141#£To není rovnice. Rovnice bude mít vzdy znaménko rovná se.
 142#£Ze soustavy rovnic jsou odstraneny následující promenné:
-143#£podle funkce 'Odstranit promennou' WordMat, '
+143#£podle funkce 'Odstranit promennou' WordMathEng, '
 144#£pravdivý
 145#£falesný
 146#£neznámý
 147#£
 148#£Resení bylo nalezeno. Muze existovat více resení.
 149#£Vyberte pouze 1 výraz
-150#£Výraz je zjednodusen pomocí WordMat pomocí metod:
+150#£Výraz je zjednodusen pomocí WordMathEng pomocí metod:
 151#£Automatické zjednodusení,
 152#£Trigonometrické identity
 153#£Tento výraz nelze zjednodusit
-154#£Výraz je zjednodusen pomocí WordMat.
-155#£Výraz je faktorizován pomocí WordMat.
+154#£Výraz je zjednodusen pomocí WordMathEng.
+155#£Výraz je faktorizován pomocí WordMathEng.
 156#£Výraz nelze faktorizovat
-157#£Výraz je rozsíren pomocí WordMat.
+157#£Výraz je rozsíren pomocí WordMathEng.
 158#£Výraz nelze rozbalit
 159#£Abyste mohli resit diferenciální rovnice, musíte zakázat jednotky
 160#£Diferenciální rovnici se nepodarilo vyresit
 161#£Skoly se mohou prihlásit k partnerství se spolecností Eduap. Partnerství získává prístup k podpore, WordMath+ a mnoho dalsího. Kliknete pro více informací
 162#£Binomické rozdelení
-163#£Výraz je testován na pravdivost pomocí WordMat.
+163#£Výraz je testován na pravdivost pomocí WordMathEng.
 164#£Výsledek je zalozen na císelném srovnání
-165#£Aplikace WordMat nebyla schopna urcit, zda je výraz pravdivý nebo nepravdivý
+165#£Aplikace WordMathEng nebyla schopna urcit, zda je výraz pravdivý nebo nepravdivý
 166#£Jednotky vypnuté
 167#£Výber výstupních jednotek
 168#£Výstupní jednotky
@@ -171,13 +171,13 @@
 170#£Automatické zálohování?
 171#£Kolik zálozních souboru ulozit?
 172#£Doba mezi zálohami
-173#£Word neprovádí automatickou zálohu, ale ukládá data, která mohou být prípadne pouzita k opetovnému vytvorení ztraceného souboru\n\nWordMat muze provádet kompletní zálohy, kdyz provedete výpocet a ulozíte dokument v nekolika verzích. (Zálohování je mnohem rychlejsí, pokud dokument není na OneDrive) . Zálozní soubory jsou ulozeny ve slozce: my documents/WordMat-backup
+173#£Word neprovádí automatickou zálohu, ale ukládá data, která mohou být prípadne pouzita k opetovnému vytvorení ztraceného souboru\n\nWordMat muze provádet kompletní zálohy, kdyz provedete výpocet a ulozíte dokument v nekolika verzích. (Zálohování je mnohem rychlejsí, pokud dokument není na OneDrive) . Zálozní soubory jsou ulozeny ve slozce: my documents/WordMathEng-backup
 174#£Otevrít zálozní slozku
 175#£Pozádat
 176#£Vzdy
 177#£Nikdy
 178#£Pri pokusu o zálohování doslo k chybe
-179#£Chcete aktivovat automatický zálohovací systém WordMats\n\n(Pro více informací jdete do nastavení | Záloha)
+179#£Chcete aktivovat automatický zálohovací systém WordMathEng's\n\n(Pro více informací jdete do nastavení | Záloha)
 180#£Normální rozdelení
 181#£Nízký
 182#£Normální
@@ -204,7 +204,7 @@
 203#£Ano
 204#£Ne
 205#£Pamatujte si tuto volbu
-206#£Pokud je povolena funkce zálohování WordMats, zálohování se provede pri provedení výpoctu. Záloha se provádí pouze kazdých 5 minut. Pred prepsáním je porízeno 10 zálozních kopií." & vbLf & vbLf & " Tato nastavení muzete zmenit v nastavení | Zálohování.
+206#£Pokud je povolena funkce zálohování WordMathEng's, zálohování se provede pri provedení výpoctu. Záloha se provádí pouze kazdých 5 minut. Pred prepsáním je porízeno 10 zálozních kopií." & vbLf & vbLf & " Tato nastavení muzete zmenit v nastavení | Zálohování.
 207#£Tuto volbu muzete kdykoli zmenit v nastavení | Zálohování
 208#£Zálohování
 209#£soucet úhlu je vetsí nez 180
@@ -291,7 +291,7 @@
 290#£Hmotnost Mesíce
 291#£Strední polomer mesíce
 292#£GeoGebra 5 není nainstalována.
-293#£Tlacítko vás prenese na domovskou stránku, kde muzete nainstalovat GeoGebru. WordMat ve Windows podporuje "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" a vetsinu dalsích verzí aplikací GeoGebra.
+293#£Tlacítko vás prenese na domovskou stránku, kde muzete nainstalovat GeoGebru. WordMathEng ve Windows podporuje "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" a vetsinu dalsích verzí aplikací GeoGebra.
 294#£GeoGebra Calculator Suite je jiz nainstalována. Bezí v prohlízeci a nevyzaduje internet. Zacíná rychle.
 295#£Instalace aplikace GeoGebra
 296#£Spustte sadu kalkulacek GeoGebra
@@ -335,7 +335,7 @@
 334#£Zmeny v dokumentech vzorcu muzete ulozit
 335#£Listy aplikace Excel lze otevrít samostatne nebo vlozit vlozené
 336#£Znacení odevzdávání? Vyzkousejte WordMark www.eduap.com
-337#£Pocet výpoctu s WordMath:
+337#£Pocet výpoctu s WordMathEng:
 338#£V cásti Definice muzete definovat fyzikální konstanty a hodnoty tabulky.
 339#£Word bezí rychleji v zobrazení konceptu - kdyz se jedná o rovnice
 340#£Vlozte vlastní popisy diagramu aplikace Excel pomocí vlozit textové pole
@@ -388,7 +388,7 @@
 387#£Intervalová metoda pouzitá v intervalu
 388#£Resení nebylo nalezeno
 389#£Zádné resení
-390#£Diferenciální rovnice je resena funkcí 'Vyresit diferenciální rovnici' aplikace WordMat
+390#£Diferenciální rovnice je resena funkcí 'Vyresit diferenciální rovnici' aplikace WordMathEng
 391#£s okrajovými podmínkami
 392#£s pocátecními podmínkami
 393#£s pocátecním stavem
@@ -488,7 +488,7 @@
 487#£Otevre brozuru s fyzikálními vzorci
 488#£Otevre brozuru s chemickými vzorci
 489#£Automatický presný nebo císelný výsledek
-490#£WordMat automaticky urcí, zda vrátit presný nebo císelný výsledek nebo obojí.
+490#£WordMathEng automaticky urcí, zda vrátit presný nebo císelný výsledek nebo obojí.
 491#£Presné výsledky
 492#£Vsechny výsledky byly vráceny jako presný výsledek. Nekdy se vsak císelné aproximaci nelze vyhnout.
 493#£Císelné výsledky
@@ -632,11 +632,11 @@
 631#£Seznam $ArrowRight tabulky
 632#£Seznam $ArrowRight tabulky
 633#£Stul
-634#£WordMat muze manipulovat s daty v seznamu. Príklad: Ke vsem prvkum v seznamu muzete snadno pridat císlo. Data jsou vsak casto v tabulce ve Wordu. Zde jsou funkce pro prevod seznamu til tabulek a obrácení.
+634#£WordMathEng muze manipulovat s daty v seznamu. Príklad: Ke vsem prvkum v seznamu muzete snadno pridat císlo. Data jsou vsak casto v tabulce ve Wordu. Zde jsou funkce pro prevod seznamu til tabulek a obrácení.
 635#£Vlozit list aplikace Excel
 636#£Vlozí prázdný vlozený list aplikace Excel. Dvojitým kliknutím otevrete a upravte.
 637#£Prevést na seznam
-638#£Prevede tabulku na seznam. S tímto seznamem lze poté manipulovat pomocí WordMat. Príklad: [1, 2, 3]+1 = [2, 3, 4] Pro více informací se podívejte do manuálu
+638#£Prevede tabulku na seznam. S tímto seznamem lze poté manipulovat pomocí WordMathEng. Príklad: [1, 2, 3]+1 = [2, 3, 4] Pro více informací se podívejte do manuálu
 639#£Prevést na tabulku
 640#£Prevede seznam na tabulku. Seznam muze být v matematickém rámecku nebo muze být napsán v dokumentu a vybrán napríklad (1, 2), (3, 4), (5, 6)
 641#£Resic trojúhelníku
@@ -646,19 +646,19 @@
 645#£Webový manuál
 646#£Otevre manuál na internetu v prohlízeci.
 647#£Manuál Maxima
-648#£Maxima je program CAS, který provádí vetsinu matematických výpoctu ve WordMatu. Maxima má mnoho vestavených funkcí, které nejsou okamzite viditelné z uzivatelského rozhraní WordMat, ale lze je spustit, pokud znáte názvy funkcí. Zde se zobrazí nápoveda Maxima, kde si muzete prohlédnout dokumentaci ke vsem funkcím Maxima.
+648#£Maxima je program CAS, který provádí vetsinu matematických výpoctu ve WordMatu. Maxima má mnoho vestavených funkcí, které nejsou okamzite viditelné z uzivatelského rozhraní WordMathEng, ale lze je spustit, pokud znáte názvy funkcí. Zde se zobrazí nápoveda Maxima, kde si muzete prohlédnout dokumentaci ke vsem funkcím Maxima.
 649#£Asi
-650#£Kdo vytvoril WordMat?
+650#£Kdo vytvoril WordMathEng?
 651#£Kontrola aktualizací
 652#£Automaticky kontrolovat aktualizace.
 653#£Klávesové zkratky
-654#£Zobrazuje seznam klávesových zkratek pro aktivaci príkazu WordMat a klávesových zkratek pro zadávání matematiky do matematických vstupních polí v aplikaci Word.
+654#£Zobrazuje seznam klávesových zkratek pro aktivaci príkazu WordMathEng a klávesových zkratek pro zadávání matematiky do matematických vstupních polí v aplikaci Word.
 655#£Sablona LaTex
 656#£Sablona LaTex
 657#£Otevre dokument aplikace Word, který je stylizován jako dokument LaTex, ale jeho psaní je stejne snadné jako dokument aplikace Word.
 658#£Precisionen je nastaven velmi vysoko. Doba výpoctu muze být velmi dlouhá nebo muze selhat. Pokud ano, zkuste to znovu s nizsím nastavením.
-659#£WordMat prevést na LaTex velmi dobre, ale je zde také moznost pouzít Maxima pro prevod na LaTex.
-660#£Jednotky se obvykle nezapisují kurzívou jako promenné. Pomocí této funkce WordMat se pokusí identifikovat jednotky a vlozit LaTex kód pro zápis jednotek normálním písmem.
+659#£WordMathEng prevést na LaTex velmi dobre, ale je zde také moznost pouzít Maxima pro prevod na LaTex.
+660#£Jednotky se obvykle nezapisují kurzívou jako promenné. Pomocí této funkce WordMathEng se pokusí identifikovat jednotky a vlozit LaTex kód pro zápis jednotek normálním písmem.
 661#£Zavrít
 662#£Vytvorí skutecný LaTex dokument pomocí MikTexu, který musí být nainstalován. Pouzívejte pouze pro jednoduchý dokument, protoze ne vsechny objekty dokumentu jsou podporovány.
 663#£Ukazuje, jak je interpretován výstup LaTex
@@ -679,7 +679,7 @@
 678#£O spolecnosti Newton-Raphson
 679#£Pred provedením zálohování je nutné dokument ulozit!
 680#£Výstup polárního zápisu
-681#£Problémy se souborem 'normal.dotm' mohou zpusobit problémy s klávesovými zkratkami v aplikaci WordMat. Problémy lze vyresit odstranením souboru, protoze pri restartování aplikace Word se automaticky vygeneruje nový výchozí soubor. Soubor nelze odstranit, pokud je aplikace Word otevrená. Musíte to udelat rucne.\r\n\r\n- Stisknutím tlacítka OK otevrete slozku, kde je umísten soubor Normal.dotm. \r\n- Ulozte svou práci a zavrete Word \r\n- delete normal.dotm \r\n- Otevrete Word a otevrete a zavrete nastavení WordMat
+681#£Problémy se souborem 'normal.dotm' mohou zpusobit problémy s klávesovými zkratkami v aplikaci WordMathEng. Problémy lze vyresit odstranením souboru, protoze pri restartování aplikace Word se automaticky vygeneruje nový výchozí soubor. Soubor nelze odstranit, pokud je aplikace Word otevrená. Musíte to udelat rucne.\r\n\r\n- Stisknutím tlacítka OK otevrete slozku, kde je umísten soubor Normal.dotm. \r\n- Ulozte svou práci a zavrete Word \r\n- delete normal.dotm \r\n- Otevrete Word a otevrete a zavrete nastavení WordMathEng
 682#£Výpocet provádí GeoGebra
 683#£síp
 684#£Otevrení prohlízece Safari
@@ -687,14 +687,14 @@
 686#£Motor CAS
 687#£Významné údaje
 688#£Zapnutí/vypnutí jednotek
-689#£Pokud jsou zapnuty jednotky, muze aplikace WordMath interpretovat a prevádet jednotky. Na tlacítku SI muzete menit výstupní jednotky. Nezapínejte jednotky, pokud to nepotrebujete. To muze ovlivnit chování WordMat a vyhrazuje si mnoho promenných.
+689#£Pokud jsou zapnuty jednotky, muze aplikace WordMathEng interpretovat a prevádet jednotky. Na tlacítku SI muzete menit výstupní jednotky. Nezapínejte jednotky, pokud to nepotrebujete. To muze ovlivnit chování WordMathEng a vyhrazuje si mnoho promenných.
 690#£Vlozit pole s kódem
 691#£Uvedte jednotky, na které chcete prevést. Ve výchozím nastavení jsou výstupní jednotky jednotky SI.
 692#£vú
 693#£Pole kódu je oblast, ve které muzete prímo programovat Maxima. Muzete napríklad definovat pokrocilejsí funkce, které pak muzete pouzít níze v dokumentu. Více v manuálu.
 694#£Ne. císel
 695#£Zaokrouhlení
-696#£Vyberte, jak se mají císla zaokrouhlovat a zaokrouhlovat. V níze uvedených príkladech je WordMat nastaven na 3 císla\r\n\r\nDesetinná císla: 12,345\r\nVýznamná císla: 12,3\r\nSci. Zápis: 1,23*10^1
+696#£Vyberte, jak se mají císla zaokrouhlovat a zaokrouhlovat. V níze uvedených príkladech je WordMathEng nastaven na 3 císla\r\n\r\nDesetinná císla: 12,345\r\nVýznamná císla: 12,3\r\nSci. Zápis: 1,23*10^1
 697#£Dokoncete ctverec
 698#£Pouzije úplný ctverec pro vsechny promenné ve výrazu
 699#£Faktoriál záporných celých císel není definován
@@ -734,11 +734,11 @@
 733#£Pouze 1 resení
 734#£Automatická kontrola aktualizací
 735#£Opravit klávesové zkratky
-736#£Restartujte WordMat
+736#£Restartujte WordMathEng
 737#£Ne. výpoctu
 738#£Klávesové zkratky opraveny.\nPokud to stále nefunguje, smazte soubor 'normal.dotm' ve slozce '~/Library/Group Containers/UBF8T346G9. Office/Uzivatelský obsah/Sablony' a restartujte aplikaci Word
 739#£Klávesové zkratky opraveny.\nPokud to stále nefunguje, smazte soubor 'normal.dotm' ve slozce '%appdata%/Microsoft/Templates' a restartujte Word
-740#£GeoGebra Calculator Suite je nainstalována s aplikací WordMat. Bezí v prohlízeci, ale nevyzaduje internet. Funguje stejne na Windows a Macu a spoustí se rychle.\nGeoGebra 5 funguje stejne na Windows i Macu, ale vyzaduje instalaci.\nWindows také podporují dalsí verze aplikací GeoGebra jako Geogebra 6, Grafická kalkulacka atd. Ty se pouzijí, pokud GeoGebra 5 nenainstaluje.
+740#£GeoGebra Calculator Suite je nainstalována s aplikací WordMathEng. Bezí v prohlízeci, ale nevyzaduje internet. Funguje stejne na Windows a Macu a spoustí se rychle.\nGeoGebra 5 funguje stejne na Windows i Macu, ale vyzaduje instalaci.\nWindows také podporují dalsí verze aplikací GeoGebra jako Geogebra 6, Grafická kalkulacka atd. Ty se pouzijí, pokud GeoGebra 5 nenainstaluje.
 741#£Klávesové zkratky nejsou nastaveny správne
 742#£Výsledek výpoctu závisí na znaménku
 743#£Státní znak
@@ -750,7 +750,7 @@
 749#£Chyba Maxima
 750#£Matematická chyba
 751#£Syntaktická chyba
-752#£Chyba syntaxe. WordMat nepochopil vás vstup.
+752#£Chyba syntaxe. WordMathEng nepochopil vás vstup.
 753#£Chybí vám
 754#£Je jich prílis mnoho
 755#£V kódu doslo k chybe.
@@ -766,7 +766,7 @@
 765#£Upozornení: Jednotky jsou zapnuté.\r\nResení rovnic bude horsí\r\nDávejte si pozor na promenné, které jsou jednotkami jako: A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Resit soustavu rovnic
 767#£Výber promenných
-768#£WordMat se spoustí
+768#£WordMathEng se spoustí
 769#£Pockejte prosím
 770#£Resic trojúhelníku
 771#£Pravoúhlý
@@ -780,7 +780,7 @@
 779#£Zobrazit výpocty v aplikaci Word
 780#£Vlozte známé strany a úhly. Zbývající strany a úhly budou poté vypocítány a vlozeny do Wordu.\r\nJe mozné zmenit názvy stran a úhlu na trojúhelníku. Stací kliknout na písmena.
 781#£Trojúhelník nemá pozadovanou velikost. Trojúhelník se správným merítkem vsak bude vlozen do aplikace Word.
-782#£Trojúhelníkový resitel WordMat se pouzívá se vstupem:
+782#£Trojúhelníkový resitel WordMathEng se pouzívá se vstupem:
 783#£Z vasich informací lze vytvorit dva trojúhelníky
 784#£Pro výpocet zbývajících stran a úhlu je zapotrebí více informací
 785#£Dva trojúhelníky
@@ -829,7 +829,7 @@
 828#£Stop
 829#£Rovnice je resena pro
 830#£Rovnice je resena numericky pro
-831#£podle WordMat.
+831#£podle WordMathEng.
 832#£Funkce
 833#£Rovnice
 834#£Rovnice
@@ -861,7 +861,7 @@
 860#£Neudelili jste prístup ke sluzbe GeGebra. Kliknete na tlacítko "Opakovat" a zkuste to znovu.
 861#£Stahování je pomalé. Zkontrolujte v prohlízeci Safari, zda to vypadá, ze probíhá stahování. Pokud nedojde k zádnému prubehu, muzete kliknout na tlacítko Stop.
 862#£Chyba pri stahování aplikace GeoGebra
-863#£Soubor nebyl nalezen v souborech ke stazení.\r\nMuzete kliknout na 'Opakovat' dole, pokud chcete, aby se WordMat podíval znovu.
+863#£Soubor nebyl nalezen v souborech ke stazení.\r\nMuzete kliknout na 'Opakovat' dole, pokud chcete, aby se WordMathEng podíval znovu.
 864#£Udelení povolení GeoGebre
 865#£Nyní by se melo otevrít okno s názvem 'Povolit prístup k souboru'.\r\n\r\n1. Kliknete na 'Vybrat...' \r\n2. Kliknete na "Priradit prístup"
 866#£Presun GeoGebry do aplikací
@@ -884,9 +884,9 @@
 883#£Rovnicový systém byl resen pomocí programu GeoGebra:
 884#£Výpocet byl prerusen, protoze trval velmi dlouho. Nekdy muze pomoci zkusit výpocet s mozností "Císelné" místo moznosti Presné nebo Automatické
 885#£Nelze se pripojit k aplikaci Maxima. Chcete místo toho pouzít metodu 'WSH'?\r\n(Tuto moznost najdete v Nastavení)
-886#£Aplikace WordMath nemuze komunikovat s aplikací GeoGebra. Je to pravdepodobne proto, ze jste v Safari nenastavili pozadovaná nastavení zabezpecení. Kliknutím na OK získáte pokyny
+886#£Aplikace WordMathEng nemuze komunikovat s aplikací GeoGebra. Je to pravdepodobne proto, ze jste v Safari nenastavili pozadovaná nastavení zabezpecení. Kliknutím na OK získáte pokyny
 887#£Resení numerických
-888#£Aplikace WordMat nemohla najít instalaci Maxima. Zkuste preinstalovat
+888#£Aplikace WordMathEng nemohla najít instalaci Maxima. Zkuste preinstalovat
 889#£Chyba pri pripojování k Maxima pomocí WSH
 890#£Automaticky se zastaví v
 891#£To se nepodarilo. Zastavuje.
@@ -904,13 +904,13 @@
 903#£Soubor kódu
 904#£Pouzití souboru kódu
 905#£Pole kódu povolení
-906#£Text v souboru kódu se spoustí v Maxime pri kazdém spustení. Muzete jej pouzít napríklad k definování funkcí, které chcete mít vzdy k dispozici ve WordMatu, nebo ke zmene nastavení v Maxima. Pouzití souboru s kódem trochu zpomalí výpocty. \nPole kódu lze vlozit pomocí nabídky definice a jsou to pole v dokumentu aplikace Word, do kterých muzete vlozit maximální kód, který se spoustí pri kazdém výpoctu. Kód v souboru kódu a polích kódu se odesílá prímo do spolecnosti Maxima nezpracovaný. Jakákoli chyba kódu zpusobí, ze WordMat selze ve vsech výpoctech, takze si dejte pozor. Podívejte se do nabídky v Nápovede > Manuál > Nápoveda k príkazum Maxima, kde najdete správnou syntaxi Maxima.
+906#£Text v souboru kódu se spoustí v Maxime pri kazdém spustení. Muzete jej pouzít napríklad k definování funkcí, které chcete mít vzdy k dispozici ve WordMatu, nebo ke zmene nastavení v Maxima. Pouzití souboru s kódem trochu zpomalí výpocty. \nPole kódu lze vlozit pomocí nabídky definice a jsou to pole v dokumentu aplikace Word, do kterých muzete vlozit maximální kód, který se spoustí pri kazdém výpoctu. Kód v souboru kódu a polích kódu se odesílá prímo do spolecnosti Maxima nezpracovaný. Jakákoli chyba kódu zpusobí, ze WordMathEng selze ve vsech výpoctech, takze si dejte pozor. Podívejte se do nabídky v Nápovede > Manuál > Nápoveda k príkazum Maxima, kde najdete správnou syntaxi Maxima.
 907#£Zde zadejte kód Maxima
 908#£Nezapnuli jste pole kódu v Nastavení > kódu. Pole kódu je vlozeno, ale nebude pouzito ve výpoctech, dokud nebude zapnuto.
 909#£Kód
 910#£Sem nelze vlozit pole kódu.
 911#£Smerová pole lze nakreslit pouze pro diferenciální rovnice 1. rádu ve tvaru y'=...
-912#£Nastavení aplikace WordMat je nastaveno na výpocet ve stupních. Je to zámer?
+912#£Nastavení aplikace WordMathEng je nastaveno na výpocet ve stupních. Je to zámer?
 913#£V názvech definic není dovoleno pouzívat operátor hat.
 914#£V názvech definic není dovoleno pouzívat císelné znaky.
 915#£Nastavili jste pro funkci prílis mnoho parametru:
@@ -918,7 +918,7 @@
 917#£Zkontrolujte WordMat+
 918#£Kupte si WordMat+
 919#£Aktivujte WordMat+ pomocí kódu
-920#£WordMat+ není na tomto pocítaci správne nainstalován. Nemuzes pokracovat. Zkuste preinstalovat WordMat.
+920#£WordMat+ není na tomto pocítaci správne nainstalován. Nemuzes pokracovat. Zkuste preinstalovat WordMathEng.
 921#£WordMat+ je na tomto pocítaci jiz aktivní.
 922#£Muzete si také zakoupit jednotlivé licence pro WordMat+. Kliknete zde pro více informací...
 923#£Výstupní císla

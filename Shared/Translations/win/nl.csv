@@ -9,7 +9,7 @@
 8#£Vergelijking sectie nr. invoegen.
 9#£Vergelijkingsnummers bijwerken
 10#£Bestaande namen van vergelijkingen
-11#£Om later een verwijzing naar de vergelijking in te voegen, kiest u 'Verwijzing naar vergelijking invoegen' in het WordMat-menu onder 'Vergelijking invoegen'
+11#£Om later een verwijzing naar de vergelijking in te voegen, kiest u 'Verwijzing naar vergelijking invoegen' in het WordMathEng-menu onder 'Vergelijking invoegen'
 12#£De naam bestaat al
 13#£De naam mag geen spaties bevatten
 14#£Vergelijking referentie
@@ -18,8 +18,8 @@
 17#£Rechterzijde
 18#£Nummering
 19#£Vraag bij het invoegen naar de naam van het kenmerk
-20#£WordMath maakt het mogelijk om wiskundige berekeningen uit te voeren in Word. De WordMath-kern is open source en gratis\r\nWordMat installeert ook de volgende programma's: Maxima, GeoGebra, Math-lettertypen.\r\nOptionele componenten: GeoGebra 5, Graph, WordMath+. Zie meer onder Licentie\r\nWordMath is gemaakt door Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
-21#£Er is een nieuwe versie van WordMath klaar om te downloaden.\r\nNieuws: \r\n
+20#£WordMathEng maakt het mogelijk om wiskundige berekeningen uit te voeren in Word. De WordMathEng-kern is open source en gratis\r\nWordMat installeert ook de volgende programma's: Maxima, GeoGebra, Math-lettertypen.\r\nOptionele componenten: GeoGebra 5, Graph, WordMath+. Zie meer onder Licentie\r\nWordMath is gemaakt door Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
+21#£Er is een nieuwe versie van WordMathEng klaar om te downloaden.\r\nNieuws: \r\n
 22#£U wordt nu doorgestuurd naar de downloadpagina
 23#£Nieuwe versie
 24#£Typ het aantal punten waarop u regressie wilt uitvoeren. Dan wordt er een tafel aangemaakt, waar je je punten in kunt zetten. Als u de regressie wilt doen, selecteert u gewoon de tabel en kiest u de gewenste regressie in het menu.
@@ -27,12 +27,12 @@
 26#£Er is een fout opgetreden. Er zit waarschijnlijk een fout in de invoernummers
 27#£U moet een tabel met twee kolommen maken. x-waarden in de linkerkolom en y-waarden in de rechterkolom. Brieven worden genegeerd. Regressie wordt uitgevoerd op de geselecteerde getallen. Als er geen is geselecteerd, wordt regressie uitgevoerd op alle getallen in de tabel
 28#£Op die punten kan geen regressie worden uitgevoerd
-29#£Lineaire regressie uitgevoerd door WordMat: $Tab
-30#£Exponentiële regressie uitgevoerd door WordMat: $Tab
-31#£Vermogensregressie uitgevoerd door WordMat: $Tab
+29#£Lineaire regressie uitgevoerd door WordMathEng: $Tab
+30#£Exponentiële regressie uitgevoerd door WordMathEng: $Tab
+31#£Vermogensregressie uitgevoerd door WordMathEng: $Tab
 32#£Vermogensregressie kan op die punten niet worden uitgevoerd. Alle getallen moeten positief zijn (en niet nul).
 33#£Door de gebruiker gedefinieerde regressie met de functie
-34#£uitgevoerd door WordMath
+34#£uitgevoerd door WordMathEng
 35#£Geef de volgorde van de polynomiale regressie (1-
 36#£(De maximale volgorde wordt bepaald door het aantal punten)
 37#£bevelen
@@ -47,15 +47,15 @@
 46#£De precisie is niet geldig. Kies een positief geheel getal.
 47#£Plaats de cursor in een vergelijking
 48#£Het is niet mogelijk om berekeningen uit te voeren op definities
-49#£De uitdrukking wordt gedifferentieerd door WordMat.
+49#£De uitdrukking wordt gedifferentieerd door WordMathEng.
 50#£De uitdrukking kon niet worden onderscheiden
 51#£Toestand variabele
-52#£Een antiderivaat wordt gevonden door WordMat
+52#£Een antiderivaat wordt gevonden door WordMathEng
 53#£De expressie kon niet worden geïntegreerd
-54#£Er is een fout opgetreden. WordMat is waarschijnlijk niet correct geïnstalleerd. Probeer opnieuw te installeren, eventueel met antivirus gedeactiveerd. Als uw school een partnerschap heeft, kan de instelling 'dll connection method' onder Instellingen/Geavanceerd het probleem mogelijk oplossen
+54#£Er is een fout opgetreden. WordMathEng is waarschijnlijk niet correct geïnstalleerd. Probeer opnieuw te installeren, eventueel met antivirus gedeactiveerd. Als uw school een partnerschap heeft, kan de instelling 'dll connection method' onder Instellingen/Geavanceerd het probleem mogelijk oplossen
 55#£Er is een fout opgetreden bij het opstarten van Maxima
 56#£De ongelijkheid is opgelost voor
-57#£door WordMat.
+57#£door WordMathEng.
 58#£Alle getallen lossen deze ongelijkheid op
 59#£De ongelijkheid had geen oplossingen op het gebied $C voor variabele
 60#£De ongelijkheid had geen oplossingen op het gebied $R voor variabele
@@ -63,7 +63,7 @@
 62#£Definiëren
 63#£Geen internetverbinding
 64#£Klik op OK om de update te starten
-65#£Sneltoetsen voor WordMat
+65#£Sneltoetsen voor WordMathEng
 66#£Sneltoetsen voor woordvergelijkingen
 67#£U kunt uw eigen typesnelkoppelingen maken in Word of de bestaande snelkoppelingen wijzigen. Plaats de cursor in een vergelijking. Open het menu Ontwerp. Zoek de functies met de groepsnaam. Klik op het pijltje in de rechterbenedenhoek. Kies voor 'Wiskundige auto-invoer'
 68#£Formules
@@ -96,7 +96,7 @@
 95#£Er is een fout opgetreden. Controleer de cijfers met xmin en xmax
 96#£Geen partnerschap
 97#£Er is een fout opgetreden bij het invoegen van Grafiek. Mogelijk heeft u een syntaxisfout in een definitie
-98#£Er is een fout opgetreden bij het invoegen van een Excel-blad. Dit kan worden veroorzaakt door een eerdere crash van Excel. Sluit alle geopende Excel-bladen en open Excel opnieuw voordat u het opnieuw probeert met WordMat.
+98#£Er is een fout opgetreden bij het invoegen van een Excel-blad. Dit kan worden veroorzaakt door een eerdere crash van Excel. Sluit alle geopende Excel-bladen en open Excel opnieuw voordat u het opnieuw probeert met WordMathEng.
 99#£Er is een fout opgetreden bij het converteren van uw opdracht naar de Maxima-syntaxis.
 100#£Er is een fout opgetreden bij het converteren van Maxima-uitvoer naar Word-syntaxis.
 101#£De oplossing is onzeker. Misschien wilt u ook numerieke methoden proberen
@@ -108,7 +108,7 @@
 107#£Waarschuwing: Je hebt gevraagd om een vergelijkingssysteem op te lossen, maar je hebt minder variabelen dan vergelijkingen genoemd. Alleen de eerste vergelijkingen worden opgelost. Controleer handmatig de laatste vergelijking(en).
 108#£Maxima meldde de volgende fout:
 109#£Maxima-fout
-110#£WordMat kon de map 'Programmabestanden' niet vinden
+110#£WordMathEng kon de map 'Programmabestanden' niet vinden
 111#£Er is een fout opgetreden bij het openen:
 112#£Kan geen verbinding maken met de server
 113#£Op deze plaats in het document wordt het volgende gedefinieerd
@@ -129,11 +129,11 @@
 128#£De expressie kon niet worden berekend.
 129#£De vergelijking had geen oplossingen in het domein $C voor variabele
 130#£De vergelijking had geen oplossingen in het domein $R voor variabele
-131#£WordMat kon de vergelijking niet oplossen
+131#£WordMathEng kon de vergelijking niet oplossen
 132#£Alle getallen zijn oplossingen voor de vergelijking
 133#£U hebt gevraagd om de vergelijking op te lossen voor een variabele die al is gedefinieerd. Voeg een 'delete def:' commando in voor de vergelijking.
 134#£Het stelsel van vergelijkingen is opgelost voor
-135#£door de 'vergelijking oplossen'-functie van WordMat,
+135#£door de 'vergelijking oplossen'-functie van WordMathEng,
 136#£WordMat+ ingeschakeld voor
 137#£Het stelsel van vergelijkingen had geen oplossingen in het domein $C voor variabelen
 138#£Het stelsel van vergelijkingen had geen oplossingen in het domein $R voor variabelen
@@ -141,29 +141,29 @@
 140#£WordMat+ niet ingeschakeld
 141#£Dit is geen vergelijking. Een vergelijking heeft altijd een gelijkteken.
 142#£De volgende variabelen worden uit het vergelijkingssysteem geëlimineerd:
-143#£door de functie 'Variabele elimineren' van WordMat, '
+143#£door de functie 'Variabele elimineren' van WordMathEng, '
 144#£waar
 145#£vals
 146#£onbekend
 147#£
 148#£Er werd een oplossing gevonden. Er kunnen meer oplossingen bestaan.
 149#£Selecteer slechts 1 expressie
-150#£De expressie wordt vereenvoudigd door WordMat met behulp van de volgende methoden:
+150#£De expressie wordt vereenvoudigd door WordMathEng met behulp van de volgende methoden:
 151#£Automatisch vereenvoudigen,
 152#£Trigonometrische identiteiten
 153#£De uitdrukking kan niet worden vereenvoudigd
-154#£De uitdrukking wordt vereenvoudigd door WordMat.
-155#£De expressie wordt ontbonden door WordMat.
+154#£De uitdrukking wordt vereenvoudigd door WordMathEng.
+155#£De expressie wordt ontbonden door WordMathEng.
 156#£De expressie kan niet worden ontbonden
-157#£De expressie wordt uitgebreid met WordMat.
+157#£De expressie wordt uitgebreid met WordMathEng.
 158#£De expressie kan niet worden uitgebreid
 159#£Je moet eenheden uitschakelen om differentiaalvergelijkingen op te lossen
 160#£De differentiaalvergelijking kon niet worden opgelost
 161#£Scholen kunnen zich aanmelden voor een Partnership met Eduap. Partnerschap krijgt toegang tot ondersteuning, WordMath+ en nog veel meer. Klik om meer te lezen
 162#£Binomiale verdeling
-163#£De uitdrukking wordt op waarheid getest door WordMat.
+163#£De uitdrukking wordt op waarheid getest door WordMathEng.
 164#£Het resultaat is gebaseerd op een numerieke vergelijking
-165#£WordMat kon niet bepalen of de uitdrukking waar of onwaar was
+165#£WordMathEng kon niet bepalen of de uitdrukking waar of onwaar was
 166#£Eenheden uitgeschakeld
 167#£Uitvoereenheden kiezen
 168#£Output eenheden
@@ -171,13 +171,13 @@
 170#£Automatische back-up?
 171#£Hoeveel back-upbestanden moet ik opslaan?
 172#£Tijd tussen back-ups
-173#£Word maakt geen automatische back-up, maar slaat gegevens op die mogelijk kunnen worden gebruikt om een verloren bestand opnieuw te maken\n\nWordMat kan volledige back-ups maken wanneer u een berekening uitvoert en het document in meerdere versies opslaat. (Back-ups zijn veel sneller als het document niet in OneDrive staat). De back-upbestanden worden opgeslagen in de map: mijn documenten/WordMat-backup
+173#£Word maakt geen automatische back-up, maar slaat gegevens op die mogelijk kunnen worden gebruikt om een verloren bestand opnieuw te maken\n\nWordMat kan volledige back-ups maken wanneer u een berekening uitvoert en het document in meerdere versies opslaat. (Back-ups zijn veel sneller als het document niet in OneDrive staat). De back-upbestanden worden opgeslagen in de map: mijn documenten/WordMathEng-backup
 174#£Open de back-upmap
 175#£Vragen
 176#£Altijd
 177#£Nooit
 178#£Er is een fout opgetreden bij het maken van een back-up
-179#£Wil je het automatische back-upsysteem van WordMats activeren\n\n(Voor meer info ga naar instellingen | Back-up)
+179#£Wil je het automatische back-upsysteem van WordMathEng's activeren\n\n(Voor meer info ga naar instellingen | Back-up)
 180#£Normaalverdeling
 181#£Laag
 182#£Normaal
@@ -204,7 +204,7 @@
 203#£Ja
 204#£Nee
 205#£Onthoud deze keuze
-206#£Wanneer de back-upfunctie van WordMats is ingeschakeld, wordt er een back-up gemaakt wanneer een berekening wordt uitgevoerd. Slechts om de 5 minuten wordt er een back-up gemaakt. Er worden 10 back-up kopieën gemaakt voordat ze worden overschreven." & vbLf & vbLf & " U kunt deze instellingen wijzigen onder instellingen | Backup.
+206#£Wanneer de back-upfunctie van WordMathEng's is ingeschakeld, wordt er een back-up gemaakt wanneer een berekening wordt uitgevoerd. Slechts om de 5 minuten wordt er een back-up gemaakt. Er worden 10 back-up kopieën gemaakt voordat ze worden overschreven." & vbLf & vbLf & " U kunt deze instellingen wijzigen onder instellingen | Backup.
 207#£Je kunt deze keuze altijd wijzigen onder instellingen | Backup
 208#£Backup
 209#£De som van de hoeken ligt boven de 180
@@ -291,7 +291,7 @@
 290#£Massa van de maan
 291#£Maan gemiddelde straal
 292#£GeoGebra 5 is niet geïnstalleerd.
-293#£De knop brengt u naar de homepage waar u GeoGebra kunt installeren. WordMat op Windows ondersteunt 'GeoGebra classic 5', 'GeoGebra Calculator Suite', 'GeoGebra Classic 6' en de meeste andere app-edities van GeoGebra.
+293#£De knop brengt u naar de homepage waar u GeoGebra kunt installeren. WordMathEng op Windows ondersteunt 'GeoGebra classic 5', 'GeoGebra Calculator Suite', 'GeoGebra Classic 6' en de meeste andere app-edities van GeoGebra.
 294#£GeoGebra Calculator Suite is al geïnstalleerd. Het draait in een browser en vereist geen internet. Start snel.
 295#£Installeer GeoGebra
 296#£Voer GeoGebra Calculator Suite uit
@@ -335,7 +335,7 @@
 334#£U kunt uw wijzigingen in de formuledocumenten opslaan
 335#£Excel-sheets kunnen afzonderlijk worden geopend of ingesloten worden ingevoegd
 336#£Markeren van inleveracties? Probeer WordMark www.eduap.com
-337#£Aantal berekeningen met WordMath:
+337#£Aantal berekeningen met WordMathEng:
 338#£Onder definities kun je natuurkundige constanten en tabelwaarden definiëren.
 339#£Word wordt sneller uitgevoerd in de conceptweergave - wanneer er vergelijkingen bij betrokken zijn
 340#£Voeg uw eigen beschrijvingen van Excel-diagrammen in met behulp van het tekstvak invoegen
@@ -351,7 +351,7 @@
 350#£Significantie niveau
 351#£Voer de afmetingen van de tabel in\r\nrijen x kolommen
 352#£Chi-kwadraattest voor onafhankelijkheid
-353#£$X^2 - test van zelfstandigheid uitgevoerd met behulp van WordMat
+353#£$X^2 - test van zelfstandigheid uitgevoerd met behulp van WordMathEng
 354#£P-waarde
 355#£Gebruikmakend van significantieniveau van
 356#£% de 0-hypothese kan worden verworpen. Er is dus een afhankelijkheid tussen de twee variabelen.
@@ -388,7 +388,7 @@
 387#£Intervalmethode toegepast in het interval
 388#£Er is geen oplossing gevonden
 389#£Geen oplossing
-390#£De differentiaalvergelijking wordt opgelost door de functie 'Differentiaalvergelijking oplossen' van WordMat
+390#£De differentiaalvergelijking wordt opgelost door de functie 'Differentiaalvergelijking oplossen' van WordMathEng
 391#£met randvoorwaarden
 392#£met startvoorwaarden
 393#£met startvoorwaarde
@@ -407,7 +407,7 @@
 406#£De som van alle cellen is minder dan 50. $X^2-verdeling is dan een slechte benadering en het resultaat onbetrouwbaar.
 407#£Q-waarde
 408#£Kritische Q-waarde
-409#£MikTex is niet geïnstalleerd. U wordt nu doorgestuurd naar de downloadpagina. De computer moet na de installatie opnieuw worden opgestart. De eerste keer dat u MikTex van WordMat uitvoert, wordt er een reeks pakketten geïnstalleerd.
+409#£MikTex is niet geïnstalleerd. U wordt nu doorgestuurd naar de downloadpagina. De computer moet na de installatie opnieuw worden opgestart. De eerste keer dat u MikTex van WordMathEng uitvoert, wordt er een reeks pakketten geïnstalleerd.
 410#£Deze functie wordt niet ondersteund op Mac
 411#£Anderen
 412#£Nieuwe vergelijking
@@ -488,7 +488,7 @@
 487#£Opent boekje met natuurkundeformules
 488#£Opent boekje scheikundeformule
 489#£Automatisch exact of numeriek resultaat
-490#£WordMat bepaalt automatisch of het exacte of numerieke resultaat of beide moet worden geretourneerd.
+490#£WordMathEng bepaalt automatisch of het exacte of numerieke resultaat of beide moet worden geretourneerd.
 491#£Exacte resultaten
 492#£Alle resultaten werden geretourneerd als exact resultaat. Soms kan een numerieke benadering echter niet worden vermeden.
 493#£Numerieke resultaten
@@ -632,11 +632,11 @@
 631#£Tabel $ArrowRight lijst
 632#£Lijst $ArrowRight Tabel
 633#£Tafel
-634#£WordMat kan gegevens in de lijst manipuleren. Voorbeeld: U kunt eenvoudig een nummer toevoegen aan alle elementen in een lijst. Gegevens staan echter vaak in een tabel in Word. Hier zijn functies om lijst te converteren til tabellen en omgekeerd.
+634#£WordMathEng kan gegevens in de lijst manipuleren. Voorbeeld: U kunt eenvoudig een nummer toevoegen aan alle elementen in een lijst. Gegevens staan echter vaak in een tabel in Word. Hier zijn functies om lijst te converteren til tabellen en omgekeerd.
 635#£Excel-blad invoegen
 636#£Voegt een leeg ingesloten Excel-blad in. Dubbelklik om te openen en te bewerken.
 637#£Converteren naar lijst
-638#£Een tabel converteren naar een lijst. Deze lijst kan vervolgens worden gemanipuleerd met behulp van WordMat. Voorbeeld: [1, 2, 3]+1 = [2, 3, 4] Zie handleiding voor meer info
+638#£Een tabel converteren naar een lijst. Deze lijst kan vervolgens worden gemanipuleerd met behulp van WordMathEng. Voorbeeld: [1, 2, 3]+1 = [2, 3, 4] Zie handleiding voor meer info
 639#£Converteren naar tafel
 640#£Converteert een lijst naar een tabel. De lijst kan in een wiskundevak staan of in het document worden geschreven en worden geselecteerd, zoals (1 , 2), (3 , 4), (5 , 6)
 641#£De oplosser van de driehoek
@@ -646,19 +646,19 @@
 645#£Webhandleiding
 646#£Opent de handleiding op internet in een browser.
 647#£Maxima handleiding
-648#£Maxima is het CAS-programma dat de meeste rekenkundige berekeningen in WordMat uitvoert. Maxima heeft veel ingebouwde functies die niet direct zichtbaar zijn vanuit de WordMat gebruikersinterface, maar wel kunnen worden uitgevoerd als je de functienamen kent. Dit toont de Maxima help waar u documentatie kunt zien voor alle maxima functies.
+648#£Maxima is het CAS-programma dat de meeste rekenkundige berekeningen in WordMathEng uitvoert. Maxima heeft veel ingebouwde functies die niet direct zichtbaar zijn vanuit de WordMathEng gebruikersinterface, maar wel kunnen worden uitgevoerd als je de functienamen kent. Dit toont de Maxima help waar u documentatie kunt zien voor alle maxima functies.
 649#£Over
-650#£Wie heeft WordMat gemaakt?
+650#£Wie heeft WordMathEng gemaakt?
 651#£Controleren op updates
 652#£Automatisch controleren op updates.
 653#£Sneltoetsen
-654#£Toont een lijst met sneltoetsen om WordMat-opdrachten te activeren en sneltoetsen voor het invoeren van wiskunde in de invoervakken voor wiskunde in Word.
+654#£Toont een lijst met sneltoetsen om WordMathEng-opdrachten te activeren en sneltoetsen voor het invoeren van wiskunde in de invoervakken voor wiskunde in Word.
 655#£LaTex-sjabloon
 656#£LaTex-sjabloon
 657#£Hiermee opent u een Word-document dat is opgemaakt als een LaTex-document, maar net zo eenvoudig te schrijven is als een Word-document.
 658#£Precisionen is erg hoog ingesteld. De rekentijd kan erg lang zijn of mislukken. Probeer dan opnieuw met een lagere stand.
-659#£WordMat converteert zeer goed naar LaTex, maar er is ook de mogelijkheid om Maxima te gebruiken om te converteren naar LaTex.
-660#£Eenheden worden normaal gesproken niet cursief geschreven als variabelen. Met deze functie probeert WordMat eenheden te identificeren en LaTex-code in te voegen om eenheden in een normaal lettertype te schrijven.
+659#£WordMathEng converteert zeer goed naar LaTex, maar er is ook de mogelijkheid om Maxima te gebruiken om te converteren naar LaTex.
+660#£Eenheden worden normaal gesproken niet cursief geschreven als variabelen. Met deze functie probeert WordMathEng eenheden te identificeren en LaTex-code in te voegen om eenheden in een normaal lettertype te schrijven.
 661#£Sluiten
 662#£Genereert met behulp van MikTex een echt LaTex-document, dat geïnstalleerd moet worden. Alleen gebruiken voor eenvoudige documenten, omdat niet alle documentobjecten worden ondersteund.
 663#£Laat zien hoe de LaTex-output wordt geïnterpreteerd
@@ -679,7 +679,7 @@
 678#£Over Newton-Raphson
 679#£U moet uw document opslaan voordat de back-up kan worden uitgevoerd!
 680#£Polaire notatie uitvoer
-681#£Problemen met het bestand 'normal.dotm', kunnen problemen veroorzaken met sneltoetsen in WordMat. De problemen kunnen worden opgelost door het bestand te verwijderen, aangezien er automatisch een nieuw standaardbestand wordt gegenereerd wanneer Word opnieuw wordt opgestart. Het bestand kan niet worden verwijderd terwijl Word is geopend. U moet dit handmatig doen.\r\n\r\n- Druk op OK om de map te openen waarin Normal.dotm zich bevindt. \r\n- Sla je werk op en sluit Word \r\n- verwijder normaal.dotm \r\n- Open Word en open en sluit de WordMat-instellingen
+681#£Problemen met het bestand 'normal.dotm', kunnen problemen veroorzaken met sneltoetsen in WordMathEng. De problemen kunnen worden opgelost door het bestand te verwijderen, aangezien er automatisch een nieuw standaardbestand wordt gegenereerd wanneer Word opnieuw wordt opgestart. Het bestand kan niet worden verwijderd terwijl Word is geopend. U moet dit handmatig doen.\r\n\r\n- Druk op OK om de map te openen waarin Normal.dotm zich bevindt. \r\n- Sla je werk op en sluit Word \r\n- verwijder normaal.dotm \r\n- Open Word en open en sluit de WordMathEng-instellingen
 682#£Berekening uitgevoerd door GeoGebra
 683#£pijl
 684#£Safari openen
@@ -687,14 +687,14 @@
 686#£CAS-motor
 687#£Belangrijke cijfers
 688#£Units aan/uit zetten
-689#£Als eenheden zijn ingeschakeld, kan WordMath eenheden interpreteren en converteren. Op de SI-knop kunt u de uitvoereenheden wijzigen. Schakel apparaten niet in, tenzij u het nodig heeft. Het kan het gedrag van WordMat beïnvloeden en reserveert veel variabelen.
+689#£Als eenheden zijn ingeschakeld, kan WordMathEng eenheden interpreteren en converteren. Op de SI-knop kunt u de uitvoereenheden wijzigen. Schakel apparaten niet in, tenzij u het nodig heeft. Het kan het gedrag van WordMathEng beïnvloeden en reserveert veel variabelen.
 690#£Codeveld invoegen
 691#£Vermeld de eenheden waarnaar u wilt converteren. Uitvoereenheden zijn standaard SI-eenheden.
 692#£Når du angiver et resultat i fysik skal antallet af betydende cifre passe med den præcision vi kender resultatet med.
 693#£Een codeveld is een gebied waar je Maxima direct kunt programmeren. U kunt bijvoorbeeld meer geavanceerde functies definiëren, die vervolgens verderop in het document kunnen worden gebruikt. Zie meer in de handleiding.
 694#£Nee. van cijfers
 695#£Afronding
-696#£Kies hoe getallen worden gefoumatteerd en afgerond. In de onderstaande voorbeelden is WordMat ingesteld op 3 cijfers\r\n\r\nDecimalen: 12,345\r\nSignificante cijfers: 12,3\r\nSci. Notatie: 1,23*10^1
+696#£Kies hoe getallen worden gefoumatteerd en afgerond. In de onderstaande voorbeelden is WordMathEng ingesteld op 3 cijfers\r\n\r\nDecimalen: 12,345\r\nSignificante cijfers: 12,3\r\nSci. Notatie: 1,23*10^1
 697#£Maak het vierkant compleet
 698#£Past het vierkant toe voor alle variabelen in expressie
 699#£Faculteit van negatieve gehele getallen niet gedefinieerd
@@ -734,11 +734,11 @@
 733#£Slechts 1 oplossing
 734#£Automatisch controleren op updates
 735#£Sneltoetsen repareren
-736#£WordMat opnieuw opstarten
+736#£WordMathEng opnieuw opstarten
 737#£Nee. van berekeningen
 738#£Sneltoetsen gerepareerd.\nAls het nog steeds niet werkt, verwijder dan het bestand 'normal.dotm' in map '~/Bibliotheek/Groepscontainers/UBF8T346G9. Office/Gebruikersinhoud/Sjablonen' en start Word opnieuw
 739#£Sneltoetsen gerepareerd.\nAls het nog steeds niet werkt, verwijder dan het bestand 'normal.dotm' in de map '%appdata%/Microsoft/Templates' en start Word opnieuw
-740#£GeoGebra Calculator Suite is geïnstalleerd met WordMat. Het draait in een browser, maar vereist geen internet. Het werkt hetzelfde op Windows en Mac, en start snel.\nGeoGebra 5 Werkt hetzelfde op Windows en Mac, maar vereist installatie.\nWindows ondersteunt ook de andere app-versies van GeoGebra zoals Geogebra 6, Graphing Calculator etc. Deze worden gebruikt als GeoGebra 5 niet is geïnstalleerd.
+740#£GeoGebra Calculator Suite is geïnstalleerd met WordMathEng. Het draait in een browser, maar vereist geen internet. Het werkt hetzelfde op Windows en Mac, en start snel.\nGeoGebra 5 Werkt hetzelfde op Windows en Mac, maar vereist installatie.\nWindows ondersteunt ook de andere app-versies van GeoGebra zoals Geogebra 6, Graphing Calculator etc. Deze worden gebruikt als GeoGebra 5 niet is geïnstalleerd.
 741#£Sneltoetsen zijn niet correct ingesteld
 742#£Het resultaat van de berekening is afhankelijk van het teken van
 743#£Het teken van de staat
@@ -750,7 +750,7 @@
 749#£Maxima-fout
 750#£Wiskundige fout
 751#£Syntaxisfout
-752#£Syntaxisfout. WordMat heeft uw input niet begrepen.
+752#£Syntaxisfout. WordMathEng heeft uw input niet begrepen.
 753#£U mist een
 754#£Er is te veel
 755#£Er is een fout opgetreden in de code.
@@ -766,7 +766,7 @@
 765#£Waarschuwing: Eenheden zijn ingeschakeld.\r\nHet oplossen van vergelijkingen zal slechter zijn\r\nPas op voor variabelen die eenheden zijn zoals: A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Stelsel van vergelijkingen oplossen
 767#£Variabelen kiezen
-768#£WordMat gaat van start
+768#£WordMathEng gaat van start
 769#£Een ogenblik geduld
 770#£De oplosser van de driehoek
 771#£Haaks
@@ -780,7 +780,7 @@
 779#£Berekeningen weergeven in Word
 780#£Voeg de bekende zijden en hoeken in. De overige zijden en hoeken worden dan berekend en ingevoegd in Word.\r\nHet is mogelijk om de namen van zijden en hoeken op de driehoek te wijzigen. Klik gewoon op de letters.
 781#£De driehoek is niet op maat. Maar een driehoek met de juiste schaal wordt ingevoegd in Word.
-782#£De trianglesolver van WordMat wordt gebruikt met invoer:
+782#£De trianglesolver van WordMathEng wordt gebruikt met invoer:
 783#£Op basis van uw gegevens kunnen twee driehoeken worden geconstrueerd
 784#£Er is meer informatie nodig om de resterende zijden en hoeken te berekenen
 785#£Twee driehoeken
@@ -829,7 +829,7 @@
 828#£Stoppen
 829#£De vergelijking is opgelost voor
 830#£De vergelijking wordt numeriek opgelost voor
-831#£door WordMat.
+831#£door WordMathEng.
 832#£Functies
 833#£Vergelijking
 834#£Vergelijkingen
@@ -861,7 +861,7 @@
 860#£U hebt geen toegang verleend tot GeGebra. Klik op 'Opnieuw' om het opnieuw te proberen.
 861#£Het downloaden gaat traag. Controleer in Safari of het erop lijkt dat er een download bezig is. U kunt op stop klikken als er geen voortgang is.
 862#£Fout bij het downloaden van GeoGebra
-863#£Het bestand kon niet worden gevonden in downloads.\r\nU kunt onderaan op 'Opnieuw' klikken als u wilt dat WordMat opnieuw kijkt.
+863#£Het bestand kon niet worden gevonden in downloads.\r\nU kunt onderaan op 'Opnieuw' klikken als u wilt dat WordMathEng opnieuw kijkt.
 864#£Geef toestemming aan GeoGebra
 865#£Een venster met de naam 'Toegang tot bestand toestaan' zou nu moeten openen.\r\n\r\n1. Klik op 'Selecteren...' \r\n2. Klik op 'Toegang toewijzen'
 866#£GeoGebra verplaatsen naar apps
@@ -884,9 +884,9 @@
 883#£Het vergelijkingssysteem werd opgelost met GeoGebra:
 884#£De berekening werd onderbroken omdat het erg lang duurde. Het kan soms helpen om de berekening te proberen met de optie 'Numeriek' in plaats van Exact of Auto
 885#£Kan geen verbinding maken met Maxima. Wil je in plaats daarvan de 'WSH'-methode gebruiken?\r\n(Deze optie is te vinden onder geavanceerd in Instellingen)
-886#£WordMath kan niet communiceren met GeoGebra. Dit komt waarschijnlijk omdat u de vereiste beveiligingsinstellingen niet hebt ingesteld in Safari. Klik op ok om de instructies te krijgen
+886#£WordMathEng kan niet communiceren met GeoGebra. Dit komt waarschijnlijk omdat u de vereiste beveiligingsinstellingen niet hebt ingesteld in Safari. Klik op ok om de instructies te krijgen
 887#£Numeriek oplossen
-888#£WordMat kon de Maxima-installatie niet vinden. Probeer opnieuw te installeren
+888#£WordMathEng kon de Maxima-installatie niet vinden. Probeer opnieuw te installeren
 889#£Fout bij het verbinden met Maxima via WSH
 890#£Stopt automatisch in
 891#£Dat is niet gelukt. Stopt.
@@ -904,13 +904,13 @@
 903#£Code bestand
 904#£Codebestand toepassen
 905#£Codevelden toestaan
-906#£De tekst in het codebestand wordt bij elke startup in Maxima gedraaid. Je kunt het bijvoorbeeld gebruiken om functies te definiëren die je altijd beschikbaar wilt hebben in WordMat, of om instellingen in Maxima te wijzigen. Het gebruik van het codebestand zal de berekeningen iets langzamer maken. \nCodevelden kunnen worden ingevoegd via het definitiemenu en zijn velden in het Word-document waar u de maximale code kunt invoegen, die bij elke berekening wordt uitgevoerd. Code in het codebestand en de codevelden worden onbewerkt direct naar Maxima gestuurd. Elke codefout zorgt ervoor dat WordMat niet in alle berekeningen werkt, dus pas op. Kijk in het menu onder Hulp > Handleiding > Hulp bij Maxima Commando's, voor de juiste Maxima syntaxis.
+906#£De tekst in het codebestand wordt bij elke startup in Maxima gedraaid. Je kunt het bijvoorbeeld gebruiken om functies te definiëren die je altijd beschikbaar wilt hebben in WordMathEng, of om instellingen in Maxima te wijzigen. Het gebruik van het codebestand zal de berekeningen iets langzamer maken. \nCodevelden kunnen worden ingevoegd via het definitiemenu en zijn velden in het Word-document waar u de maximale code kunt invoegen, die bij elke berekening wordt uitgevoerd. Code in het codebestand en de codevelden worden onbewerkt direct naar Maxima gestuurd. Elke codefout zorgt ervoor dat WordMathEng niet in alle berekeningen werkt, dus pas op. Kijk in het menu onder Hulp > Handleiding > Hulp bij Maxima Commando's, voor de juiste Maxima syntaxis.
 907#£Vul hier de Maxima code in
 908#£U heeft geen codevelden ingeschakeld in 'Instellingen > code'. Het codeveld wordt ingevoegd, maar wordt pas gebruikt in berekeningen als het wordt ingeschakeld.
 909#£Code
 910#£Een codeveld kon hier niet worden ingevoegd.
 911#£Richtingsvelden kunnen alleen worden getekend voor differentiaalvergelijkingen van de 1e orde op de vorm y'=...
-912#£De instelling van WordMat is ingesteld om in graden te berekenen. Is dat de bedoeling?
+912#£De instelling van WordMathEng is ingesteld om in graden te berekenen. Is dat de bedoeling?
 913#£Het is niet toegestaan om de hat operator te gebruiken in definitienamen.
 914#£Het is niet toegestaan om numerieke tekens te gebruiken in definitienamen.
 915#£Je hebt te veel parameters ingesteld voor de functie:
@@ -918,7 +918,7 @@
 917#£Controleer op WordMat+
 918#£Koop WordMath+
 919#£Activeer WordMat+ met code
-920#£WordMat+ is niet correct geïnstalleerd op deze computer. Je kunt niet doorgaan. Probeer WordMat opnieuw te installeren.
+920#£WordMat+ is niet correct geïnstalleerd op deze computer. Je kunt niet doorgaan. Probeer WordMathEng opnieuw te installeren.
 921#£WordMat+ is al actief op deze computer.
 922#£Je kunt ook losse licenties voor WordMat+ kopen. Klik hier om meer te zien...
 923#£Uitvoercijfers

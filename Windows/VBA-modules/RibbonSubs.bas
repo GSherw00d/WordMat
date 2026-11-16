@@ -815,7 +815,7 @@ End Sub
 Sub Rib_HelpOnline(control As IRibbonControl)
 '    OpenLink "https://sites.google.com/site/wordmat/"
 '    If TT.LangNo = 1 Then
-        OpenLink "https://www.wordmat.dk/docs"
+        MsgBox2 "Online help isn't available for WordMathEng. Use the DOCX or PDF manual (from the original WordMat).", vbOKOnly, "WordMathEng" ' word_math
 '    Else
 '        OpenLink "https://www.eduap.com/wordmatdoc/en/index.html"
 '    End If
@@ -840,10 +840,10 @@ Sub Rib_HelpMaxima(control As IRibbonControl)
     OpenLink "https://maxima.sourceforge.io/docs/manual"
 End Sub
 Sub Rib_CheckForUpdate(control As IRibbonControl)
-    CheckForUpdate
+    MsgBox2 "WordMathEng doesn't check for updates online.", vbOKOnly, "WordMathEng" ' word_math: no WordMat downloads
 End Sub
 Sub Rib_CheckForUpdateBeta(control As IRibbonControl)
-    UpdateToBeta
+    MsgBox2 "WordMathEng doesn't check for updates online.", vbOKOnly, "WordMathEng" ' word_math: no WordMat downloads
 End Sub
 Sub Rib_CheckForUpdateGeoGebra(control As IRibbonControl)
     InstallGeoGebra False
@@ -852,10 +852,10 @@ Sub Rib_Genveje(control As IRibbonControl)
     UserFormShortcuts.Show
 End Sub
 Sub Rib_CheckForWordMatPlus(control As IRibbonControl)
-    QCheckForWordMatPlus
+    ' word_math: WordMat+ is a paid product of the original WordMat; not offered
 End Sub
 Sub Rib_PurchaseWordMatPlus(control As IRibbonControl)
-    QPurchaseWordMatPlus
+    ' word_math: WordMat+ is a paid product of the original WordMat; not offered
 End Sub
 Sub Rib_ActivateWordMatPlusCode(control As IRibbonControl)
     On Error GoTo fejl

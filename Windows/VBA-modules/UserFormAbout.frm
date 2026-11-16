@@ -51,7 +51,7 @@ Sub SetEscEvents(ControlColl As Controls)
 End Sub
 
 Private Sub Image1_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    OpenLink "https://www.eduap.com"
+    ' word_math: no link to Eduap's site
 End Sub
 
 Private Sub Label_checkpartnerskab_MouseMove(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -59,19 +59,19 @@ Private Sub Label_checkpartnerskab_MouseMove(ByVal Button As Integer, ByVal Shif
 End Sub
 
 Private Sub Label_license_Click()
-    OpenLink "https://www.eduap.com/wordmath-license/"
+    OpenLink "https://www.gnu.org/licenses/gpl-3.0.html" ' word_math: the GPL itself, not the Eduap licence page
 End Sub
 
 Private Sub Label_Licensetitle_Click()
-    OpenLink "https://www.eduap.com/wordmath-license/"
+    OpenLink "https://www.gnu.org/licenses/gpl-3.0.html" ' word_math
 End Sub
 
 Private Sub Label_link_Click()
-    OpenLink "https://www.eduap.com"
+    ' word_math: no link to Eduap's site
 End Sub
 
 Private Sub Label_logo_Click()
-    OpenLink "https://www.eduap.com"
+    ' word_math: no link to Eduap's site
 End Sub
 
 Private Sub Label_ok_Click()
@@ -79,32 +79,29 @@ Private Sub Label_ok_Click()
 End Sub
 
 Private Sub Label_partnerskab_Click()
-    OpenLink "https://www.eduap.com/da/partnerskab/"
+    ' word_math: no link to the paid partnership
 End Sub
 
 Private Sub Label_partnerskab2_Click()
-    OpenLink "https://www.eduap.com/da/partnerskab/"
+    ' word_math: no link to the paid partnership
 End Sub
 
 Private Sub Label_WordMatPlus_Click()
-    QPurchaseWordMatPlus
+    ' word_math: no link to the paid WordMat+
 End Sub
 
 Private Sub Label1_Click()
-    OpenLink "https://www.eduap.com"
+    ' word_math: no link to Eduap's site
 End Sub
 
 Private Sub UserForm_Activate()
     SetCaptions
     
-    Label_partnerskab2.Caption = TT.A(161)
-    If QActivePartnership Then
-        Label_partnerskab.Caption = TT.A(136) & " " & SkoleNavn
-        Label_checkpartnerskab.visible = False
-    Else
-        Label_partnerskab.Caption = TT.A(140)
-        Label_checkpartnerskab.visible = True
-    End If
+    ' word_math: no partnership or WordMat+ information (paid products of the original WordMat)
+    Label_partnerskab2.visible = False
+    Label_partnerskab.visible = False
+    Label_checkpartnerskab.visible = False
+    Label_WordMatPlus.visible = False
 End Sub
 
 Sub SetCaptions()
@@ -117,16 +114,14 @@ Sub SetCaptions()
     If BetaVersion Then
         v = v & " beta"
     End If
-    If TT.LangNo = 1 Then
-        Me.Caption = TT.A(812) & " WordMat"
-        Label_title.Caption = "WordMat"
-    Else
-        Me.Caption = TT.A(812) & " WordMath"
-        Label_title.Caption = "WordMath"
-    End If
+    ' word_math: WordMathEng, with a credit line (GPL v3); no links to the paid WordMat products
+    Me.Caption = TT.A(812) & " WordMathEng"
+    Label_title.Caption = "WordMathEng"
     Label_version.Caption = "Version: " & v
-    Label_text.Caption = TT.A(20)
-    Label_WordMatPlus.Caption = TT.A(922)
+    Label_text.Caption = "WordMathEng, based on WordMat by Eduap (GPL v3)." & vbCrLf & vbCrLf & _
+        "Maths in Word with units, free-typed equations (~~ ... ~~) and engineering functions. " & _
+        "Free software under the GNU General Public Licence v3 or later. Calculations by Maxima."
+    Label_WordMatPlus.Caption = ""
 
 End Sub
 

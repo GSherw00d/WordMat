@@ -9,7 +9,7 @@
 8#£Iterpti lygties sekcijos nr.
 9#£Lygciu numeriu naujinimas
 10#£Esami lygciu pavadinimai
-11#£Noredami iterpti nuoroda i lygti veliau, pasirinkite "Iterpti nuoroda i lygti" is "WordMat" meniu, esancio skiltyje "Iterpti lygti"
+11#£Noredami iterpti nuoroda i lygti veliau, pasirinkite "Iterpti nuoroda i lygti" is "WordMathEng" meniu, esancio skiltyje "Iterpti lygti"
 12#£Pavadinimas jau egzistuoja
 13#£Pavadinime negali buti tarpu
 14#£Lygties nuoroda
@@ -18,8 +18,8 @@
 17#£Desine puse
 18#£Numeravimas
 19#£Iterpdami paprasykite nuorodos pavadinimo
-20#£"WordMath" leidzia atlikti matematinius skaiciavimus programoje "Word". WordMath branduolys yra atvirojo kodo ir nemokamas\r\nWordMat taip pat idiegia sias programas: Maxima, GeoGebra, Math fonts.\r\nOptionalus komponentai: GeoGebra 5, Graph, WordMath+. Daugiau ziurekite skiltyje License\r\nWordMath sukure Mikael Samsøe Sørensen, Niborgo gimnazija, EDUAP 2009-2025.
-21#£Yra nauja WordMath versija, paruosta atsisiusti.\r\nNews: \r\n
+20#£"WordMathEng" leidzia atlikti matematinius skaiciavimus programoje "Word". WordMathEng branduolys yra atvirojo kodo ir nemokamas\r\nWordMat taip pat idiegia sias programas: Maxima, GeoGebra, Math fonts.\r\nOptionalus komponentai: GeoGebra 5, Graph, WordMath+. Daugiau ziurekite skiltyje License\r\nWordMath sukure Mikael Samsøe Sørensen, Niborgo gimnazija, EDUAP 2009-2025.
+21#£Yra nauja WordMathEng versija, paruosta atsisiusti.\r\nNews: \r\n
 22#£Dabar busite nukreipti i atsisiuntimo puslapi
 23#£Nauja versija
 24#£Iveskite tasku, kuriuose norite atlikti regresija, skaiciu. Tada bus sukurta lentele, kurioje galesite sudeti savo taskus. Jei norite atlikti regresija, tiesiog pasirinkite lentele ir meniu pasirinkite norima regresija.
@@ -27,12 +27,12 @@
 26#£Ivyko klaida. Tikriausiai ivesties numeriuose yra klaida
 27#£Turite sukurti lentele su dviem stulpeliais. x reiksmes kairiajame stulpelyje ir y reiksmes desiniajame stulpelyje. Laiskai ignoruojami. Regresija atliekama pasirinktiems skaiciams. Jei nepasirinkta ne vieno, regresija atliekama su visais lenteles skaiciais
 28#£Regresijos negalima atlikti tuose taskuose
-29#£Tiesine regresija, kuria atlieka WordMat: $Tab
-30#£Eksponentine regresija, kuria atlieka WordMat: $Tab
-31#£Galios regresija, kuria atlieka WordMat: $Tab
+29#£Tiesine regresija, kuria atlieka WordMathEng: $Tab
+30#£Eksponentine regresija, kuria atlieka WordMathEng: $Tab
+31#£Galios regresija, kuria atlieka WordMathEng: $Tab
 32#£Tuose taskuose galios regresijos atlikti negalima. Visi skaiciai turi buti teigiami (o ne nulis).
 33#£Vartotojo apibrezta regresija su funkcija
-34#£atliko WordMath
+34#£atliko WordMathEng
 35#£Nurodykite polinomines regresijos tvarka (1-
 36#£(Maksimali tvarka nustatoma pagal tasku skaiciu)
 37#£isakymas
@@ -47,15 +47,15 @@
 46#£Tikslumas negalioja. Pasirinkite teigiama sveikaji skaiciu.
 47#£Perkelkite zymekli i lygti
 48#£Neimanoma apskaiciuoti apibrezimu
-49#£Israiska diferencijuojama pagal WordMat.
+49#£Israiska diferencijuojama pagal WordMathEng.
 50#£Israiska negalejo buti skirtinga
 51#£Valstybes kintamasis
-52#£Antiderybini randa WordMat
+52#£Antiderybini randa WordMathEng
 53#£Israiska negalejo buti integruota
-54#£Ivyko klaida. "WordMat" tikriausiai idiegta netinkamai. Pabandykite is naujo idiegti, galbut isjunge antivirusine programa. Jei jusu mokykloje yra partneryste, nustatymas "dll rysio metodas" skiltyje "Nustatymai / isplestine" gali isspresti problema
+54#£Ivyko klaida. "WordMathEng" tikriausiai idiegta netinkamai. Pabandykite is naujo idiegti, galbut isjunge antivirusine programa. Jei jusu mokykloje yra partneryste, nustatymas "dll rysio metodas" skiltyje "Nustatymai / isplestine" gali isspresti problema
 55#£Klaida ivyko bandant paleisti "Maxima"
 56#£Nelygybe isspresta
-57#£pagal WordMat.
+57#£pagal WordMathEng.
 58#£Visi skaiciai issprendzia sia nelygybe
 59#£Nelygybe neturejo sprendimu kintamuju $C srityje
 60#£Nelygybe neturejo sprendimu kintamuju $R srityje
@@ -63,7 +63,7 @@
 62#£Apibrezti
 63#£Nera interneto rysio
 64#£Spustelekite Gerai, kad pradetumete naujinima
-65#£"WordMat" spartieji klavisai
+65#£"WordMathEng" spartieji klavisai
 66#£Word lygciu spartieji klavisai
 67#£Galite sukurti savo spausdinimo trumpus pjuvius programoje "Word" arba pakeisti esamus sparciuosius klavisus. Perkelkite zymekli i lygti. Atidarykite meniu Dizainas. Raskite grupe, vadinama funkcijomis. Spustelekite maza rodykle apatiniame desiniajame kampe. Pasirinkite varianta 'Matematiniai automatiniai irasai'
 68#£Formules
@@ -96,7 +96,7 @@
 95#£Ivyko klaida. Patikrinkite skaicius pagal xmin ir xmax
 96#£Nera partnerystes
 97#£Bandant iterpti diagrama ivyko klaida. Apibrezime gali buti sintakses klaida
-98#£Bandant iterpti "Excel" lapa ivyko klaida. Tai gali sukelti ankstesnis "Excel" gedimas. Uzdarykite visus atidarytus "Excel" lapus ir is naujo atidarykite "Excel" pries bandydami dar karta naudoti "WordMat".
+98#£Bandant iterpti "Excel" lapa ivyko klaida. Tai gali sukelti ankstesnis "Excel" gedimas. Uzdarykite visus atidarytus "Excel" lapus ir is naujo atidarykite "Excel" pries bandydami dar karta naudoti "WordMathEng".
 99#£Bandant konvertuoti komanda i "Maxima" sintakse ivyko klaida.
 100#£Bandant konvertuoti "Maxima" isvesti i "Word" sintakse ivyko klaida.
 101#£Sprendimas neaiskus. Galbut noresite pabandyti naudoti ir skaitinius metodus
@@ -108,7 +108,7 @@
 107#£Ispejimas: Jus paprasete isspresti lygciu sistema, bet nurodete maziau kintamuju nei lygtys. Issprendziamos tik pirmosios lygtys. Rankiniu budu patikrinkite paskutine (-ias) lygti (-tis).
 108#£"Maxima" pranese apie sia klaida:
 109#£"Maxima" klaida
-110#£"WordMat" nepavyko rasti aplanko "Programos failai"
+110#£"WordMathEng" nepavyko rasti aplanko "Programos failai"
 111#£Bandant atidaryti ivyko klaida:
 112#£Nepavyksta prisijungti prie serverio
 113#£Sioje dokumento vietoje apibreziama:
@@ -129,11 +129,11 @@
 128#£Israiskos apskaiciuoti nepavyko.
 129#£Lygtis neturejo sprendiniu kintamojo $C srityje
 130#£Lygtis neturejo sprendiniu kintamojo $R srityje
-131#£"WordMat" nepavyko isspresti lygties
+131#£"WordMathEng" nepavyko isspresti lygties
 132#£Visi skaiciai yra lygties sprendimai
 133#£Jus paprasete isspresti kintamojo, kuris jau yra apibreztas, lygti. Pries lygti iterpkite komanda "istrinti def:".
 134#£Lygciu sistema isspresta
-135#£pagal WordMat funkcija "isspresti lygti",
+135#£pagal WordMathEng funkcija "isspresti lygti",
 136#£"WordMat+" ijungta
 137#£Lygciu sistema neturejo sprendiniu kintamuju $C srityje
 138#£Lygciu sistema neturejo sprendiniu kintamuju $R srityje
@@ -141,29 +141,29 @@
 140#£WordMat+ neigalintas
 141#£Tai nera lygtis. Lygtis visada tures lygybes zenkla.
 142#£Is lygciu sistemos pasalinami sie kintamieji:
-143#£pagal WordMat 's 'Pasalinti kintamaji' funkcija, '
+143#£pagal WordMathEng 's 'Pasalinti kintamaji' funkcija, '
 144#£Tiesa
 145#£klaidinga
 146#£nezinomas
 147#£
 148#£Buvo rastas sprendimas. Sprendimu gali buti ir daugiau.
 149#£Pazymeti tik 1 israiska
-150#£Israiska supaprastina WordMat, naudojant metodus:
+150#£Israiska supaprastina WordMathEng, naudojant metodus:
 151#£Automatinis supaprastinimas,
 152#£Trigonometrines tapatybes
 153#£Posakis negalejo buti supaprastintas
-154#£Israiska supaprastina "WordMat".
-155#£Israiska atspindi WordMat.
+154#£Israiska supaprastina "WordMathEng".
+155#£Israiska atspindi WordMathEng.
 156#£Si israiska negalejo buti faktorizuota
-157#£Israiska isplecia "WordMat".
+157#£Israiska isplecia "WordMathEng".
 158#£Israiska negalejo buti isplesta
 159#£Noredami isspresti diferencialines lygtis, turite isjungti vienetus
 160#£Diferencialine lygtis negalejo buti isspresta
 161#£Mokyklos gali uzsiregistruoti partnerystei su "Eduap". Partneryste gauna prieiga prie palaikymo, "WordMath+" ir daug daugiau. Spustelekite, jei norite suzinoti daugiau
 162#£Binominis skirstinys
-163#£Israiska del tiesos isbando WordMat.
+163#£Israiska del tiesos isbando WordMathEng.
 164#£Rezultatas pagristas skaitiniu palyginimu
-165#£"WordMat" negalejo nustatyti, ar israiska buvo teisinga, ar klaidinga
+165#£"WordMathEng" negalejo nustatyti, ar israiska buvo teisinga, ar klaidinga
 166#£Vienetai isjungti
 167#£Pasirinkite isvesties vienetus
 168#£Isvesties vienetai
@@ -171,13 +171,13 @@
 170#£Automatinis atsarginis kopijavimas?
 171#£Kiek atsarginiu failu saugoti?
 172#£Laikas tarp atsarginiu kopiju kurimo
-173#£"Word" nedaro automatinio atsarginiu kopiju kurimo, bet iraso duomenis, kuriuos galima naudoti norint atkurti prarasta faila\n\nWordMat gali sukurti visas atsargines kopijas, kai atliekate skaiciavimus ir irasote dokumenta keliomis versijomis. (Atsargines kopijos kuriamos daug greiciau, jei dokumento nera "OneDrive") . Atsargines kopijos failai saugomi aplanke: mano dokumentai / WordMat atsargine kopija
+173#£"Word" nedaro automatinio atsarginiu kopiju kurimo, bet iraso duomenis, kuriuos galima naudoti norint atkurti prarasta faila\n\nWordMat gali sukurti visas atsargines kopijas, kai atliekate skaiciavimus ir irasote dokumenta keliomis versijomis. (Atsargines kopijos kuriamos daug greiciau, jei dokumento nera "OneDrive") . Atsargines kopijos failai saugomi aplanke: mano dokumentai / WordMathEng atsargine kopija
 174#£Atidarykite atsargines kopijos aplanka
 175#£Klausti
 176#£Visada
 177#£Niekada
 178#£Bandant sukurti atsargine kopija ivyko klaida
-179#£Ar norite suaktyvinti WordMats automatine atsargine kopija-system\n\n(Noredami gauti daugiau informacijos, eikite i nustatymus | Atsargine kopija)
+179#£Ar norite suaktyvinti WordMathEng's automatine atsargine kopija-system\n\n(Noredami gauti daugiau informacijos, eikite i nustatymus | Atsargine kopija)
 180#£Normalusis skirstinys
 181#£Zemas
 182#£Iprastas
@@ -204,7 +204,7 @@
 203#£Taip
 204#£Ne
 205#£Prisiminkite si pasirinkima
-206#£Kai ijungta "WordMats" atsargines kopijos kurimo funkcija, atlikus skaiciavima bus atlikta atsargine kopija. Atsargine kopija daroma tik kas 5 minutes. Pries perrasant padaroma 10 atsarginiu kopiju." & vbLf & vbLf > " Siuos nustatymus galite pakeisti nustatymuose | Atsargine kopija.
+206#£Kai ijungta "WordMathEng's" atsargines kopijos kurimo funkcija, atlikus skaiciavima bus atlikta atsargine kopija. Atsargine kopija daroma tik kas 5 minutes. Pries perrasant padaroma 10 atsarginiu kopiju." & vbLf & vbLf > " Siuos nustatymus galite pakeisti nustatymuose | Atsargine kopija.
 207#£Si pasirinkima visada galite pakeisti nustatymuose | Atsargine kopija
 208#£Atsargine kopija
 209#£kampu suma yra didesne nei 180
@@ -291,7 +291,7 @@
 290#£Menulio mase
 291#£Menulio vidutinis spindulys
 292#£GeoGebra 5 neidiegta.
-293#£Mygtukas nuves jus i pagrindini puslapi, kuriame galesite idiegti "GeoGebra". "WordMat" sistemoje "Windows" palaiko "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" ir dauguma kitu "GeoGebra" programu leidimu.
+293#£Mygtukas nuves jus i pagrindini puslapi, kuriame galesite idiegti "GeoGebra". "WordMathEng" sistemoje "Windows" palaiko "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" ir dauguma kitu "GeoGebra" programu leidimu.
 294#£"GeoGebra Calculator Suite" jau idiegtas. Jis veikia narsykleje ir nereikalauja interneto. Pradeda greitai.
 295#£Idiekite "GeoGebra"
 296#£Paleiskite "GeoGebra Calculator Suite"
@@ -335,7 +335,7 @@
 334#£Galite irasyti formuliu dokumentu pakeitimus
 335#£"Excel" lapus galima atidaryti atskirai arba iterpti
 336#£Ranku zymejimas? Isbandykite WordMark www.eduap.com
-337#£Skaiciavimu su "WordMath" skaicius:
+337#£Skaiciavimu su "WordMathEng" skaicius:
 338#£Dalyje apibrezimai galite apibrezti fizines konstantas ir lenteles reiksmes.
 339#£"Word" veikia greiciau juodrascio rodinyje - kai itraukiamos lygtys
 340#£Savo "Excel" diagramu aprasu iterpimas naudojant iterpimo teksto lauka
@@ -351,7 +351,7 @@
 350#£Reiksmingumo lygis
 351#£Lenteles matmenu ivedimas\r\nrows x stulpeliai
 352#£Ci kvadrato testas nepriklausomybei
-353#£$X^2 - nepakankamumo testas, atliktas naudojant WordMat
+353#£$X^2 - nepakankamumo testas, atliktas naudojant WordMathEng
 354#£P reiksme
 355#£Naudojant reiksmingumo lygi
 356#£% 0 hipoteze gali buti atmesta. Taigi tarp siu dvieju kintamuju yra priklausomybe.
@@ -388,7 +388,7 @@
 387#£Intervale taikomas intervalo metodas
 388#£Sprendimas nerastas
 389#£Nera sprendimo
-390#£Diferencialine lygti issprendzia WordMat funkcija "Solve differential equation"
+390#£Diferencialine lygti issprendzia WordMathEng funkcija "Solve differential equation"
 391#£su ribinemis salygomis
 392#£su starto salygomis
 393#£su starto salyga
@@ -407,7 +407,7 @@
 406#£Visu langeliu suma yra mazesne nei 50. $X^2 pasiskirstymas tada yra prastas apytikslis ir rezultatas nepatikimas.
 407#£Q reiksme
 408#£Kritine Q reiksme
-409#£"MikTex" neidiegtas. Dabar busite nusiusti i atsisiuntimo puslapi. Po idiegimo kompiuteris turi buti paleistas is naujo. Pirma karta paleidus "MikTex" is "WordMat", bus idiegta paketu serija.
+409#£"MikTex" neidiegtas. Dabar busite nusiusti i atsisiuntimo puslapi. Po idiegimo kompiuteris turi buti paleistas is naujo. Pirma karta paleidus "MikTex" is "WordMathEng", bus idiegta paketu serija.
 410#£Si funkcija nepalaikoma "Mac"
 411#£Kiti
 412#£Nauja lygtis
@@ -488,7 +488,7 @@
 487#£Atidaro fizikos formuliu knygele
 488#£Atidaro chemijos formuliu knygele
 489#£Automatinis tikslus arba skaitinis rezultatas
-490#£"WordMat" automatiskai nustato, kad pateikia tikslu arba skaitini rezultata, arba abu.
+490#£"WordMathEng" automatiskai nustato, kad pateikia tikslu arba skaitini rezultata, arba abu.
 491#£Tikslus rezultatai
 492#£Visi rezultatai pateikti kaip tikslus rezultatas. Taciau kartais negalima isvengti skaitines aproksimacijos.
 493#£Skaitiniai rezultatai
@@ -632,11 +632,11 @@
 631#£$ArrowRight lenteles sarasas
 632#£Sarasas $ArrowRight lentele
 633#£Stalas
-634#£"WordMat" gali manipuliuoti saraso duomenimis. Pavyzdys: galite lengvai prideti skaiciu prie visu saraso elementu. Taciau duomenys daznai yra "Word" lenteleje. Cia yra funkcijos, skirtos konvertuoti saraso til lenteles ir atvirksciai.
+634#£"WordMathEng" gali manipuliuoti saraso duomenimis. Pavyzdys: galite lengvai prideti skaiciu prie visu saraso elementu. Taciau duomenys daznai yra "Word" lenteleje. Cia yra funkcijos, skirtos konvertuoti saraso til lenteles ir atvirksciai.
 635#£"Excel" lapo iterpimas
 636#£Iterpia tuscia idetaji "Excel" lapa. Dukart spustelekite, kad atidarytumete ir redaguotumete.
 637#£Konvertuoti i sarasa
-638#£Konvertuoti lentele i sarasa. Tada siuo sarasu galima manipuliuoti naudojant "WordMat". Pavyzdys: [1, 2, 3]+1 = [2, 3, 4] Se vadovas, jei norite gauti daugiau informacijos
+638#£Konvertuoti lentele i sarasa. Tada siuo sarasu galima manipuliuoti naudojant "WordMathEng". Pavyzdys: [1, 2, 3]+1 = [2, 3, 4] Se vadovas, jei norite gauti daugiau informacijos
 639#£Konvertuoti i lentele
 640#£Konvertuoja sarasa i lentele. Sarasas gali buti matematikos laukelyje arba parasytas dokumente ir pazymetas, pvz., (1 , 2), (3 , 4), (5 , 6)
 641#£Trikampio sprendejas
@@ -646,19 +646,19 @@
 645#£Ziniatinklio vadovas
 646#£Atidaro vadova internete narsykleje.
 647#£"Maxima" vadovas
-648#£"Maxima" yra CAS programa, kuri atlieka dauguma matematiniu skaiciavimu "WordMat". "Maxima" turi daug integruotu funkciju, kurios nera is karto matomos is "WordMat" vartotojo sasajos, taciau gali buti vykdomos, jei zinote funkciju pavadinimus. Tai rodo "Maxima" pagalba, kurioje galite pamatyti visu "Maxima" funkciju dokumentacija.
+648#£"Maxima" yra CAS programa, kuri atlieka dauguma matematiniu skaiciavimu "WordMathEng". "Maxima" turi daug integruotu funkciju, kurios nera is karto matomos is "WordMathEng" vartotojo sasajos, taciau gali buti vykdomos, jei zinote funkciju pavadinimus. Tai rodo "Maxima" pagalba, kurioje galite pamatyti visu "Maxima" funkciju dokumentacija.
 649#£Apie
-650#£Kas sukure "WordMat"?
+650#£Kas sukure "WordMathEng"?
 651#£Patikrinkite, ar yra naujinimu
 652#£Automatiskai tikrinkite, ar yra naujinimu.
 653#£Spartieji klavisai
-654#£Rodomas sparciuju klavisu, skirtu suaktyvinti "WordMat" komandas ir sparciuosius klavisus, skirtus ivesti matematika "Word" matematikos ivesties laukuose, sarasas.
+654#£Rodomas sparciuju klavisu, skirtu suaktyvinti "WordMathEng" komandas ir sparciuosius klavisus, skirtus ivesti matematika "Word" matematikos ivesties laukuose, sarasas.
 655#£LaTex sablonas
 656#£LaTex sablonas
 657#£Atidaro "Word" dokumenta, kurio stilius panasus i "LaTex" dokumenta, bet kuri taip pat lengva rasyti kaip "Word" dokumenta.
 658#£Precisionen yra labai aukstas. Skaiciavimo laikas gali buti labai ilgas arba nepavykti. Jei taip, bandykite dar karta naudodami zemesni nustatyma.
-659#£WordMat labai gerai konvertuoja i LaTex, taciau taip pat yra galimybe naudoti Maxima konvertuoti i LaTex.
-660#£Vienetas paprastai nera rasomas kursyvu kaip kintamieji. Su sia funkcija WordMat bando identifikuoti vienetus ir iterpti LaTex koda, kad butu galima rasyti vienetus iprastu sriftu.
+659#£WordMathEng labai gerai konvertuoja i LaTex, taciau taip pat yra galimybe naudoti Maxima konvertuoti i LaTex.
+660#£Vienetas paprastai nera rasomas kursyvu kaip kintamieji. Su sia funkcija WordMathEng bando identifikuoti vienetus ir iterpti LaTex koda, kad butu galima rasyti vienetus iprastu sriftu.
 661#£Uzdaryti
 662#£Sugeneruoja tikra LaTex dokumenta naudodamas MikTex, kuris turi buti idiegtas. Naudokite tik paprastam dokumentui, nes palaikomi ne visi dokumento objektai.
 663#£Parodo, kaip interpretuojama LaTex isvestis
@@ -679,7 +679,7 @@
 678#£Apie Niutona-Raphsona
 679#£Turite issaugoti savo dokumenta, kad butu galima sukurti atsargine kopija!
 680#£Poliarinio zymejimo isvestis
-681#£Problemos su failu "normal.dotm" gali sukelti problemu del "WordMat" sparciuju klavisu. Problemas galima isspresti istrynus faila, nes naujas numatytasis failas automatiskai sugeneruojamas, kai "Word" paleidziama is naujo. Failo negalima panaikinti, kol programa Word atidaryta. Turite tai padaryti rankiniu budu.\r\n\r\n- Paspauskite OK, kad atidarytumete aplanka, kuriame yra Normal.dotm. \r\n- Irasykite savo darba ir uzdarykite "Word" \r\n- panaikinkite normal.dotm \r\n- atidarykite "Word", atidarykite ir uzdarykite "WordMat" parametrus
+681#£Problemos su failu "normal.dotm" gali sukelti problemu del "WordMathEng" sparciuju klavisu. Problemas galima isspresti istrynus faila, nes naujas numatytasis failas automatiskai sugeneruojamas, kai "Word" paleidziama is naujo. Failo negalima panaikinti, kol programa Word atidaryta. Turite tai padaryti rankiniu budu.\r\n\r\n- Paspauskite OK, kad atidarytumete aplanka, kuriame yra Normal.dotm. \r\n- Irasykite savo darba ir uzdarykite "Word" \r\n- panaikinkite normal.dotm \r\n- atidarykite "Word", atidarykite ir uzdarykite "WordMathEng" parametrus
 682#£GeoGebra atliktas skaiciavimas
 683#£strele
 684#£"Safari" atidarymas
@@ -687,14 +687,14 @@
 686#£CAS variklis
 687#£Reiksmingi skaiciai
 688#£Vienetu ijungimas / isjungimas
-689#£Jei vienetai ijungti, WordMath kan interpretuoja ir konvertuoja vienetus. SI mygtuke galite pakeisti isvesties vienetus. Neijunkite irenginiu, nebent jums to reikia. Tai gali tureti itakos WordMat elgesiui ir pasilieka daug kintamuju.
+689#£Jei vienetai ijungti, WordMathEng kan interpretuoja ir konvertuoja vienetus. SI mygtuke galite pakeisti isvesties vienetus. Neijunkite irenginiu, nebent jums to reikia. Tai gali tureti itakos WordMathEng elgesiui ir pasilieka daug kintamuju.
 690#£Iterpti kodo lauka
 691#£Nurodykite vienetus, i kuriuos norite konvertuoti. Pagal numatytuosius nustatymus isvesties vienetai yra SI vienetai.
 692#£rs
 693#£Kodo laukas yra sritis, kurioje galite tiesiogiai programuoti "Maxima". Pavyzdziui, galite apibrezti isplestines funkcijas, kurias veliau galima naudoti toliau dokumente. Daugiau informacijos rasite vadove.
 694#£Ne. skaiciu
 695#£Apvalinimo
-696#£Pasirinkite, kaip skaiciai bus fomatuojami ir apvalinami. Toliau pateiktuose pavyzdziuose WordMat nustatyta i 3 paveikslus\r\n\r\nDecimals: 12,345\r\nReiksmingi skaiciai: 12,3\r\nSci. zymejimas: 1,23*10^1
+696#£Pasirinkite, kaip skaiciai bus fomatuojami ir apvalinami. Toliau pateiktuose pavyzdziuose WordMathEng nustatyta i 3 paveikslus\r\n\r\nDecimals: 12,345\r\nReiksmingi skaiciai: 12,3\r\nSci. zymejimas: 1,23*10^1
 697#£Uzbaikite aikste
 698#£Taiko visa kvadrata visiems israiskos kintamiesiems
 699#£Neapibreztu neigiamu sveikuju skaiciu faktorialas
@@ -734,11 +734,11 @@
 733#£Tik 1 sprendimas
 734#£Automatiskai tikrinti, ar yra naujinimu
 735#£Pataisykite sparciuosius klavisus
-736#£Is naujo paleiskite "WordMat".
+736#£Is naujo paleiskite "WordMathEng".
 737#£Ne. skaiciavimu
 738#£Spartieji klavisai pataisyti.\nJei jis vis tiek neveikia, istrinkite faila "normal.dotm" aplanke "~/Library/Group Containers/UBF8T346G9. "Office" / vartotojo turinys / sablonai" ir is naujo paleiskite "Word"
 739#£Spartieji klavisai pataisyti.\nJei jis vis tiek neveikia, istrinkite faila "normal.dotm" aplanke "%appdata%/Microsoft/Templates" ir is naujo paleiskite "Word"
-740#£"GeoGebra Calculator Suite" idiegtas su "WordMat". Jis veikia narsykleje, bet jam nereikia interneto. Jis veikia vienodai "Windows" ir "Mac" ir greitai paleidziamas.\nGeoGebra 5 Veikia vienodai "Windows" ir "Mac", taciau reikia idiegti.\nWindows taip pat palaiko kitas "GeoGebra" programu versijas, tokias kaip "Geogebra 6", "Graphing Calculator" ir kt. Jie bus naudojami, jei "GeoGebra 5" nebus idiegta.
+740#£"GeoGebra Calculator Suite" idiegtas su "WordMathEng". Jis veikia narsykleje, bet jam nereikia interneto. Jis veikia vienodai "Windows" ir "Mac" ir greitai paleidziamas.\nGeoGebra 5 Veikia vienodai "Windows" ir "Mac", taciau reikia idiegti.\nWindows taip pat palaiko kitas "GeoGebra" programu versijas, tokias kaip "Geogebra 6", "Graphing Calculator" ir kt. Jie bus naudojami, jei "GeoGebra 5" nebus idiegta.
 741#£Spartieji klavisai nustatyti netinkamai
 742#£Skaiciavimo rezultatas priklauso nuo zenklo
 743#£Valstybes zenklas
@@ -750,7 +750,7 @@
 749#£"Maxima" klaida
 750#£Matematikos klaida
 751#£Sintakses klaida
-752#£Sintakses klaida. "WordMat" nesuprato jusu ivesties.
+752#£Sintakses klaida. "WordMathEng" nesuprato jusu ivesties.
 753#£Jums truksta
 754#£Ju yra per daug
 755#£Kode ivyko klaida.
@@ -766,7 +766,7 @@
 765#£Ispejimas: Vienetai ijungti.\r\nLygties sprendimas bus prastesnis\r\nStebekite kintamuosius, kurie yra tokie vienetai kaip: A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Isspreskite lygciu sistema
 767#£Pasirinkite kintamuosius
-768#£"WordMat" pradeda veikti
+768#£"WordMathEng" pradeda veikti
 769#£Palauk
 770#£Trikampio sprendejas
 771#£Desiniuoju kampu
@@ -780,7 +780,7 @@
 779#£Skaiciavimu rodymas programoje "Word"
 780#£Idekite zinomas puses ir kampus. Tada bus apskaiciuotos likusios puses ir kampai ir iterpti i Word.\r\nGalima keisti trikampio krastu ir kampu pavadinimus. Tiesiog spustelekite raides.
 781#£Trikampis nera dydzio. Taciau teisingai pakeistas trikampis bus iterptas i "Word".
-782#£"WordMat" trikampis sprendimas naudojamas su ivestimi:
+782#£"WordMathEng" trikampis sprendimas naudojamas su ivestimi:
 783#£Is jusu informacijos galima sudaryti du trikampius
 784#£Norint apskaiciuoti likusias puses ir kampus, reikia daugiau informacijos
 785#£Du trikampiai
@@ -829,7 +829,7 @@
 828#£Sustoti, sustok
 829#£Lygtis isspresta
 830#£Lygtis issprendziama skaiciais
-831#£pagal WordMat.
+831#£pagal WordMathEng.
 832#£Funkcijas
 833#£Lygtis
 834#£Lygtis
@@ -861,7 +861,7 @@
 860#£Jus nesuteikete prieigos prie GeGebra. Spustelekite "Bandyti dar karta", kad bandytumete dar karta.
 861#£Atsisiuntimas yra letas. Patikrinkite "Safari", jei atrodo, kad vyksta atsisiuntimas. Galite spusteleti stabdyti, jei nera pazangos.
 862#£Klaida atsisiunciant "GeoGebra"
-863#£Failo nepavyko rasti atsisiuntimuose.\r\nGalite spusteleti "Pakartoti" apacioje, jei norite, kad "WordMat" vel atrodytu.
+863#£Failo nepavyko rasti atsisiuntimuose.\r\nGalite spusteleti "Pakartoti" apacioje, jei norite, kad "WordMathEng" vel atrodytu.
 864#£Suteikite leidima "GeoGebra"
 865#£Dabar turetu atsidaryti langas pavadinimu "Leisti prieiga prie failo".\r\n\r\n1. Spustelekite "Pasirinkti..." \r\n2. Spustelekite "Priskirti prieiga"
 866#£"GeoGebra" perkelimas i programas
@@ -884,9 +884,9 @@
 883#£Lygciu sistema buvo isspresta naudojant GeoGebra:
 884#£Skaiciavimas buvo nutrauktas, nes uztruko labai ilgai. Kartais gali buti naudinga isbandyti skaiciavima naudojant parinkti "Skaitinis", o ne "Tikslus" arba "Automatinis"
 885#£Nepavyksta prisijungti prie "Maximos". Ar norite vietoj to naudoti "WSH" metoda?\r\n(sia parinkti galite rasti skiltyje Isplestiniai nustatymuose)
-886#£"WordMath" negali susisiekti su "GeoGebra". Tikriausiai taip yra todel, kad "Safari" nenustatete reikiamu saugos nustatymu. Spustelekite gerai, kad gautumete instrukcijas
+886#£"WordMathEng" negali susisiekti su "GeoGebra". Tikriausiai taip yra todel, kad "Safari" nenustatete reikiamu saugos nustatymu. Spustelekite gerai, kad gautumete instrukcijas
 887#£Isspreskite skaitini
-888#£"WordMat" nepavyko rasti "Maxima" diegimo. Pabandykite idiegti is naujo
+888#£"WordMathEng" nepavyko rasti "Maxima" diegimo. Pabandykite idiegti is naujo
 889#£Klaida jungiantis prie "Maxima" naudojant WSH
 890#£Automatiskai sustoja
 891#£Tai nepavyko. Sustoja.
@@ -904,13 +904,13 @@
 903#£Kodo failas
 904#£Taikyti kodo faila
 905#£Leisti kodo laukus
-906#£Kodo failo tekstas "Maximoje" paleidziamas kiekvieno paleidimo metu. Pavyzdziui, galite ji naudoti noredami apibrezti funkcijas, kurias visada norite tureti "WordMat", arba pakeisti nustatymus "Maxima". Naudojant kodo faila, skaiciavimai bus siek tiek letesni. \nKodo laukus galima iterpti per apibrezimo meniu ir tai yra "Word" dokumento laukai, kuriuose galite iterpti maksimalu koda, kuris vykdomas kiekvieno skaiciavimo metu. Kodas kodo faile ir kodo laukuose siunciamas tiesiai i "Maxima" neperdirbtas. Del bet kokios kodo klaidos "WordMat" nepavyks atlikti visu skaiciavimu, todel saugokites. Noredami rasti teisinga "Maxima" sintakse, ziurekite meniu, esanciame skiltyje "Zinynas > Vadovas > pagalba su "Maxima" komandomis.
+906#£Kodo failo tekstas "Maximoje" paleidziamas kiekvieno paleidimo metu. Pavyzdziui, galite ji naudoti noredami apibrezti funkcijas, kurias visada norite tureti "WordMathEng", arba pakeisti nustatymus "Maxima". Naudojant kodo faila, skaiciavimai bus siek tiek letesni. \nKodo laukus galima iterpti per apibrezimo meniu ir tai yra "Word" dokumento laukai, kuriuose galite iterpti maksimalu koda, kuris vykdomas kiekvieno skaiciavimo metu. Kodas kodo faile ir kodo laukuose siunciamas tiesiai i "Maxima" neperdirbtas. Del bet kokios kodo klaidos "WordMathEng" nepavyks atlikti visu skaiciavimu, todel saugokites. Noredami rasti teisinga "Maxima" sintakse, ziurekite meniu, esanciame skiltyje "Zinynas > Vadovas > pagalba su "Maxima" komandomis.
 907#£Iveskite "Maxima" koda cia
 908#£Neijungete kodo lauku skiltyje "Nustatymai > kodas". Kodo laukas iterpiamas, bet nebus naudojamas skaiciavimuose, kol jis nebus ijungtas.
 909#£Kodas
 910#£Cia nepavyko iterpti kodo lauko.
 911#£Krypties laukus galima nubrezti tik 1 eiles diferencialinems lygtims y'=...
-912#£"WordMat" nustatymas nustatytas skaiciuoti laipsniais. Ar tai ketinimas?
+912#£"WordMathEng" nustatymas nustatytas skaiciuoti laipsniais. Ar tai ketinimas?
 913#£Apibrezimu pavadinimuose neleidziama naudoti skrybeles operatoriaus.
 914#£Apibrezimu pavadinimuose neleidziama naudoti skaitiniu simboliu.
 915#£Nustatete per daug funkcijos parametru:
@@ -918,7 +918,7 @@
 917#£Patikrinkite, ar yra "WordMat+"
 918#£Pirkite "WordMat+"
 919#£Suaktyvinkite WordMat+ naudodami koda
-920#£WordMat+ siame kompiuteryje idiegta netinkamai. Testi negalima. Pabandykite is naujo idiegti "WordMat".
+920#£WordMat+ siame kompiuteryje idiegta netinkamai. Testi negalima. Pabandykite is naujo idiegti "WordMathEng".
 921#£WordMat+ jau aktyvus siame kompiuteryje.
 922#£Taip pat galite isigyti atskiras "WordMat+" licencijas. Spauskite cia noredami pamatyti daugiau...
 923#£Isvesties numeriai

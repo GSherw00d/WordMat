@@ -631,6 +631,9 @@ Sub CheckForUpdate()
     CheckForUpdatePar False
 End Sub
 Sub CheckForUpdatePar(Optional RunSilent As Boolean = False)
+    ' word_math: WordMathEng doesn't check for or download WordMat updates (decided 2026-11-16)
+    If Not RunSilent Then MsgBox2 "WordMathEng doesn't check for updates online.", vbOKOnly, "WordMathEng"
+    Exit Sub
     On Error GoTo fejl
     Dim NewVersion As String, p As Integer, News As String, s As String
     Dim UpdateNow As Boolean, Partnership As Boolean
@@ -1577,7 +1580,7 @@ Function GetWordMatDir(Optional SubDir As String) As String
         If Dir(GetWordMatDir & SubDir, vbDirectory) = vbNullString Then
             GetWordMatDir = Environ("AppData") & "\WordMat\"
             If Dir(GetWordMatDir & SubDir, vbDirectory) = vbNullString Then
-                MsgBox "WordMat folder could not be found", vbOKOnly, TT.Error
+                MsgBox "WordMathEng's folder (%AppData%\WordMat) could not be found", vbOKOnly, TT.Error
             End If
         End If
     Else
@@ -1585,7 +1588,7 @@ Function GetWordMatDir(Optional SubDir As String) As String
         If Dir(GetWordMatDir & SubDir, vbDirectory) = vbNullString Then
             GetWordMatDir = GetProgramFilesDir() & "\WordMat\"
             If Dir(GetWordMatDir & SubDir, vbDirectory) = vbNullString Then
-                MsgBox "WordMat folder could not be found", vbOKOnly, TT.Error
+                MsgBox "WordMathEng's folder (%AppData%\WordMat) could not be found", vbOKOnly, TT.Error
             End If
         End If
     End If

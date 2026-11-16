@@ -1518,7 +1518,7 @@ Private Function GetSettingsFilePath() As String
 End Function
 Sub SaveSettingsToFile(Optional SettingsFileName As String)
     Dim s As String
-    s = "# WordMat Settings" & vbCrLf
+    s = "# WordMathEng Settings" & vbCrLf
     
 #If Mac Then
     SettingsFileName = GetDocumentsDir & "/settings.txt"

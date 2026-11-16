@@ -15,11 +15,7 @@ Private LanguageFileMissing As Boolean
 Private Sub Class_Initialize()
     RunFirst
     CheckSetting
-    If TT.LangNo = 1 Then
-        AppNavn = "WordMat"
-    Else
-        AppNavn = "WordMath"
-    End If
+    AppNavn = "WordMathEng" ' word_math: the application is called WordMathEng (decided 2026-11-16)
     LoadSprogArray
 End Sub
 Public Sub CheckSetting()

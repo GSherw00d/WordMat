@@ -9,7 +9,7 @@
 8#£Wstaw sekcje równania nr.
 9#£Aktualizowanie numerów równan
 10#£Istniejace nazwy równan
-11#£Aby pózniej wstawic odniesienie do równania, wybierz opcje "Wstaw odniesienie do równania" z menu WordMat w sekcji "Wstaw równanie"
+11#£Aby pózniej wstawic odniesienie do równania, wybierz opcje "Wstaw odniesienie do równania" z menu WordMathEng w sekcji "Wstaw równanie"
 12#£Nazwa juz istnieje
 13#£Nazwa nie moze zawierac spacji
 14#£Odniesienie do równania
@@ -18,8 +18,8 @@
 17#£Prawa strona
 18#£Numerowanie
 19#£Zapytaj o nazwe referencji podczas wstawiania
-20#£WordMath umozliwia wykonywanie obliczen matematycznych w programie Word. Rdzen WordMath jest open source i darmowy\r\nWordMat instaluje równiez nastepujace programy: Maxima, GeoGebra, czcionki matematyczne.\r\nOpcjonalne komponenty: GeoGebra 5, Graph, WordMath+. Zobacz wiecej na licencji\r\nWordMath zostal stworzony przez Mikaela Samsøe Sørensena, Nyborg Gymnasium, EDUAP 2009-2025.
-21#£Jest nowa wersja WordMath gotowa do pobrania.\r\nAktualnosci: \r\n
+20#£WordMathEng umozliwia wykonywanie obliczen matematycznych w programie Word. Rdzen WordMathEng jest open source i darmowy\r\nWordMat instaluje równiez nastepujace programy: Maxima, GeoGebra, czcionki matematyczne.\r\nOpcjonalne komponenty: GeoGebra 5, Graph, WordMath+. Zobacz wiecej na licencji\r\nWordMath zostal stworzony przez Mikaela Samsøe Sørensena, Nyborg Gymnasium, EDUAP 2009-2025.
+21#£Jest nowa wersja WordMathEng gotowa do pobrania.\r\nAktualnosci: \r\n
 22#£Zostaniesz teraz przekierowany na strone pobierania
 23#£Nowa wersja
 24#£Wpisz liczbe punktów, dla których chcesz przeprowadzic regresje. Nastepnie zostanie utworzona tabela, w której mozesz umiescic swoje punkty. Jesli chcesz wykonac regresje, po prostu wybierz tabele i wybierz zadana regresje z menu.
@@ -27,12 +27,12 @@
 26#£Wystapil blad. Prawdopodobnie wystapil blad w liczbach wejsciowych
 27#£Musisz utworzyc tabele z dwiema kolumnami. wartosci x w lewej kolumnie i wartosci y w prawej kolumnie. Litery sa ignorowane. Regresja jest wykonywana na wybranych liczbach. Jesli zadna z nich nie zostanie wybrana, regresja jest wykonywana dla wszystkich liczb w tabeli
 28#£Nie mozna przeprowadzic regresji w tych punktach
-29#£Regresja liniowa wykonywana przez WordMat: $Tab
-30#£Regresja wykladnicza wykonywana przez WordMat: $Tab
-31#£Regresja mocy wykonywana przez WordMat: $Tab
+29#£Regresja liniowa wykonywana przez WordMathEng: $Tab
+30#£Regresja wykladnicza wykonywana przez WordMathEng: $Tab
+31#£Regresja mocy wykonywana przez WordMathEng: $Tab
 32#£W tych punktach nie mozna przeprowadzic regresji mocy. Wszystkie liczby musza byc dodatnie (a nie zerowe).
 33#£Regresja zdefiniowana przez uzytkownika z funkcja
-34#£w wykonaniu WordMath
+34#£w wykonaniu WordMathEng
 35#£Okresl porzadek regresji wielomianowej (1-
 36#£(Maksymalna liczba zamówien zalezy od liczby punktów)
 37#£porzadek
@@ -47,15 +47,15 @@
 46#£Precyzja jest nieprawidlowa. Wybierz dodatnia liczbe calkowita.
 47#£Umieszczanie kursora w równaniu
 48#£Nie jest mozliwe wykonanie obliczen na definicjach
-49#£Wyrazenie jest rozrózniane przez WordMat.
+49#£Wyrazenie jest rozrózniane przez WordMathEng.
 50#£Wyrazenie to nie moglo byc zróznicowane
 51#£Zmienna stanu
-52#£Pierwotna jest znaleziona przez WordMat
+52#£Pierwotna jest znaleziona przez WordMathEng
 53#£Nie mozna zintegrowac wyrazenia
-54#£Wystapil blad. WordMat prawdopodobnie nie jest poprawnie zainstalowany. Spróbuj zainstalowac ponownie, byc moze z wylaczonym programem antywirusowym. Jesli Twoja szkola ma program partnerski, ustawienie "metoda polaczenia dll" w Ustawieniach/Zaawansowane moze rozwiazac problem
+54#£Wystapil blad. WordMathEng prawdopodobnie nie jest poprawnie zainstalowany. Spróbuj zainstalowac ponownie, byc moze z wylaczonym programem antywirusowym. Jesli Twoja szkola ma program partnerski, ustawienie "metoda polaczenia dll" w Ustawieniach/Zaawansowane moze rozwiazac problem
 55#£Wystapil blad podczas próby uruchomienia Maxima
 56#£Nierównosc zostala zazegnana,
-57#£przez WordMat.
+57#£przez WordMathEng.
 58#£Wszystkie liczby rozwiazuja te nierównosc
 59#£Nierównosc nie miala rozwiazania w dziedzinie $C dla zmiennej
 60#£Nierównosc nie miala rozwiazania w dziedzinie $R dla zmiennych
@@ -63,7 +63,7 @@
 62#£Definiowac
 63#£Brak polaczenia z Internetem
 64#£Kliknij przycisk OK, aby rozpoczac aktualizacje
-65#£Skróty klawiaturowe programu WordMat
+65#£Skróty klawiaturowe programu WordMathEng
 66#£Skróty równan programu Word
 67#£Mozesz tworzyc wlasne skróty do pisania w programie Word lub zmieniac istniejace skróty. Umiesc kursor w równaniu. Otwórz menu Projekt. Zlokalizuj grupe o nazwie funkcje. Kliknij mala strzalke w prawym dolnym rogu. Wybierz "Automatyczne wprowadzanie matematyki"
 68#£Formuly
@@ -96,7 +96,7 @@
 95#£Wystapil blad. Sprawdz liczby wedlug xmin i xmax
 96#£Brak partnerstwa
 97#£Wystapil blad podczas próby wstawienia wykresu. W definicji moze wystapic blad skladni
-98#£Wystapil blad podczas próby wstawienia arkusza programu Excel. Moze to byc spowodowane poprzednia awaria programu Excel. Zamknij wszystkie otwarte arkusze programu Excel, a nastepnie ponownie otwórz program Excel przed ponowna próba uzycia programu WordMat.
+98#£Wystapil blad podczas próby wstawienia arkusza programu Excel. Moze to byc spowodowane poprzednia awaria programu Excel. Zamknij wszystkie otwarte arkusze programu Excel, a nastepnie ponownie otwórz program Excel przed ponowna próba uzycia programu WordMathEng.
 99#£Wystapil blad podczas próby przekonwertowania polecenia na skladnie Maxima.
 100#£Wystapil blad podczas próby przekonwertowania danych wyjsciowych Maxima na skladnie programu Word.
 101#£Rozwiazanie nie jest pewne. Mozesz równiez spróbowac uzyc metod numerycznych
@@ -108,7 +108,7 @@
 107#£Ostrzezenie: Poprosiles o rozwiazanie ukladu równan, ale podales mniej zmiennych niz równan. Rozwiazywane sa tylko pierwsze równania. Sprawdz recznie ostatnie równanie.
 108#£Firma Maxima zglosila nastepujacy blad:
 109#£Blad maksimum
-110#£Program WordMat nie byl w stanie zlokalizowac folderu "Pliki programów"
+110#£Program WordMathEng nie byl w stanie zlokalizowac folderu "Pliki programów"
 111#£Wystapil blad podczas próby otwarcia:
 112#£Nie mozna polaczyc sie z serwerem
 113#£W tym miejscu dokumentu okresla sie, co nastepuje
@@ -129,11 +129,11 @@
 128#£Nie mozna obliczyc wyrazenia.
 129#£Równanie nie mialo rozwiazan w dziedzinie $C dla zmiennej
 130#£Równanie nie mialo rozwiazan w dziedzinie $R dla zmiennej
-131#£WordMat nie mógl rozwiazac równania
+131#£WordMathEng nie mógl rozwiazac równania
 132#£Wszystkie liczby sa rozwiazaniami równania
 133#£Poprosiles o rozwiazanie równania dla zmiennej, która jest juz zdefiniowana. Wstaw polecenie 'delete def:' przed równaniem.
 134#£Uklad równan jest rozwiazywany dla
-135#£za pomoca funkcji "rozwiaz równanie" programu WordMat,
+135#£za pomoca funkcji "rozwiaz równanie" programu WordMathEng,
 136#£WordMat+ wlaczony dla
 137#£Uklad równan nie posiadal rozwiazan w dziedzinie $C dla zmiennych
 138#£Uklad równan nie posiadal rozwiazan w dziedzinie $R dla zmiennych
@@ -141,29 +141,29 @@
 140#£WordMat+ nie wlaczony
 141#£To nie jest równanie. Równanie zawsze bedzie mialo znak równosci.
 142#£Z ukladu równan eliminowane sa nastepujace zmienne:
-143#£za pomoca funkcji "Wyeliminuj zmienna" programu WordMat, "
+143#£za pomoca funkcji "Wyeliminuj zmienna" programu WordMathEng, "
 144#£prawdziwy
 145#£falszywy
 146#£nieznany
 147#£
 148#£Znaleziono rozwiazanie. Rozwiazan moze byc wiecej.
 149#£Wybierz tylko 1 wyrazenie
-150#£Wyrazenie jest upraszczane przez WordMat za pomoca metod:
+150#£Wyrazenie jest upraszczane przez WordMathEng za pomoca metod:
 151#£Automatyczne upraszczanie,
 152#£Tozsamosci trygonometryczne
 153#£Wyrazenia nie mozna uproscic
-154#£Wyrazenie jest upraszczane przez WordMat.
-155#£Wyrazenie jest rozkladane na czynniki przez program WordMat.
+154#£Wyrazenie jest upraszczane przez WordMathEng.
+155#£Wyrazenie jest rozkladane na czynniki przez program WordMathEng.
 156#£Nie mozna rozlozyc wyrazenia na czynniki pierwsze
-157#£Wyrazenie jest rozwijane przez program WordMat.
+157#£Wyrazenie jest rozwijane przez program WordMathEng.
 158#£Nie mozna rozwinac wyrazenia
 159#£Musisz wylaczyc jednostki, aby rozwiazac równania rózniczkowe
 160#£Nie udalo sie rozwiazac równania rózniczkowego
 161#£Szkoly moga zarejestrowac sie w programie partnerskim z Eduap. Partnerstwo zapewnia dostep do wsparcia, WordMath+ i wielu innych. Kliknij aby przeczytac wiecej
 162#£Rozklad dwumianowy
-163#£Wyrazenie jest testowane pod katem prawdziwosci przez program WordMat.
+163#£Wyrazenie jest testowane pod katem prawdziwosci przez program WordMathEng.
 164#£Wynik oparty jest na porównaniu numerycznym
-165#£Program WordMat nie byl w stanie okreslic, czy wyrazenie jest prawdziwe, czy falszywe
+165#£Program WordMathEng nie byl w stanie okreslic, czy wyrazenie jest prawdziwe, czy falszywe
 166#£Jednostki wylaczone
 167#£Wybieranie jednostek wyjsciowych
 168#£Jednostki wyjsciowe
@@ -171,13 +171,13 @@
 170#£Automatyczna kopia zapasowa?
 171#£Ile plików kopii zapasowych nalezy przechowywac?
 172#£Czas miedzy kopiami zapasowymi
-173#£Word nie wykonuje automatycznego tworzenia kopii zapasowych, ale zapisuje dane, które moga byc uzyte do odtworzenia utraconego pliku\n\nWordMat moze wykonac pelne kopie zapasowe, gdy wykonasz obliczenia i zapiszesz dokument w wielu wersjach. (Kopie zapasowe sa znacznie szybsze, jesli dokument nie znajduje sie w usludze OneDrive) . Pliki kopii zapasowej sa przechowywane w folderze: moje dokumenty/WordMat-backup
+173#£Word nie wykonuje automatycznego tworzenia kopii zapasowych, ale zapisuje dane, które moga byc uzyte do odtworzenia utraconego pliku\n\nWordMat moze wykonac pelne kopie zapasowe, gdy wykonasz obliczenia i zapiszesz dokument w wielu wersjach. (Kopie zapasowe sa znacznie szybsze, jesli dokument nie znajduje sie w usludze OneDrive) . Pliki kopii zapasowej sa przechowywane w folderze: moje dokumenty/WordMathEng-backup
 174#£Otwórz folder kopii zapasowej
 175#£Pytac
 176#£Zawsze
 177#£Nigdy
 178#£Wystapil blad podczas próby wykonania kopii zapasowej
-179#£Czy chcesz aktywowac system automatycznego tworzenia kopii zapasowych WordMats\n\n(Aby uzyskac wiecej informacji, przejdz do ustawien | Kopia zapasowa)
+179#£Czy chcesz aktywowac system automatycznego tworzenia kopii zapasowych WordMathEng's\n\n(Aby uzyskac wiecej informacji, przejdz do ustawien | Kopia zapasowa)
 180#£Rozklad normalny
 181#£Niski
 182#£Normalny
@@ -204,7 +204,7 @@
 203#£Tak
 204#£Nie
 205#£Zapamietaj ten wybór
-206#£Gdy funkcja tworzenia kopii zapasowych WordMats jest wlaczona, kopia zapasowa zostanie wykonana po wykonaniu obliczen. Kopia zapasowa jest wykonywana tylko co 5 minut. Wykonywanych jest 10 kopii zapasowych, zanim zostana nadpisane." & vbLf & vbLf & " Mozesz zmienic te ustawienia w ustawieniach | Kopia zapasowa.
+206#£Gdy funkcja tworzenia kopii zapasowych WordMathEng's jest wlaczona, kopia zapasowa zostanie wykonana po wykonaniu obliczen. Kopia zapasowa jest wykonywana tylko co 5 minut. Wykonywanych jest 10 kopii zapasowych, zanim zostana nadpisane." & vbLf & vbLf & " Mozesz zmienic te ustawienia w ustawieniach | Kopia zapasowa.
 207#£Zawsze mozesz zmienic ten wybór w ustawieniach | Kopia zapasowa
 208#£Kopia zapasowa
 209#£Suma katów jest wyzsza niz 180
@@ -291,7 +291,7 @@
 290#£Masa Ksiezyca
 291#£Sredni promien ksiezyca
 292#£GeoGebra 5 nie jest zainstalowana.
-293#£Przycisk przeniesie Cie na strone glówna, na której mozesz zainstalowac GeoGebra. WordMat w systemie Windows obsluguje "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" i wiekszosc innych wersji aplikacji GeoGebra.
+293#£Przycisk przeniesie Cie na strone glówna, na której mozesz zainstalowac GeoGebra. WordMathEng w systemie Windows obsluguje "GeoGebra classic 5", "GeoGebra Calculator Suite", "GeoGebra Classic 6" i wiekszosc innych wersji aplikacji GeoGebra.
 294#£Pakiet kalkulatorów GeoGebra jest juz zainstalowany. Dziala w przegladarce i nie wymaga dostepu do Internetu. Uruchamia sie szybko.
 295#£Zainstaluj GeoGebre
 296#£Uruchom pakiet kalkulatorów GeoGebra
@@ -335,7 +335,7 @@
 334#£Zmiany mozna zapisac w dokumentach formul
 335#£Arkusze Excela mozna otwierac osobno lub wstawiac osadzone
 336#£Znakowanie rak? Wypróbuj www.eduap.com WordMark
-337#£Liczba obliczen za pomoca WordMath:
+337#£Liczba obliczen za pomoca WordMathEng:
 338#£W obszarze Definicje mozna zdefiniowac stale fizyczne i wartosci tabeli.
 339#£Program Word dziala szybciej w widoku roboczym - gdy w gre wchodza równania
 340#£Wstawianie wlasnych opisów diagramów programu Excel za pomoca pola tekstowego wstawiania
@@ -351,7 +351,7 @@
 350#£Poziom istotnosci
 351#£Podaj wymiary tabeli\r\nwiersze x kolumny
 352#£Test chi-kwadrat na niezaleznosc
-353#£$X^2 - test niezaleznosci wykonany za pomoca WordMat
+353#£$X^2 - test niezaleznosci wykonany za pomoca WordMathEng
 354#£Wartosc P
 355#£Korzystanie z poziomu istotnosci
 356#£% hipoteza 0 moze zostac odrzucona. Stad istnieje zaleznosc miedzy tymi dwiema zmiennymi.
@@ -388,7 +388,7 @@
 387#£Metoda interwalowa zastosowana w interwale
 388#£Nie znaleziono rozwiazania
 389#£Brak rozwiazania
-390#£Równanie rózniczkowe jest rozwiazywane przez funkcje "Rozwiaz równanie rózniczkowe" programu WordMat
+390#£Równanie rózniczkowe jest rozwiazywane przez funkcje "Rozwiaz równanie rózniczkowe" programu WordMathEng
 391#£z warunkami brzegowymi
 392#£z warunkami poczatkowymi
 393#£z warunkiem poczatkowym
@@ -407,7 +407,7 @@
 406#£Suma wszystkich komórek jest mniejsza niz 50. Rozklad $X^2 jest wiec slabym przyblizeniem, a wynik niewiarygodny.
 407#£Wartosc Q
 408#£Krytyczna wartosc Q
-409#£MikTex nie jest zainstalowany. Zostaniesz teraz przekierowany na strone pobierania. Po instalacji komputer musi zostac ponownie uruchomiony. Przy pierwszym uruchomieniu MikTex z WordMat zostanie zainstalowana seria pakietów.
+409#£MikTex nie jest zainstalowany. Zostaniesz teraz przekierowany na strone pobierania. Po instalacji komputer musi zostac ponownie uruchomiony. Przy pierwszym uruchomieniu MikTex z WordMathEng zostanie zainstalowana seria pakietów.
 410#£Ta funkcja nie jest obslugiwana na komputerach Mac
 411#£Inni
 412#£Nowe równanie
@@ -488,7 +488,7 @@
 487#£Otwiera ksiazeczke z formulami fizycznymi
 488#£Otwiera ksiazeczke z formulami chemicznymi
 489#£Automatyczny dokladny lub numeryczny wynik
-490#£WordMat automatycznie okresla, czy zwrócic wynik dokladny, numeryczny, czy oba te elementy.
+490#£WordMathEng automatycznie okresla, czy zwrócic wynik dokladny, numeryczny, czy oba te elementy.
 491#£Dokladne wyniki
 492#£Wszystkie wyniki zostaly zwrócone jako dokladny wynik. Czasami jednak nie da sie uniknac przyblizenia liczbowego.
 493#£Wyniki liczbowe
@@ -632,11 +632,11 @@
 631#£Tabela $ArrowRight Lista
 632#£Lista $ArrowRight tabeli
 633#£Stól
-634#£WordMat moze manipulowac danymi na liscie. Przyklad: Mozesz latwo dodac liczbe do wszystkich elementów na liscie. Jednak dane czesto znajduja sie w tabeli w programie Word. Oto funkcje do konwersji list til tabel i odwracania.
+634#£WordMathEng moze manipulowac danymi na liscie. Przyklad: Mozesz latwo dodac liczbe do wszystkich elementów na liscie. Jednak dane czesto znajduja sie w tabeli w programie Word. Oto funkcje do konwersji list til tabel i odwracania.
 635#£Wstaw arkusz Excela
 636#£Wstawia pusty osadzony arkusz programu Excel. Kliknij dwukrotnie, aby otworzyc i edytowac.
 637#£Konwertuj na liste
-638#£Konwertowanie tabeli na liste. Ta lista mozna nastepnie manipulowac za pomoca programu WordMat. Przyklad: [1, 2, 3]+1 = [2, 3, 4] Zobacz instrukcje, aby uzyskac wiecej informacji
+638#£Konwertowanie tabeli na liste. Ta lista mozna nastepnie manipulowac za pomoca programu WordMathEng. Przyklad: [1, 2, 3]+1 = [2, 3, 4] Zobacz instrukcje, aby uzyskac wiecej informacji
 639#£Konwertuj na tabele
 640#£Konwertuje liste na tabele. Lista moze znajdowac sie w polu matematycznym lub byc zapisana w dokumencie i wybrana, na przyklad (1 , 2), (3 , 4), (5 , 6)
 641#£Solwer trójkatów
@@ -646,19 +646,19 @@
 645#£Podrecznik internetowy
 646#£Otwiera instrukcje w internecie w przegladarce.
 647#£Instrukcja obslugi Maxima
-648#£Maxima to program CAS, który wykonuje wiekszosc obliczen matematycznych w WordMat. Maxima ma wiele wbudowanych funkcji, które nie sa natychmiast widoczne z interfejsu uzytkownika WordMat, ale mozna je wykonac, jesli znasz nazwy funkcji. Spowoduje to wyswietlenie pomocy programu Maxima, w której mozna zapoznac sie z dokumentacja dotyczaca wszystkich funkcji programu Maxima.
+648#£Maxima to program CAS, który wykonuje wiekszosc obliczen matematycznych w WordMathEng. Maxima ma wiele wbudowanych funkcji, które nie sa natychmiast widoczne z interfejsu uzytkownika WordMathEng, ale mozna je wykonac, jesli znasz nazwy funkcji. Spowoduje to wyswietlenie pomocy programu Maxima, w której mozna zapoznac sie z dokumentacja dotyczaca wszystkich funkcji programu Maxima.
 649#£Okolo
-650#£Kto stworzyl WordMat?
+650#£Kto stworzyl WordMathEng?
 651#£Sprawdz dostepnosc aktualizacji
 652#£Automatycznie sprawdzaj dostepnosc aktualizacji.
 653#£Skróty klawiaturowe
-654#£Przedstawia liste skrótów klawiaturowych sluzacych do aktywowania polecen programu WordMat oraz skrótów sluzacych do wprowadzania danych matematycznych w polach wprowadzania danych matematycznych w programie Word.
+654#£Przedstawia liste skrótów klawiaturowych sluzacych do aktywowania polecen programu WordMathEng oraz skrótów sluzacych do wprowadzania danych matematycznych w polach wprowadzania danych matematycznych w programie Word.
 655#£Szablon LaTex
 656#£Szablon LaTex
 657#£Otwiera dokument programu Word, który jest stylizowany na dokument LaTex, ale jest tak latwy do napisania jak dokument programu Word.
 658#£Precisionen jest ustawiony bardzo wysoko. Czas obliczen moze byc bardzo dlugi lub zakonczyc sie niepowodzeniem. Jesli tak, spróbuj ponownie z nizszym ustawieniem.
-659#£WordMat bardzo dobrze konwertuje na LaTex, ale istnieje równiez mozliwosc uzycia Maxima do konwersji na LaTex.
-660#£Jednostki zwykle nie sa zapisywane kursywa jako zmienne. Za pomoca tej funkcji WordMat próbuje zidentyfikowac jednostki i wstawic kod LaTex, aby zapisac jednostki normalna czcionka.
+659#£WordMathEng bardzo dobrze konwertuje na LaTex, ale istnieje równiez mozliwosc uzycia Maxima do konwersji na LaTex.
+660#£Jednostki zwykle nie sa zapisywane kursywa jako zmienne. Za pomoca tej funkcji WordMathEng próbuje zidentyfikowac jednostki i wstawic kod LaTex, aby zapisac jednostki normalna czcionka.
 661#£Zamykac
 662#£Generuje prawdziwy dokument LaTex za pomoca MikTex, który musi byc zainstalowany. Uzywaj tylko dla prostego dokumentu, poniewaz nie wszystkie obiekty dokumentu sa obslugiwane.
 663#£Pokazuje, jak interpretowane sa dane wyjsciowe LaTex
@@ -679,7 +679,7 @@
 678#£O firmie Newton-Raphson
 679#£Musisz zapisac swój dokument, zanim bedzie mozna wykonac kopie zapasowa!
 680#£Wyjscie notacji biegunowej
-681#£Problemy z plikiem "normal.dotm" moga powodowac problemy ze skrótami klawiaturowymi w programie WordMat. Problemy mozna rozwiazac, usuwajac plik, poniewaz nowy plik domyslny jest generowany automatycznie po ponownym uruchomieniu programu Word. Pliku nie mozna usunac, gdy program Word jest otwarty. Musisz to zrobic recznie.\r\n\r\n- Nacisnij OK, aby otworzyc folder, w którym znajduje sie Normal.dotm. \r\n- Zapisz swoja prace i zamknij Worda \r\n- usun normal.dotm \r\n- Otwórz Worda oraz otwórz i zamknij ustawienia WordMat
+681#£Problemy z plikiem "normal.dotm" moga powodowac problemy ze skrótami klawiaturowymi w programie WordMathEng. Problemy mozna rozwiazac, usuwajac plik, poniewaz nowy plik domyslny jest generowany automatycznie po ponownym uruchomieniu programu Word. Pliku nie mozna usunac, gdy program Word jest otwarty. Musisz to zrobic recznie.\r\n\r\n- Nacisnij OK, aby otworzyc folder, w którym znajduje sie Normal.dotm. \r\n- Zapisz swoja prace i zamknij Worda \r\n- usun normal.dotm \r\n- Otwórz Worda oraz otwórz i zamknij ustawienia WordMathEng
 682#£Obliczenia wykonane przez GeoGebra
 683#£strzala
 684#£Otwieranie przegladarki Safari
@@ -687,14 +687,14 @@
 686#£Silnik CAS
 687#£Znaczace liczby
 688#£Wlaczanie/wylaczanie jednostek
-689#£Jesli jednostki sa wlaczone, program WordMath moze interpretowac i konwertowac jednostki. Na przycisku SI mozna zmienic jednostki wyjsciowe. Nie wlaczaj jednostek, chyba ze jest to konieczne. Moze wplywac na zachowanie WordMat i rezerwuje wiele zmiennych.
+689#£Jesli jednostki sa wlaczone, program WordMathEng moze interpretowac i konwertowac jednostki. Na przycisku SI mozna zmienic jednostki wyjsciowe. Nie wlaczaj jednostek, chyba ze jest to konieczne. Moze wplywac na zachowanie WordMathEng i rezerwuje wiele zmiennych.
 690#£Wstaw pole kodu
 691#£Podaj jednostki, na które chcesz przekonwertowac. Domyslnie jednostkami wyjsciowymi sa jednostki SI.
 692#£zl
 693#£Pole kodu to obszar, w którym mozna bezposrednio zaprogramowac Maxima. Na przyklad mozna zdefiniowac bardziej zaawansowane funkcje, które moga byc nastepnie uzywane w dalszej czesci dokumentu. Zobacz wiecej w instrukcji.
 694#£Nie. liczb
 695#£Zaokraglanie
-696#£Wybierz, w jaki sposób liczby maja byc mapowane i zaokraglane. W ponizszych przykladach WordMat jest ustawiony na 3 cyfry\r\n\r\nUlamki dziesietne: 12,345\r\nCyfry znaczace: 12,3\r\nSci. Notacja: 1,23*10^1
+696#£Wybierz, w jaki sposób liczby maja byc mapowane i zaokraglane. W ponizszych przykladach WordMathEng jest ustawiony na 3 cyfry\r\n\r\nUlamki dziesietne: 12,345\r\nCyfry znaczace: 12,3\r\nSci. Notacja: 1,23*10^1
 697#£Ukoncz kwadrat
 698#£Stosuje uzupelnienie kwadratu dla wszystkich zmiennych w wyrazeniu
 699#£Silnia ujemnych liczb calkowitych niezdefiniowana
@@ -734,11 +734,11 @@
 733#£Tylko 1 rozwiazanie
 734#£Automatyczne sprawdzanie dostepnosci aktualizacji
 735#£Napraw skróty klawiaturowe
-736#£Uruchom ponownie WordMat
+736#£Uruchom ponownie WordMathEng
 737#£Nie. obliczen
 738#£Skróty klawiaturowe naprawione.\nJesli nadal nie dziala, usun plik 'normal.dotm' w folderze '~/Library/Group Containers/UBF8T346G9. Office/Zawartosc uzytkownika/Szablony" i uruchom ponownie program Word
 739#£Skróty klawiaturowe zostaly naprawione.\nJesli nadal nie dziala, usun plik 'normal.dotm' w folderze '%appdata%/Microsoft/Templates' i uruchom ponownie Worda
-740#£Pakiet GeoGebra Calculator Suite jest instalowany z programem WordMat. Dziala w przegladarce, ale nie wymaga internetu. Dziala tak samo na Windows i Mac, i uruchamia sie szybko.\nGeoGebra 5 Dziala tak samo na Windows i Mac, ale wymaga instalacji.\nWindows obsluguje równiez inne wersje aplikacji GeoGebra, takie jak Geogebra 6, Graphing Calculator itp. Beda one uzywane, jesli GeoGebra 5 nie jest zainstalowana.
+740#£Pakiet GeoGebra Calculator Suite jest instalowany z programem WordMathEng. Dziala w przegladarce, ale nie wymaga internetu. Dziala tak samo na Windows i Mac, i uruchamia sie szybko.\nGeoGebra 5 Dziala tak samo na Windows i Mac, ale wymaga instalacji.\nWindows obsluguje równiez inne wersje aplikacji GeoGebra, takie jak Geogebra 6, Graphing Calculator itp. Beda one uzywane, jesli GeoGebra 5 nie jest zainstalowana.
 741#£Skróty klawiaturowe nie sa ustawione poprawnie
 742#£Wynik obliczen zalezy od znaku
 743#£Znak stanu
@@ -750,7 +750,7 @@
 749#£Blad maksimum
 750#£Blad matematyczny
 751#£Blad skladniowy
-752#£Blad skladniowy. WordMat nie zrozumial Twoich danych wejsciowych.
+752#£Blad skladniowy. WordMathEng nie zrozumial Twoich danych wejsciowych.
 753#£Brakuje Ci
 754#£Jest ich za duzo
 755#£Wystapil blad w kodzie.
@@ -766,7 +766,7 @@
 765#£Ostrzezenie: Jednostki sa wlaczone.\r\nRozwiazywanie równan bedzie ubozsze\r\nUwazaj na zmienne, które sa jednostkami takimi jak: A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Rozwiaz uklad równan
 767#£Wybieranie zmiennych
-768#£Uruchamia sie WordMat
+768#£Uruchamia sie WordMathEng
 769#£Czekaj
 770#£Solwer trójkatów
 771#£Kat prosty
@@ -829,7 +829,7 @@
 828#£Zatrzymac
 829#£Równanie jest rozwiazywane dla
 830#£Równanie jest rozwiazywane numerycznie dla
-831#£przez WordMat.
+831#£przez WordMathEng.
 832#£Funkcje
 833#£Równanie
 834#£Równania
@@ -861,7 +861,7 @@
 860#£Nie udzieliles dostepu do GeGebry. Kliknij "Ponów próbe", aby spróbowac ponownie.
 861#£Pobieranie jest powolne. Sprawdz w przegladarce Safari, czy wyglada na to, ze trwa pobieranie. Mozesz kliknac przycisk Zatrzymaj, jesli nie ma postepu.
 862#£Blad podczas pobierania GeoGebry
-863#£Nie udalo sie odnalezc pliku w pobranych plikach.\r\nMozesz kliknac 'Ponów' na dole, jesli chcesz, aby WordMat wygladal ponownie.
+863#£Nie udalo sie odnalezc pliku w pobranych plikach.\r\nMozesz kliknac 'Ponów' na dole, jesli chcesz, aby WordMathEng wygladal ponownie.
 864#£Udzielanie uprawnien GeoGebrze
 865#£Okno o nazwie 'Zezwól na dostep do pliku' powinno sie teraz otworzyc.\r\n\r\n1. Kliknij 'Wybierz...' \r\n2. Kliknij "Przypisz dostep"
 866#£Przenoszenie GeoGebry do aplikacji
@@ -884,9 +884,9 @@
 883#£System równan zostal rozwiazany za pomoca GeoGebry:
 884#£Obliczenia zostaly przerwane, poniewaz trwaly bardzo dlugo. Czasami pomocne moze byc wypróbowanie obliczen za pomoca opcji "Numeryczne" zamiast Dokladnej lub Automatycznej
 885#£Nie mozna polaczyc sie z Maxima. Czy zamiast tego chcesz uzyc metody 'WSH'?\r\n(Ta opcja znajduje sie w sekcji Zaawansowane w Ustawieniach)
-886#£WordMath nie moze komunikowac sie z GeoGebra. Dzieje sie tak prawdopodobnie dlatego, ze nie ustawiles wymaganych ustawien zabezpieczen w Safari. Kliknij przycisk OK, aby wyswietlic instrukcje
+886#£WordMathEng nie moze komunikowac sie z GeoGebra. Dzieje sie tak prawdopodobnie dlatego, ze nie ustawiles wymaganych ustawien zabezpieczen w Safari. Kliknij przycisk OK, aby wyswietlic instrukcje
 887#£Rozwiaz obliczenia numeryczne
-888#£WordMat nie mógl zlokalizowac instalacji Maxima. Spróbuj zainstalowac ponownie
+888#£WordMathEng nie mógl zlokalizowac instalacji Maxima. Spróbuj zainstalowac ponownie
 889#£Blad podczas nawiazywania polaczenia z Maxima za pomoca WSH
 890#£Zatrzymuje sie automatycznie za
 891#£Nie udalo sie. Zatrzymuje.
@@ -904,13 +904,13 @@
 903#£Plik kodu
 904#£Stosowanie pliku kodu
 905#£Zezwalaj na pola kodu
-906#£Tekst w pliku kodu jest uruchamiany w Maxima przy kazdym uruchomieniu. Na przyklad mozesz go uzyc do zdefiniowania funkcji, które zawsze chcesz miec dostepne w programie WordMat, lub do zmiany ustawien w programie Maxima. Uzycie pliku kodu sprawi, ze obliczenia beda nieco wolniejsze. \nPola kodu mozna wstawiac za pomoca menu definicji i sa to pola w dokumencie programu Word, w których mozna wstawic kod maksymalny, który jest uruchamiany przy kazdym obliczeniu. Kod w pliku kodu i pola kodu sa wysylane bezposrednio do Maxima w postaci nieprzetworzonej. Kazdy blad w kodzie spowoduje, ze WordMat nie wykona wszystkich obliczen, wiec uwazaj. Zajrzyj do menu w sekcji Pomoc > Podrecznik > Pomoc z poleceniami Maxima, aby uzyskac poprawna skladnie Maxima.
+906#£Tekst w pliku kodu jest uruchamiany w Maxima przy kazdym uruchomieniu. Na przyklad mozesz go uzyc do zdefiniowania funkcji, które zawsze chcesz miec dostepne w programie WordMathEng, lub do zmiany ustawien w programie Maxima. Uzycie pliku kodu sprawi, ze obliczenia beda nieco wolniejsze. \nPola kodu mozna wstawiac za pomoca menu definicji i sa to pola w dokumencie programu Word, w których mozna wstawic kod maksymalny, który jest uruchamiany przy kazdym obliczeniu. Kod w pliku kodu i pola kodu sa wysylane bezposrednio do Maxima w postaci nieprzetworzonej. Kazdy blad w kodzie spowoduje, ze WordMathEng nie wykona wszystkich obliczen, wiec uwazaj. Zajrzyj do menu w sekcji Pomoc > Podrecznik > Pomoc z poleceniami Maxima, aby uzyskac poprawna skladnie Maxima.
 907#£Wpisz tutaj kod Maxima
 908#£Nie masz wlaczonych pól kodu w "Ustawieniach > Kod". Pole kodu zostanie wstawione, ale nie bedzie uzywane w obliczeniach, dopóki nie zostanie wlaczone.
 909#£Kod
 910#£W tym miejscu nie mozna wstawic pola kodu.
 911#£Pola kierunkowe mozna rysowac tylko dla równan rózniczkowych 1. rzedu w postaci y'=...
-912#£Ustawienie programu WordMat jest ustawione na obliczanie w stopniach. Czy taka jest intencja?
+912#£Ustawienie programu WordMathEng jest ustawione na obliczanie w stopniach. Czy taka jest intencja?
 913#£Niedozwolone jest uzywanie operatora hat w nazwach definicji.
 914#£Niedozwolone jest uzywanie znaków numerycznych w nazwach definicji.
 915#£Ustawiles zbyt wiele parametrów dla funkcji:
@@ -918,7 +918,7 @@
 917#£Sprawdz WordMat+
 918#£Kup WordMat+
 919#£Aktywuj WordMat+ za pomoca kodu
-920#£WordMat+ nie jest poprawnie zainstalowany na tym komputerze. Nie mozesz kontynuowac. Spróbuj zainstalowac ponownie WordMat.
+920#£WordMat+ nie jest poprawnie zainstalowany na tym komputerze. Nie mozesz kontynuowac. Spróbuj zainstalowac ponownie WordMathEng.
 921#£WordMat+ jest juz aktywny na tym komputerze.
 922#£Mozesz takze kupic pojedyncze licencje na WordMat+. Kliknij tutaj, aby zobaczyc wiecej...
 923#£Numery wyjsciowe

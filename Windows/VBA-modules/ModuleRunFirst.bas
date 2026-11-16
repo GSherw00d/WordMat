@@ -88,7 +88,7 @@ Sub RunFirst()
 
 860       GoTo slut
 TheEnd:
-870       MsgBox2 "A startup error occured. WordMat will probably work, but please show this to support: " & "Err. number: " & Err.Number & vbCrLf & Err.Description & vbCrLf & "Linenumber: " & Erl, vbOKOnly, TT.Error
+870       MsgBox2 "A startup error occured. WordMathEng will probably work, but please show this to support: " & "Err. number: " & Err.Number & vbCrLf & Err.Description & vbCrLf & "Linenumber: " & Erl, vbOKOnly, TT.Error
 slut:
 880       HasStarted = True
 End Sub

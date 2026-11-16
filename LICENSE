@@ -1,3 +1,14 @@
+WordMathEng
+===========
+WordMathEng is a modified version of WordMat (https://github.com/Eduap-com/WordMat) by Eduap,
+adapted for engineering calculations (units, free-typed equations, matrices and more).
+Modified in 2026. Like WordMat's core, it is licensed under the GNU General Public License,
+version 3 or later (text below). It does not include and does not link to the proprietary or paid
+WordMat components (installers, WordMat+/WordMatP, partnership licences).
+The original WordMat licence notes follow unchanged.
+
+----------------------------------------------------------------
+
 WordMath License
 
 WordMath is really an aggregate of different components providing math functionality.

@@ -5324,7 +5324,7 @@ genstart:
             antalgenstart = antalgenstart + 1
             GoTo genstart
         ElseIf Kommando = "" Then
-            MsgBox "WordMat cant read the command. This can be caused by error which can be corrected by restarting Word (Close all Word documents).", vbOKOnly, TT.Error
+            MsgBox "WordMathEng can't read the command. This can be caused by error which can be corrected by restarting Word (Close all Word documents).", vbOKOnly, TT.Error
         End If
         
         If SplitByOR Then

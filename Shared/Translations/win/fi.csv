@@ -9,7 +9,7 @@
 8#£Lisää yhtälö osa nro.
 9#£Päivitä yhtälönumerot
 10#£Olemassa olevat yhtälöiden nimet
-11#£Jos haluat lisätä viittauksen yhtälöön myöhemmin, valitse WordMat-valikosta "Lisää yhtälö" "Lisää viittaus yhtälöön"
+11#£Jos haluat lisätä viittauksen yhtälöön myöhemmin, valitse WordMathEng-valikosta "Lisää yhtälö" "Lisää viittaus yhtälöön"
 12#£Nimi on jo olemassa
 13#£Nimi ei saa sisältää välilyöntejä
 14#£Yhtälön viite
@@ -18,7 +18,7 @@
 17#£Oikea puoli
 18#£Numerointi
 19#£Kysy viitteen nimeä lisätessäsi
-20#£WordMath mahdollistaa matemaattisten laskelmien tekemisen Wordissa. WordMath-ydin on avoimen lähdekoodin ja maksuton\r\nWordMat asentaa myös seuraavat ohjelmat: Maxima, GeoGebra, Math-fontit.\r\nValinnaiset komponentit: GeoGebra 5, Graph, WordMath+. Katso lisää kohdasta Lisenssi\r\nWordMathin on tehnyt Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
+20#£WordMathEng mahdollistaa matemaattisten laskelmien tekemisen Wordissa. WordMathEng-ydin on avoimen lähdekoodin ja maksuton\r\nWordMat asentaa myös seuraavat ohjelmat: Maxima, GeoGebra, Math-fontit.\r\nValinnaiset komponentit: GeoGebra 5, Graph, WordMath+. Katso lisää kohdasta Lisenssi\r\nWordMathin on tehnyt Mikael Samsøe Sørensen, Nyborg Gymnasium, EDUAP 2009-2025.
 21#£WordMathin uusi versio on valmiina ladattavaksi.\r\nUutiset: \r\n
 22#£Sinut ohjataan nyt lataussivulle
 23#£Uusi versio
@@ -32,7 +32,7 @@
 31#£WordMatin suorittama tehoregressio: $Tab
 32#£Potenssiregressiota ei voida suorittaa noille pisteille. Kaikkien lukujen on oltava positiivisia (eikä nolla).
 33#£Käyttäjän määrittämä regressio funktion kanssa
-34#£esittäjä WordMath
+34#£esittäjä WordMathEng
 35#£Ilmoita polynomiregression järjestys (1-
 36#£(Maksimijärjestys määräytyy pisteiden määrän mukaan)
 37#£tilata
@@ -50,12 +50,12 @@
 49#£Lauseke erotetaan WordMatin mukaan.
 50#£Ilmaisua ei voitu erottaa toisistaan
 51#£Tila-muuttuja
-52#£WordMat löytää antijohdannaisen
+52#£WordMathEng löytää antijohdannaisen
 53#£Lauseketta ei voitu integroida
 54#£Tapahtui virhe. WordMatia ei todennäköisesti ole asennettu oikein. Yritä asentaa uudelleen, mahdollisesti virustorjunta poistettu käytöstä. Jos koulussasi on kumppanuus, Asetukset/Lisäasetukset -kohdan dll-yhteysmenetelmä -asetus voi mahdollisesti ratkaista ongelman
 55#£Maximan käynnistämisessä tapahtui virhe
 56#£Eriarvoisuus on ratkaistu
-57#£kirjoittanut WordMat.
+57#£kirjoittanut WordMathEng.
 58#£Kaikki numerot ratkaisevat tämän epätasa-arvon
 59#£Eriarvoisuuteen ei ollut ratkaisuja muuttujien $C
 60#£Eriarvoisuuteen ei ollut ratkaisuja $R muuttujalle
@@ -63,7 +63,7 @@
 62#£Määritellä
 63#£Ei Internet-yhteyttä
 64#£Aloita päivitys napsauttamalla OK
-65#£WordMat-pikanäppäimet
+65#£WordMathEng-pikanäppäimet
 66#£Word-yhtälöjen pikakuvakkeet
 67#£Voit luoda omia kirjoitusoikoteitä Wordissa tai muuttaa olemassa olevia pikanäppäimiä. Aseta kohdistin yhtälöön. Avaa Design-valikko. Etsi ryhmä nimeltä funktiot. Napsauta pientä nuolta oikeassa alakulmassa. Valitse "Matematiikan automaattiset merkinnät"
 68#£Kaavoja
@@ -108,7 +108,7 @@
 107#£Varoitus: Olet pyytänyt yhtälöjärjestelmän ratkaisemista, mutta ilmoittanut vähemmän muuttujia kuin yhtälöitä. Vain ensimmäiset yhtälöt ratkaistaan. Tarkista viimeiset yhtälöt manuaalisesti.
 108#£Maxima ilmoitti seuraavasta virheestä:
 109#£Maxima-virhe
-110#£WordMat ei löytänyt Ohjelmatiedostot-kansiota
+110#£WordMathEng ei löytänyt Ohjelmatiedostot-kansiota
 111#£Avaamisessa tapahtui virhe:
 112#£Yhteyden muodostaminen palvelimeen ei onnistu
 113#£Tässä kohdassa asiakirjassa määritellään seuraava
@@ -129,7 +129,7 @@
 128#£Lauseketta ei voitu laskea.
 129#£Yhtälössä ei ollut ratkaisuja muuttujalle $C
 130#£Yhtälössä ei ollut ratkaisuja muuttujalle $R
-131#£WordMat ei pystynyt ratkaisemaan yhtälöä
+131#£WordMathEng ei pystynyt ratkaisemaan yhtälöä
 132#£Kaikki luvut ovat ratkaisuja yhtälöön
 133#£Olet pyytänyt ratkaisemaan yhtälön muuttujalle, joka on jo määritelty. Lisää 'delete def:' -komento ennen yhtälöä.
 134#£Yhtälöjärjestelmä on ratkaistu
@@ -148,22 +148,22 @@
 147#£
 148#£Ratkaisu löytyi. Ratkaisuja voi olla enemmänkin.
 149#£Valitse vain 1 lauseke
-150#£WordMat yksinkertaistaa lauseketta seuraavilla menetelmillä:
+150#£WordMathEng yksinkertaistaa lauseketta seuraavilla menetelmillä:
 151#£Automaattinen yksinkertaistaminen,
 152#£Trigonometriset identiteetit
 153#£Ilmaisua ei voitu yksinkertaistaa
-154#£WordMat yksinkertaistaa ilmaisua.
-155#£Lausekkeen faktoroi WordMat.
+154#£WordMathEng yksinkertaistaa ilmaisua.
+155#£Lausekkeen faktoroi WordMathEng.
 156#£Lauseketta ei voitu ottaa huomioon
-157#£WordMat laajentaa lauseketta.
+157#£WordMathEng laajentaa lauseketta.
 158#£Ilmaisua ei voitu laajentaa
 159#£Sinun on poistettava yksiköt käytöstä differentiaaliyhtälöiden ratkaisemiseksi
 160#£Differentiaaliyhtälöä ei voitu ratkaista
 161#£Koulut voivat liittyä kumppanuuteen Eduapin kanssa. Kumppanuus saa tukea, WordMath+:aa ja paljon muuta. Klikkaa lukeaksesi lisää
 162#£Binomijakauma
-163#£WordMat testaa lausekkeen totuuden.
+163#£WordMathEng testaa lausekkeen totuuden.
 164#£Tulos perustuu numeeriseen vertailuun
-165#£WordMat ei pystynyt määrittämään, oliko lauseke tosi vai epätosi
+165#£WordMathEng ei pystynyt määrittämään, oliko lauseke tosi vai epätosi
 166#£Yksiköt pois päältä
 167#£Valitse lähtöyksiköt
 168#£Lähtöyksiköt
@@ -171,7 +171,7 @@
 170#£Automaattinen varmuuskopiointi?
 171#£Kuinka monta varmuuskopiotiedostoa tallennetaan?
 172#£Varmuuskopioiden välinen aika
-173#£Word ei tee automaattista varmuuskopiointia, mutta tallentaa tiedot, joita voidaan mahdollisesti käyttää kadonneen tiedoston luomiseen uudelleen\n\nWordMat voi suorittaa täydelliset varmuuskopiot, kun teet laskutoimituksen ja tallennat asiakirjan useissa versioissa. (Varmuuskopiointi on paljon nopeampaa, jos asiakirja ei ole OneDrivessa) . Varmuuskopiotiedostot tallennetaan kansioon: omat asiakirjat/WordMat-backup
+173#£Word ei tee automaattista varmuuskopiointia, mutta tallentaa tiedot, joita voidaan mahdollisesti käyttää kadonneen tiedoston luomiseen uudelleen\n\nWordMat voi suorittaa täydelliset varmuuskopiot, kun teet laskutoimituksen ja tallennat asiakirjan useissa versioissa. (Varmuuskopiointi on paljon nopeampaa, jos asiakirja ei ole OneDrivessa) . Varmuuskopiotiedostot tallennetaan kansioon: omat asiakirjat/WordMathEng-backup
 174#£Avaa varmuuskopiokansio
 175#£Kysyä
 176#£Aina
@@ -291,7 +291,7 @@
 290#£Kuun massa
 291#£Kuun keskimääräinen säde
 292#£GeoGebra 5:tä ei ole asennettu.
-293#£Painike vie sinut kotisivulle, jossa voit asentaa GeoGebran. Windowsin WordMat tukee GeoGebra classic 5:tä, GeoGebra Calculator Suitea, GeoGebra Classic 6:ta ja useimpia muita GeoGebran sovellusversioita.
+293#£Painike vie sinut kotisivulle, jossa voit asentaa GeoGebran. Windowsin WordMathEng tukee GeoGebra classic 5:tä, GeoGebra Calculator Suitea, GeoGebra Classic 6:ta ja useimpia muita GeoGebran sovellusversioita.
 294#£GeoGebra Calculator Suite on jo asennettu. Se toimii selaimessa, eikä vaadi Internetiä. Käynnistyy nopeasti.
 295#£Asenna GeoGebra
 296#£Suorita GeoGebra-laskinsarja
@@ -488,7 +488,7 @@
 487#£Avaa fysiikan kaavavihkon
 488#£Avaa kemian kaavavihkon
 489#£Automaattinen tarkka tai numeerinen tulos
-490#£WordMat määrittää automaattisesti, kumpi palauttaa tarkan tai numeerisen tuloksen vai molemmat.
+490#£WordMathEng määrittää automaattisesti, kumpi palauttaa tarkan tai numeerisen tuloksen vai molemmat.
 491#£Tarkat tulokset
 492#£Kaikki tulokset palautettiin tarkkoina tuloksina. Joskus numeerista approksimaatiota ei kuitenkaan voida välttää.
 493#£Numeeriset tulokset
@@ -632,7 +632,7 @@
 631#£Taulukko $ArrowRight Luettelo
 632#£Luettelo $ArrowRight taulukko
 633#£Pöytä
-634#£WordMat voi käsitellä luettelon tietoja. Esimerkki: Voit helposti lisätä numeron kaikkiin luettelon elementteihin. Tiedot ovat kuitenkin usein Wordin taulukossa. Tässä on funktioita luettelon muuntamiseksi taulukoiksi ja kääntämiseksi.
+634#£WordMathEng voi käsitellä luettelon tietoja. Esimerkki: Voit helposti lisätä numeron kaikkiin luettelon elementteihin. Tiedot ovat kuitenkin usein Wordin taulukossa. Tässä on funktioita luettelon muuntamiseksi taulukoiksi ja kääntämiseksi.
 635#£Lisää Excel-taulukko
 636#£Lisää tyhjän upotetun Excel-taulukon. Avaa ja muokkaa kaksoisnapsauttamalla.
 637#£Muunna luetteloksi
@@ -646,19 +646,19 @@
 645#£Web-opas
 646#£Avaa käyttöohjeen internetissä selaimessa.
 647#£Maxima-käsikirja
-648#£Maxima on CAS-ohjelma, joka tekee suurimman osan WordMatin matemaattisista laskutoimituksista. Maximassa on paljon sisäänrakennettuja toimintoja, jotka eivät näy välittömästi WordMat-käyttöliittymästä, mutta ne voidaan suorittaa, jos tiedät toimintojen nimet. Tämä näyttää Maxima-ohjeen, josta näet kaikkien maxima-funktioiden dokumentaatiot.
+648#£Maxima on CAS-ohjelma, joka tekee suurimman osan WordMatin matemaattisista laskutoimituksista. Maximassa on paljon sisäänrakennettuja toimintoja, jotka eivät näy välittömästi WordMathEng-käyttöliittymästä, mutta ne voidaan suorittaa, jos tiedät toimintojen nimet. Tämä näyttää Maxima-ohjeen, josta näet kaikkien maxima-funktioiden dokumentaatiot.
 649#£Noin
 650#£Kuka teki WordMatin?
 651#£Tarkista päivitykset
 652#£Tarkista päivitykset automaattisesti.
 653#£Pikanäppäimet
-654#£Näyttää luettelon pikanäppäimistä, joilla voit aktivoida WordMat-komennot ja pikanäppäimet matematiikan syöttämiseen Wordin matematiikan syöttöruutuihin.
+654#£Näyttää luettelon pikanäppäimistä, joilla voit aktivoida WordMathEng-komennot ja pikanäppäimet matematiikan syöttämiseen Wordin matematiikan syöttöruutuihin.
 655#£LaTex-malli
 656#£LaTex-malli
 657#£Avaa Word-asiakirjan, joka on tyyliltään LaTex-asiakirja, mutta yhtä helppo kirjoittaa kuin Word-asiakirja.
 658#£Precisionen on asetettu erittäin korkealle. Laskenta-aika voi olla hyvin pitkä tai epäonnistua. Jos näin on, yritä uudelleen pienemmällä asetuksella.
-659#£WordMat muuntaa LaTexiksi erittäin hyvin, mutta on myös mahdollisuus käyttää Maximaa muuntamiseen LaTexiksi.
-660#£Yksikköä ei yleensä kirjoiteta kursivoituna muuttujina. Tämän toiminnon avulla WordMat yrittää tunnistaa yksiköt ja lisätä LaTex-koodin kirjoittaakseen yksiköitä normaalilla fontilla.
+659#£WordMathEng muuntaa LaTexiksi erittäin hyvin, mutta on myös mahdollisuus käyttää Maximaa muuntamiseen LaTexiksi.
+660#£Yksikköä ei yleensä kirjoiteta kursivoituna muuttujina. Tämän toiminnon avulla WordMathEng yrittää tunnistaa yksiköt ja lisätä LaTex-koodin kirjoittaakseen yksiköitä normaalilla fontilla.
 661#£Sulkea
 662#£Luo todellisen LaTex-dokumentin MikTexillä, joka on asennettava. Käytä vain yksinkertaisille dokumenteille, koska kaikkia asiakirjaobjekteja ei tueta.
 663#£Näyttää, miten LaTex-lähtö tulkitaan
@@ -679,7 +679,7 @@
 678#£Tietoja Newton-Raphsonista
 679#£Sinun on tallennettava asiakirjasi ennen kuin varmuuskopiointi voidaan suorittaa!
 680#£Polaarisen notaation lähtö
-681#£Ongelmat tiedoston "normal.dotm" kanssa voivat aiheuttaa ongelmia WordMatin pikanäppäimissä. Ongelmat voidaan ratkaista poistamalla tiedosto, koska uusi oletustiedosto luodaan automaattisesti, kun Word käynnistyy uudelleen. Tiedostoa ei voi poistaa, kun Word on avoinna. Sinun on tehtävä se manuaalisesti.\r\n\r\n- Paina OK avataksesi kansion, jossa Normal.dotm sijaitsee. \r\n- Tallenna työsi ja sulje Word \r\n- poista normal.dotm \r\n- Avaa Word ja avaa ja sulje WordMat-asetukset
+681#£Ongelmat tiedoston "normal.dotm" kanssa voivat aiheuttaa ongelmia WordMatin pikanäppäimissä. Ongelmat voidaan ratkaista poistamalla tiedosto, koska uusi oletustiedosto luodaan automaattisesti, kun Word käynnistyy uudelleen. Tiedostoa ei voi poistaa, kun Word on avoinna. Sinun on tehtävä se manuaalisesti.\r\n\r\n- Paina OK avataksesi kansion, jossa Normal.dotm sijaitsee. \r\n- Tallenna työsi ja sulje Word \r\n- poista normal.dotm \r\n- Avaa Word ja avaa ja sulje WordMathEng-asetukset
 682#£GeoGebran suorittama laskenta
 683#£nuoli
 684#£Safarin avaaminen
@@ -687,14 +687,14 @@
 686#£CAS-moottori
 687#£Merkittävät luvut
 688#£Kytke yksiköt päälle/pois päältä
-689#£Jos yksiköt ovat käytössä, WordMath voi tulkita ja muuntaa yksiköitä. SI-painikkeella voit muuttaa lähtöyksiköitä. Älä kytke laitteita päälle, ellet tarvitse sitä. Se voi vaikuttaa WordMatin toimintaan ja varaa paljon muuttujia.
+689#£Jos yksiköt ovat käytössä, WordMathEng voi tulkita ja muuntaa yksiköitä. SI-painikkeella voit muuttaa lähtöyksiköitä. Älä kytke laitteita päälle, ellet tarvitse sitä. Se voi vaikuttaa WordMatin toimintaan ja varaa paljon muuttujia.
 690#£Lisää koodikenttä
 691#£Ilmoita yksiköt, joihin muunnetaan. Oletusarvoisesti lähtöyksiköt ovat SI-yksiköitä.
 692#£ml
 693#£Koodikenttä on alue, jossa voit ohjelmoida Maximan suoraan. Voit esimerkiksi määrittää edistyneempiä funktioita, joita voidaan sitten käyttää alempana asiakirjassa. Katso lisää käsikirjasta.
 694#£Ei. lukujen määrä
 695#£Pyöristys
-696#£Valitse, miten luvut fomatoidaan ja pyöristetään. Alla olevissa esimerkeissä WordMat on asetettu 3 numeroon\r\n\r\nDesimaalit: 12 345\r\nMerkitsevät luvut: 12,3\r\nSci. merkintä: 1,23*10^1
+696#£Valitse, miten luvut fomatoidaan ja pyöristetään. Alla olevissa esimerkeissä WordMathEng on asetettu 3 numeroon\r\n\r\nDesimaalit: 12 345\r\nMerkitsevät luvut: 12,3\r\nSci. merkintä: 1,23*10^1
 697#£Viimeistele neliö
 698#£Käyttää täydentää neliön kaikille lausekkeen muuttujille
 699#£Määrittelemättömien negatiivisten kokonaislukujen kerroin
@@ -734,7 +734,7 @@
 733#£Vain 1 ratkaisu
 734#£Tarkista päivitykset automaattisesti
 735#£Korjaa pikanäppäimet
-736#£Käynnistä WordMat uudelleen
+736#£Käynnistä WordMathEng uudelleen
 737#£Ei. laskelmista
 738#£Pikanäppäimet korjattu.\nJos se ei vieläkään toimi, poista tiedosto 'normal.dotm' kansiosta '~/Library/Group Containers/UBF8T346G9. Office/User Content/Templates" ja käynnistä Word uudelleen
 739#£Pikanäppäimet korjattu.\nJos se ei vieläkään toimi, poista tiedosto 'normal.dotm' kansiosta '%appdata%/Microsoft/Templates' ja käynnistä Word uudelleen
@@ -750,7 +750,7 @@
 749#£Maxima-virhe
 750#£Matemaattinen virhe
 751#£Syntaksivirhe
-752#£Syntaksivirhe. WordMat ei ymmärtänyt syötettäsi.
+752#£Syntaksivirhe. WordMathEng ei ymmärtänyt syötettäsi.
 753#£Sinulta puuttuu
 754#£Niitä on liikaa
 755#£Koodissa tapahtui virhe.
@@ -766,7 +766,7 @@
 765#£Varoitus: Yksiköt ovat päällä.\r\nYhtälöiden ratkaisu on huonompaa\r\nVaro muuttujia, jotka ovat yksiköitä, kuten: A,C,F,H,J,K,L,N,S,T,V,W,m,g,u,s
 766#£Ratkaise yhtälöjärjestelmä
 767#£Valitse muuttujat
-768#£WordMat käynnistyy
+768#£WordMathEng käynnistyy
 769#£Ole hyvä ja odota
 770#£Kolmion ratkaisija
 771#£Suorakulmainen
@@ -829,7 +829,7 @@
 828#£Seis
 829#£Yhtälö on ratkaistu
 830#£Yhtälö ratkaistaan numeerisesti
-831#£kirjoittanut WordMat.
+831#£kirjoittanut WordMathEng.
 832#£Toimintoja
 833#£Yhtälö
 834#£Yhtälöt
@@ -884,9 +884,9 @@
 883#£Yhtälöjärjestelmä ratkaistiin GeoGebralla:
 884#£Laskenta keskeytyi, koska se kesti hyvin kauan. Joskus voi olla hyödyllistä kokeilla laskutoimitusta "Numeerinen"-vaihtoehdolla Tarkka tai Automaattinen
 885#£Ei voi muodostaa yhteyttä Maximaan. Haluatko käyttää sen sijaan WSH-menetelmää?\r\n(Tämä vaihtoehto löytyy asetusten lisäasetukset-kohdasta)
-886#£WordMath ei voi kommunikoida GeoGebran kanssa. Tämä johtuu luultavasti siitä, että et ole asettanut tarvittavia suojausasetuksia Safarissa. Napsauta ok saadaksesi ohjeet
+886#£WordMathEng ei voi kommunikoida GeoGebran kanssa. Tämä johtuu luultavasti siitä, että et ole asettanut tarvittavia suojausasetuksia Safarissa. Napsauta ok saadaksesi ohjeet
 887#£Ratkaise numeerinen
-888#£WordMat ei löytänyt Maxima-asennusta. Yritä asentaa uudelleen
+888#£WordMathEng ei löytänyt Maxima-asennusta. Yritä asentaa uudelleen
 889#£Virhe yhteyden muodostamisessa Maximaan WSH:n avulla
 890#£Pysähtyy automaattisesti
 891#£Se ei onnistunut. Pysähtyy.
@@ -904,7 +904,7 @@
 903#£Kooditiedosto
 904#£Käytä kooditiedostoa
 905#£Salli koodikentät
-906#£Kooditiedoston teksti suoritetaan Maximassa jokaisen käynnistyksen yhteydessä. Sen avulla voit esimerkiksi määrittää funktioita, joiden haluat aina olevan käytettävissä WordMatissa, tai muuttaa asetuksia Maximassa. Kooditiedoston käyttö hidastaa laskelmia hieman. \nKoodikentät voidaan lisätä määrittelyvalikon kautta, ja ne ovat Word-asiakirjan kenttiä, joihin voit lisätä enimmäiskoodin, joka suoritetaan jokaisessa laskutoimituksessa. Kooditiedoston ja koodikenttien koodi lähetetään suoraan Maximalle käsittelemättömänä. Mikä tahansa koodivirhe aiheuttaa sen, että WordMat epäonnistuu kaikissa laskutoimituksissa, joten ole varovainen. Katso valikosta Ohje > Käsikirja > Ohje maksimikomentoihin oikean Maxima-syntaksin.
+906#£Kooditiedoston teksti suoritetaan Maximassa jokaisen käynnistyksen yhteydessä. Sen avulla voit esimerkiksi määrittää funktioita, joiden haluat aina olevan käytettävissä WordMatissa, tai muuttaa asetuksia Maximassa. Kooditiedoston käyttö hidastaa laskelmia hieman. \nKoodikentät voidaan lisätä määrittelyvalikon kautta, ja ne ovat Word-asiakirjan kenttiä, joihin voit lisätä enimmäiskoodin, joka suoritetaan jokaisessa laskutoimituksessa. Kooditiedoston ja koodikenttien koodi lähetetään suoraan Maximalle käsittelemättömänä. Mikä tahansa koodivirhe aiheuttaa sen, että WordMathEng epäonnistuu kaikissa laskutoimituksissa, joten ole varovainen. Katso valikosta Ohje > Käsikirja > Ohje maksimikomentoihin oikean Maxima-syntaksin.
 907#£Syötä Maxima-koodi tähän
 908#£Et ole laittanut koodikenttiä päälle Asetukset > Koodi -kohdassa. Koodikenttä lisätään, mutta sitä ei käytetä laskutoimituksissa, ennen kuin se on otettu käyttöön.
 909#£Koodi
@@ -918,7 +918,7 @@
 917#£Tarkista WordMat+
 918#£Osta WordMat+
 919#£Aktivoi WordMat+ koodilla
-920#£WordMat+ ei ole asennettu oikein tälle tietokoneelle. Et voi jatkaa. Kokeile asentaa WordMat uudelleen.
+920#£WordMat+ ei ole asennettu oikein tälle tietokoneelle. Et voi jatkaa. Kokeile asentaa WordMathEng uudelleen.
 921#£WordMat+ on jo aktiivinen tällä tietokoneella.
 922#£Voit myös ostaa yksittäisiä lisenssejä WordMat+:lle. Klikkaa tästä nähdäksesi lisää...
 923#£Lähtöluvut
