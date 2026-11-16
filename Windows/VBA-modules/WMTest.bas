@@ -153,6 +153,128 @@ slut:
     WMTestMode = False
 End Function
 
+Public Function WMTest_ReadCompare(ByVal docPath As String, ByVal resultPath As String) As String
+' word_math safe read: reads every OMath of docPath (a copy; it is closed without saving) with the new reader
+' (WMSR_ReadOMath) and then the old one (WMSR_ReadOMathUndo), and writes one line per equation:
+' index, start, in table, same, new, old, ms new, ms old. Returns "OK <n> equations <same> same <ms new> <ms old>".
+    Dim doc As Document, i As Long, n As Long, nSame As Long, om As OMath
+    Dim a As String, b As String, t As Single, tn As Double, tOld As Double, dn As Double, dOld As Double
+    On Error GoTo fejl
+    WMTestMode = True
+    mResult = "Index" & vbTab & "Start" & vbTab & "InTable" & vbTab & "Same" & vbTab & "New" & vbTab & "Old" & _
+              vbTab & "MsNew" & vbTab & "MsOld" & vbCrLf
+    WriteResult resultPath
+    Set doc = Documents.Open(FileName:=docPath, AddToRecentFiles:=False, Visible:=True)
+    doc.Activate
+    n = doc.Range.OMaths.Count
+    For i = 1 To n
+        Set om = doc.Range.OMaths(i)
+        t = Timer: a = WMSR_ReadOMath(om.Range): dn = (Timer - t) * 1000
+        Set om = doc.Range.OMaths(i)
+        t = Timer: b = WMSR_ReadOMathUndo(om.Range): dOld = (Timer - t) * 1000
+        tn = tn + dn: tOld = tOld + dOld
+        If a = b Then nSame = nSame + 1
+        mResult = mResult & i & vbTab & om.Range.Start & vbTab & om.Range.Information(wdWithInTable) & vbTab & _
+                  (a = b) & vbTab & Esc(a) & vbTab & Esc(b) & vbTab & Format$(dn, "0") & vbTab & Format$(dOld, "0") & vbCrLf
+        WriteResult resultPath
+    Next
+    WMTest_ReadCompare = "OK " & n & " equations " & nSame & " same " & Format$(tn, "0") & " " & Format$(tOld, "0")
+    GoTo slut
+fejl:
+    WMTest_ReadCompare = "ERROR " & Err.Number & ": " & Err.Description & " (equation " & i & ")"
+slut:
+    On Error Resume Next
+    WMSR_CloseScratch
+    If Not doc Is Nothing Then doc.Close wdDoNotSaveChanges
+    WMTestMode = False
+End Function
+
+Public Function WMTest_ReadNonDestructive(ByVal docPath As String, ByVal resultPath As String, _
+                                          ByVal reader As String) As String
+' word_math safe read: types a marker (the known top of the undo stack), reads every OMath of docPath (a copy,
+' closed without saving) with reader "new" (the production omax.ReadEquation2) or "old" (WMSR_ReadOMathUndo),
+' and checks after each read: full text, Saved, selection; after all: WordOpenXML, then a single Undo must
+' remove the marker; finally the same reads with Saved = True. One line per check: name, PASS/FAIL, detail.
+    Dim doc As Document, i As Long, n As Long, t0 As String, t1 As String, x1 As String, s1 As Long, e1 As Long
+    Dim sv1 As Boolean, bad As String, nFail As Long
+    On Error GoTo fejl
+    WMTestMode = True
+    If omax Is Nothing Then Set omax = New CMaxima
+    mResult = "Check" & vbTab & "Result" & vbTab & "Detail" & vbCrLf
+    WriteResult resultPath
+    Set doc = Documents.Open(FileName:=docPath, AddToRecentFiles:=False, Visible:=True)
+    doc.Activate
+    t0 = FullText(doc)
+    Selection.HomeKey wdStory
+    Selection.TypeText "WMSR-MARK "
+    t1 = FullText(doc): x1 = doc.Content.WordOpenXML: sv1 = doc.Saved
+    s1 = Selection.Start: e1 = Selection.End
+    n = doc.Range.OMaths.Count
+    For i = 1 To n
+        ReadOne doc.Range.OMaths(i).Range, reader
+        bad = ""
+        If FullText(doc) <> t1 Then bad = bad & "text changed; "
+        If doc.Saved <> sv1 Then bad = bad & "Saved changed; "
+        If Selection.Start <> s1 Or Selection.End <> e1 Then bad = bad & "selection moved; "
+        If Not ActiveDocument Is doc Then bad = bad & "active document changed; "
+        NdRow "equation " & i & " (start " & doc.Range.OMaths(i).Range.Start & ")", bad, nFail
+    Next
+    NdRow "formatting (WordOpenXML) after " & n & " reads", IIf(doc.Content.WordOpenXML = x1, "", "WordOpenXML changed"), nFail
+    doc.Undo 1
+    NdRow "one Undo removes the typed marker", IIf(FullText(doc) = t0, "", "after one Undo the text is not the original: " & _
+          Left$(Clean(FullText(doc)), 80)), nFail
+    doc.Saved = True
+    For i = 1 To n
+        ReadOne doc.Range.OMaths(i).Range, reader
+    Next
+    NdRow "Saved = True stays True after " & n & " reads", IIf(doc.Saved, "", "Saved became False"), nFail
+    WMTest_ReadNonDestructive = "OK " & n & " equations, " & nFail & " failed checks"
+    GoTo slut
+fejl:
+    WMTest_ReadNonDestructive = "ERROR " & Err.Number & ": " & Err.Description & " (equation " & i & ")"
+    NdRow "VBA error", WMTest_ReadNonDestructive, nFail
+slut:
+    On Error Resume Next
+    WriteResult resultPath
+    WMSR_CloseScratch
+    If Not doc Is Nothing Then doc.Close wdDoNotSaveChanges
+    WMTestMode = False
+End Function
+
+Private Sub ReadOne(r As Range, ByVal reader As String)
+    If reader = "old" Then WMSR_ReadOMathUndo r Else omax.ReadEquation2 r
+End Sub
+
+Private Function FullText(doc As Document) As String
+    Dim r As Range
+    Set r = doc.Content
+    r.TextRetrievalMode.IncludeHiddenText = True
+    FullText = r.Text
+End Function
+
+Private Sub NdRow(ByVal check As String, ByVal bad As String, nFail As Long)
+    If Len(bad) > 0 Then nFail = nFail + 1
+    mResult = mResult & check & vbTab & IIf(Len(bad) = 0, "PASS", "FAIL") & vbTab & Clean(bad) & vbCrLf
+End Sub
+
+Private Function Esc(ByVal s As String) As String
+' Makes control characters visible for the TSV: \r \n \t \v (ChrW 11) and other codes below 32 as \u....
+    Dim i As Long, c As Long, o As String
+    For i = 1 To Len(s)
+        c = AscW(Mid$(s, i, 1))
+        Select Case c
+        Case 13: o = o & "\r"
+        Case 10: o = o & "\n"
+        Case 9: o = o & "\t"
+        Case 11: o = o & "\v"
+        Case 92: o = o & "\\"
+        Case 0 To 31: o = o & "\u" & Right$("000" & Hex$(c), 4)
+        Case Else: o = o & Mid$(s, i, 1)
+        End Select
+    Next
+    Esc = o
+End Function
+
 Private Sub RunCase(doc As Document, tbl As Table, ByVal r As Long, ByVal cId As Long, ByVal cIn As Long, _
                     ByVal cExp As Long, ByVal cNotes As Long)
     Dim id As String, notes As String, action As String, var As String, inputText As String
