@@ -313,6 +313,10 @@
 
 
 </group >
+ <group id="gWMEngFreeText" label="Free-typed ~~">
+  <button id="ButtonMarkersPrint" label="Format for print" size="large" imageMso="FilePrintPreview" screentip="Format the ~~ markers for print" supertip="Makes every ~~ marker in the document white and 1 pt, ready for printing or publishing. Equations still calculate. Use Show markers to undo." onAction="Rib_FormatMarkersForPrint"/>
+  <button id="ButtonMarkersShow" label="Show markers" size="large" imageMso="FormatPainter" screentip="Show the ~~ markers" supertip="Returns every ~~ marker to normal text, after Format for print or after hiding them." onAction="Rib_ShowMarkers"/>
+ </group>
    </tab >
   </tabs >
  </ribbon >

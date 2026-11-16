@@ -119,48 +119,85 @@ fejl:
     Application.ScreenUpdating = True
 End Sub
 
+' ---------------------------------------------------------------------------------------------------------------
+' The ~~ markers: hidden (WM_HideMarkers), formatted for print or publishing (WM_FormatMarkersForPrint: white,
+' 1 pt, decided 2026-11-16) or shown again (WM_ShowMarkers). Every ~~ in the document is a marker by design, so
+' they are found with Word's Find (safe in tables, unlike a For Each over paragraphs) and given a character
+' style created in the active document only (never Normal.dotm). Equations still calculate in every state.
+' ---------------------------------------------------------------------------------------------------------------
 Public Sub WM_HideMarkers()
-' Applies the hidden character style "WM Marker" (created in the active document only) to every ~~ marker.
-    Dim spans() As FTSpan, n As Long, i As Long, st As Style, ur As UndoRecord
-    On Error GoTo fejl
-    If Documents.Count = 0 Then Exit Sub
-    Set st = GetMarkerStyle(True)
-    n = FindSpans(ActiveDocument.Content.Start, ActiveDocument.Content.End, spans)
-    Set ur = Application.UndoRecord
-    ur.StartCustomRecord "Hide ~~ markers"
-    For i = 1 To n
-        ActiveDocument.Range(spans(i).OpenStart, spans(i).OpenStart + 2).Style = st
-        If Not spans(i).Unbalanced Then ActiveDocument.Range(spans(i).ContentEnd, spans(i).CloseEnd).Style = st
-    Next
-    ur.EndCustomRecord
-    LogMsg "HIDDEN " & n
-    Exit Sub
-fejl:
-    On Error Resume Next
-    If Not ur Is Nothing Then If ur.IsRecordingCustomRecord Then ur.EndCustomRecord
-    ShowMsg "Hiding the ~~ markers failed: " & Err.Description
+    MarkerAction 1
+End Sub
+Public Sub WM_FormatMarkersForPrint()
+    MarkerAction 2
+End Sub
+Public Sub WM_ShowMarkers()
+    MarkerAction 0
+End Sub
+Public Sub Rib_FormatMarkersForPrint(control As IRibbonControl)
+    WM_FormatMarkersForPrint
+End Sub
+Public Sub Rib_ShowMarkers(control As IRibbonControl)
+    WM_ShowMarkers
 End Sub
 
-Public Sub WM_ShowMarkers()
-' Removes the "WM Marker" style from every ~~ marker, so the markers are visible again.
-    Dim spans() As FTSpan, n As Long, i As Long, ur As UndoRecord
+Private Sub MarkerAction(ByVal mode As Integer)
+' mode 0: plain (style removed), 1: hidden ("WM Marker"), 2: print ("WM Marker Print": white, 1 pt)
+    Dim st As Style, r As Range, ur As UndoRecord, n As Long, lastPos As Long, oldHidden As Boolean, title As String
     On Error GoTo fejl
     If Documents.Count = 0 Then Exit Sub
-    n = FindSpans(ActiveDocument.Content.Start, ActiveDocument.Content.End, spans)
+    title = Choose(mode + 1, "Show ~~ markers", "Hide ~~ markers", "Format ~~ markers for print")
+    If mode = 1 Then Set st = GetMarkerStyle(True)
+    If mode = 2 Then Set st = GetPrintMarkerStyle()
+    oldHidden = ActiveWindow.View.ShowHiddenText
+    ActiveWindow.View.ShowHiddenText = True ' Find only sees hidden text that is displayed
     Set ur = Application.UndoRecord
-    ur.StartCustomRecord "Show ~~ markers"
-    For i = 1 To n
-        UnhideRange ActiveDocument.Range(spans(i).OpenStart, spans(i).OpenStart + 2)
-        If Not spans(i).Unbalanced Then UnhideRange ActiveDocument.Range(spans(i).ContentEnd, spans(i).CloseEnd)
-    Next
+    ur.StartCustomRecord title
+    Set r = ActiveDocument.Content
+    With r.Find
+        .ClearFormatting
+        .text = MARKER
+        .Forward = True
+        .Wrap = wdFindStop
+        .Format = False
+        .MatchWildcards = False
+        .MatchCase = True
+    End With
+    lastPos = -1
+    Do While r.Find.Execute
+        If r.Start <= lastPos Then Exit Do ' guard: the search must move forward
+        lastPos = r.Start
+        If mode = 0 Then
+            UnhideRange r
+        Else
+            r.Style = st
+        End If
+        n = n + 1
+        r.Collapse wdCollapseEnd
+    Loop
     ur.EndCustomRecord
-    LogMsg "SHOWN " & n
+    ActiveWindow.View.ShowHiddenText = oldHidden
+    LogMsg Choose(mode + 1, "SHOWN ", "HIDDEN ", "PRINT ") & n
     Exit Sub
 fejl:
     On Error Resume Next
     If Not ur Is Nothing Then If ur.IsRecordingCustomRecord Then ur.EndCustomRecord
-    ShowMsg "Showing the ~~ markers failed: " & Err.Description
+    ActiveWindow.View.ShowHiddenText = oldHidden
+    ShowMsg title & " failed: " & Err.Description
 End Sub
+
+Private Function GetPrintMarkerStyle() As Style
+' The character style for printing or publishing: the markers are white and 1 pt (decided 2026-11-16)
+    Dim st As Style
+    On Error Resume Next
+    Set st = ActiveDocument.Styles("WM Marker Print")
+    On Error GoTo 0
+    If st Is Nothing Then Set st = ActiveDocument.Styles.Add("WM Marker Print", wdStyleTypeCharacter)
+    st.Font.Hidden = False
+    st.Font.Color = wdColorWhite
+    st.Font.Size = 1
+    Set GetPrintMarkerStyle = st
+End Function
 
 ' =========================================================================================================
 ' Hooks called from existing WordMat code

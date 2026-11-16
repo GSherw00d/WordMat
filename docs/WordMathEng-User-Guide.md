@@ -23,8 +23,13 @@ Numbers always use a **decimal point** (`2.5`). Lists and arrays separate their 
 
 - An equation must start and end in the same paragraph. Text outside the markers is ignored, and a single `~`
   is ordinary text.
-- **Hiding the markers:** run `WM_HideMarkers` (and `WM_ShowMarkers` to show them again). They get the
-  character style "WM Marker" with hidden text, so they disappear when ¶ is off and don't print.
+- **Before printing or publishing:** click **Format for print** in the ribbon's *Free-typed ~~* group. Every
+  `~~` marker becomes white, 1 pt (character style "WM Marker Print"), and the equations still calculate.
+  **Show markers** returns them to normal. One Ctrl+Z also undoes it.
+  - White text still comes along when copying, and shows on a coloured background or highlighting.
+- **Hiding the markers instead:** run the macro `WM_HideMarkers` (Alt+F8). The markers get the character
+  style "WM Marker" with hidden text, so they disappear when ¶ is off and don't print. **Show markers**
+  undoes this too.
 - **Recalculation:** pressing calculate on an equation that already has an answer recalculates it and
   replaces the answer, keeping its unit.
   - This includes solved answers such as `~~a = 2 [m/s^2]~~`.
