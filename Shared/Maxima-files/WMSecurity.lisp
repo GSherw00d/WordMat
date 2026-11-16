@@ -54,15 +54,51 @@
                 (wm-sec-refuse "system")))))
   (setf (get '$system 'mfexpr*) (lambda (&rest args) (declare (ignore args)) (wm-sec-refuse "system"))))
 
-;; load( ): refuse network (UNC) paths such as //server/share/file.mac
+;; load( ): only files inside WordMathEng's folder (where this file is) or Maxima's own installation, found
+;; with Maxima's default search lists (a document can't redirect file_search_maxima/_lisp). Network (UNC)
+;; paths and anything else are refused. Package names such as load(draw) or load("mnewton") still work.
+(defvar *wm-sec-roots* nil)
+(defvar *wm-sec-search* nil)
+(defun wm-sec-norm (p)
+  (string-downcase (substitute #\/ #\ (namestring p))))
+(defun wm-sec-allowed-file-p (path)
+  (let ((tn (ignore-errors (probe-file path))))
+    (and tn
+         (let ((n (wm-sec-norm tn)))
+           (some (lambda (r) (and (>= (length n) (length r)) (string= r (subseq n 0 (length r)))))
+                 *wm-sec-roots*)))))
 (unless (get '$load 'wm-sec-orig)
+  (setf *wm-sec-roots*
+        (remove nil (list (and *load-truename* (wm-sec-norm (make-pathname :name nil :type nil :version nil
+                                                                           :defaults *load-truename*)))
+                          (and (boundp '*maxima-prefix*) *maxima-prefix*
+                               (ignore-errors (wm-sec-norm (truename (concatenate 'string *maxima-prefix* "/"))))))))
+  (setf *wm-sec-search* (list (copy-tree $file_search_maxima) (copy-tree $file_search_lisp)))
   (setf (get '$load 'wm-sec-orig) (symbol-function '$load))
   (setf (symbol-function '$load)
         (lambda (&rest args)
-          (let ((f (car args)))
-            (when (and (stringp f) (>= (length f) 2)
-                       (member (char f 0) '(#\/ #\\)) (member (char f 1) '(#\/ #\\)))
+          (let* ((f (car args))
+                 (fs (if (or (stringp f) (symbolp f)) (if (stringp f) f (string-downcase (subseq (symbol-name f) 1))) "")))
+            (when (and (>= (length fs) 2) (member (char fs 0) '(#\/ #\\)) (member (char fs 1) '(#\/ #\\)))
               (wm-sec-refuse "load from a network path"))
-            (prog1 (apply (get '$load 'wm-sec-orig) args)
-              ;; a loaded package may define a blocked function again
-              (wm-sec-block-all))))))
+            (let (($file_search_maxima (first *wm-sec-search*))
+                  ($file_search_lisp (second *wm-sec-search*)))
+              (let ((found (ignore-errors ($file_search f (cons '(mlist) (append (cdr $file_search_maxima) (cdr $file_search_lisp)))))))
+                (unless (and (stringp found) (wm-sec-allowed-file-p found))
+                  (wm-sec-refuse (format nil "load of ~a" fs))))
+              (prog1 (apply (get '$load 'wm-sec-orig) args)
+                ;; a loaded package may define a blocked function again
+                (wm-sec-block-all)))))))
+
+;; eval_string( ) and parse_string( ): refuse text holding ? (Lisp names such as ?run-program) or :lisp, so a
+;; string built at run time can't reach Lisp. WMUnits.mac uses parse_string( ) on numbers only.
+(dolist (s '($eval_string $parse_string))
+  (unless (get s 'wm-sec-orig)
+    (setf (get s 'wm-sec-orig) (symbol-function s))
+    (let ((sym s) (wm-nm (string-downcase (subseq (symbol-name s) 1))))
+      (setf (symbol-function s)
+            (lambda (&rest args)
+              (when (and (stringp (car args))
+                         (or (find #\? (car args)) (search ":lisp" (string-downcase (car args)))))
+                (wm-sec-refuse (format nil "~a with ? or :lisp" wm-nm)))
+              (apply (get sym 'wm-sec-orig) args))))))
