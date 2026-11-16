@@ -2736,6 +2736,7 @@ End Sub
 
 Function CodeForMaxima(ByVal text As String, Optional CAStype As Integer = 0) As String
 ' Castype=0 is maxima, CasType=1/2 is GeoGebra (geogebra friendly. still needs convertToGeogebraSyntax)
+    Dim wmPrev As String, wmK As Long ' word_math matrices
     Dim ea As New ExpressionAnalyser
     Dim ea2 As New ExpressionAnalyser
     Dim pos As Long
@@ -3899,7 +3900,23 @@ spring:
                 Next
                 mtext = Left$(mtext, Len(mtext) - 1) & ")"
             End If
-            text = Left$(text, stpos - 1) & mtext & Right$(text, Len(text) - slpos)
+            ' word_math matrices: in det(matrix(...)) the brackets belong to the function call, not to the matrix,
+            ' so they are kept (as the vector code below does); otherwise the matrix's own brackets are removed
+            ' a function call: the bracket follows a name that starts with a letter (determinant2, transpose, f1),
+            ' or Word's function-application character; a number before it (2(...)) is a multiplication
+            wmPrev = vbNullString
+            wmK = stpos - 1
+            Do While wmK >= 1
+                If Not (Mid$(text, wmK, 1) Like "[A-Za-z0-9_]") Then Exit Do
+                wmK = wmK - 1
+            Loop
+            If wmK + 1 <= stpos - 1 Then wmPrev = Mid$(text, wmK + 1, 1)
+            If stpos > 1 Then If Mid$(text, stpos - 1, 1) = ChrW$(8289) Then wmPrev = "f"
+            If Mid$(text, stpos, 1) = "(" And (wmPrev Like "[A-Za-z_]") Then
+                text = Left$(text, stpos) & mtext & Right$(text, Len(text) - slpos + 1)
+            Else
+                text = Left$(text, stpos - 1) & mtext & Right$(text, Len(text) - slpos)
+            End If
         End If
     Loop While pos <> 0
 
