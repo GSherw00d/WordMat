@@ -11,6 +11,7 @@ Option Explicit
 
 Private mScratch As Document        ' hidden scratch document, created on demand, closed when Word is idle
 Private mCloseQueued As Boolean     ' an OnTime close is pending
+Public WMSR_TestOldReader As Boolean ' TEST ONLY (WMTest_ReadTiming): route reads to the old reader
 
 Public Function WMSR_ReadOMath(ByVal ir As Range) As String
 ' Linear text of the first OMath in ir (as ReadEquation2 returned it), read from a copy.
@@ -19,6 +20,7 @@ Public Function WMSR_ReadOMath(ByVal ir As Range) As String
 ' the selection itself is unchanged (upstream's ReadEquation2 reselected it the same way). Errors are passed on.
     Dim sd As Document, om As OMath, r As Range, ad As Document, sel As Range
     Dim en As Long, es As String, ed As String
+    If WMSR_TestOldReader Then WMSR_ReadOMath = WMSR_ReadOMathUndo(ir): Exit Function ' TEST ONLY
     On Error Resume Next
     Set ad = ActiveDocument
     Set sel = Selection.Range

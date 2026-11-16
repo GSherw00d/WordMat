@@ -268,6 +268,36 @@ fejl:
     WMTest_ReadNoClose = "ERROR " & Err.Number & ": " & Err.Description
 End Function
 
+Public Function WMTest_ReadTiming(ByVal docPath As String, ByVal rounds As Long) As String
+' word_math safe read: times CMaxima.FindDefinitions (which reads every earlier definition) with the cursor at
+' the end of docPath (closed without saving), alternating the old and the new reader, rounds times each.
+' Returns "defs=<n> new=<ms per call> old=<ms per call>" (the first call of each kind is included).
+    Dim doc As Document, k As Long, t As Single, tn As Double, tOld As Double, d As String
+    On Error GoTo fejl
+    WMTestMode = True
+    If omax Is Nothing Then Set omax = New CMaxima
+    Set doc = Documents.Open(FileName:=docPath, AddToRecentFiles:=False, Visible:=True)
+    doc.Activate
+    Selection.EndKey wdStory
+    For k = 1 To rounds
+        WMSR_TestOldReader = True
+        t = Timer: d = omax.FindDefinitions: tOld = tOld + (Timer - t) * 1000
+        WMSR_TestOldReader = False
+        WMSR_CloseScratch                   ' each new-reader call pays for creating the scratch, as in real use
+        t = Timer: d = omax.FindDefinitions: tn = tn + (Timer - t) * 1000
+    Next
+    WMTest_ReadTiming = "defs=" & omax.defindex & " new=" & Format$(tn / rounds, "0") & " old=" & Format$(tOld / rounds, "0")
+    GoTo slut
+fejl:
+    WMTest_ReadTiming = "ERROR " & Err.Number & ": " & Err.Description
+slut:
+    On Error Resume Next
+    WMSR_TestOldReader = False
+    WMSR_CloseScratch
+    If Not doc Is Nothing Then doc.Close wdDoNotSaveChanges
+    WMTestMode = False
+End Function
+
 Private Sub ReadOne(r As Range, ByVal reader As String)
     If reader = "old" Then WMSR_ReadOMathUndo r Else omax.ReadEquation2 r
 End Sub
