@@ -159,3 +159,15 @@ Public Function WMSR_ReadOMathsUndo(ByVal r As Range) As String
     WMSR_ReadOMathsUndo = o
 End Function
 
+
+Public Function WMSR_ReadLinearizeUndo(ByVal r As Range) As String
+' TEST ONLY: the old read of CRegression.GetSetData (Linearize only, then Range.text), undone afterwards here
+' (upstream left the equation linear).
+    Dim Oundo As UndoRecord
+    Set Oundo = Application.UndoRecord
+    Oundo.StartCustomRecord
+    r.OMaths(1).Linearize
+    WMSR_ReadLinearizeUndo = r.OMaths(1).Range.text
+    Oundo.EndCustomRecord
+    ActiveDocument.Undo
+End Function

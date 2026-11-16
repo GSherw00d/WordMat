@@ -5247,8 +5247,8 @@ Function ConvertLatexToWord(text As String) As String
 End Function
 Sub ReadSelection(Optional SplitByOR As Boolean = True)
     ' inserts the selected equation as a command
-    ' this method does not use tempdoc, but changes the selected equation to text, reads it and changes it back to prof layout. This may cause changes in the way it is written.
-    ' the method is probably a bit faster though
+    ' word_math safe read: each equation is read from a copy in a hidden scratch document (WMSafeRead); the
+    ' document, its undo history and Saved are not changed (upstream changed the equation and undid it)
     ' SplitByOR means to split the command into two commands if separated by an OR symbol (v)
 
     Dim antal As Integer

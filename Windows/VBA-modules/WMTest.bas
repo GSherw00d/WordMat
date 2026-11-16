@@ -158,6 +158,7 @@ Public Function WMTest_ReadCompare(ByVal docPath As String, ByVal resultPath As 
 ' (WMSR_ReadOMath) and then the old one (WMSR_ReadOMathUndo), and writes one line per equation:
 ' index, start, in table, same, new, old, ms new, ms old. Returns "OK <n> equations <same> same <ms new> <ms old>".
     Dim doc As Document, i As Long, n As Long, nSame As Long, om As OMath
+    Dim c As String, nLin As Long, mLin As String
     Dim a As String, b As String, t As Single, tn As Double, tOld As Double, dn As Double, dOld As Double
     On Error GoTo fejl
     WMTestMode = True
@@ -172,6 +173,9 @@ Public Function WMTest_ReadCompare(ByVal docPath As String, ByVal resultPath As 
         t = Timer: a = WMSR_ReadOMath(om.Range): dn = (Timer - t) * 1000
         Set om = doc.Range.OMaths(i)
         t = Timer: b = WMSR_ReadOMathUndo(om.Range): dOld = (Timer - t) * 1000
+        Set om = doc.Range.OMaths(i)
+        c = WMSR_ReadLinearizeUndo(om.Range)
+        If c = a Then nLin = nLin + 1 Else If Len(mLin) < 120 Then mLin = mLin & " #" & i & ": new '" & Esc(a) & "' linearize-only '" & Esc(c) & "'"
         tn = tn + dn: tOld = tOld + dOld
         If a = b Then nSame = nSame + 1
         mResult = mResult & i & vbTab & om.Range.Start & vbTab & om.Range.Information(wdWithInTable) & vbTab & _
@@ -187,7 +191,7 @@ Public Function WMTest_ReadCompare(ByVal docPath As String, ByVal resultPath As 
     If a = b Then nSame = nSame + 1
     mResult = mResult & "all" & vbTab & 0 & vbTab & "-" & vbTab & (a = b) & vbTab & Esc(a) & vbTab & Esc(b) & vbTab & "-" & vbTab & "-" & vbCrLf
     WriteResult resultPath
-    WMTest_ReadCompare = "OK " & n + 1 & " readings " & nSame & " same " & Format$(tn, "0") & " " & Format$(tOld, "0")
+    WMTest_ReadCompare = "OK " & n + 1 & " readings " & nSame & " same " & Format$(tn, "0") & " " & Format$(tOld, "0") & " (info: CRegression linearize-only read same " & nLin & "/" & n & "; first differences:" & mLin & ")"
     GoTo slut
 fejl:
     WMTest_ReadCompare = "ERROR " & Err.Number & ": " & Err.Description & " (equation " & i & ")"

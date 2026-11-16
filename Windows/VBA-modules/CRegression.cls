@@ -325,8 +325,7 @@ Dim Arr As Variant
     ReDim yval(1 To 1000) As Double
 ea.StartBracket = "{"
 ea.EndBracket = "}"
-Selection.OMaths.Linearize
-text = Selection.OMaths(1).Range.text
+text = WMSR_ReadOMath(Selection.Range) ' word_math safe read (was: Selection.OMaths.Linearize, left linear, and Range.text)
 ea.text = Replace(text, VBA.ChrW$(8722), "-") ' required
 ea.text = ea.GetNextBracketContent()
 ea.SetNormalBrackets
