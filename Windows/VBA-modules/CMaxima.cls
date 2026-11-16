@@ -5317,153 +5317,31 @@ genstart:
         '            .OMaths.Linearize
         '        End With
 
-        Dim Oundo As UndoRecord
-        Set Oundo = Application.UndoRecord
-        Oundo.StartCustomRecord
-    
         Set mathcol = Selection.OMaths
-        With Selection.OMaths
-            .BuildUp
-            .Linearize
-        End With
-
-        For j = 0 To antal - 1
-            mathcol(j + 1).ConvertToNormalText
-            Kommandoer(j) = Replace(mathcol(j + 1).Range.text, ChrW$(11), "")    ' remove shift-enter
+        For j = 0 To antal - 1 ' word_math safe read: each OMath read from a copy (was: change, read, Undo)
+            Kommandoer(j) = Replace(WMSR_ReadOMath(mathcol(j + 1).Range), ChrW$(11), "")    ' remove shift-enter
         Next
-        
-        Oundo.EndCustomRecord
-        ActiveDocument.Undo
-        
 hop:
         ReDim Preserve Kommandoer(0 To antal - 1)
         sr.Select
     End If
     GoTo slut
 fejl:
-    On Error GoTo slut
-    ReadSelectionOld
+    Kommando = "" ' word_math safe read: was ReadSelectionOld, which read by changing the equation without undo
 slut:
-    '    tempDoc.Saved = True
     Selection.start = sstart
     Selection.End = sslut
 
 End Sub
 
 Function ReadEquation2(Optional ir As Range) As String
-    Dim sr As Range
-    Set sr = Selection.Range
-
-    If ir Is Nothing Then
-        Set ir = sr
-    End If
-    Dim OM As OMath
-    Dim Oundo As UndoRecord
-    Set Oundo = Application.UndoRecord
-    Set OM = ir.OMaths(1)
-    OM.Range.Font.Bold = False
-    Oundo.StartCustomRecord
-    If OM.Range.End + 100 >= ActiveDocument.Range.End Then ' if the equation is at the very end of the document (or some enter characters after) and there are certain expressions, e.g. integrals, then a strange error occurs where the document appears empty. You can see it in draft view, however. The error does not occur if there is just one more character, so a new empty line is inserted
-        OM.Range.Select
-        Selection.Collapse wdCollapseEnd
-        Selection.TypeParagraph
-        Selection.TypeText "x"
-    End If
-    OM.BuildUp
-    OM.Linearize
-    OM.ConvertToNormalText
-    ReadEquation2 = OM.Range.text
-    Oundo.EndCustomRecord
-    ActiveDocument.Undo
-    sr.Select
-
-Exit Function
-'  below v1.30 and before
-    
-'    Dim r As Range
-'    Set sr = Selection.Range
-'    ir.Copy
-'
-'    Set r = tempDoc.Range
-''    at.Insert r, True   ' removed 19/2 it has been replaced by paste under 'with' below?
-'
-'    With r
-'        .Paste
-'        .Font.Bold = False
-'        .OMaths.BuildUp
-'        .OMaths.Linearize
-'        .OMaths(1).ConvertToNormalText
-'    End With
-'
-'    ReadEquation2 = r.text
-'    sr.Select
-'
-'    tempDoc.Range.Delete    ' this may fix Word being slow
-
+' word_math safe read: the linear text of the first OMath in ir (default: the selection). Read from a copy in
+' a hidden scratch document (WMSafeRead), so the document, its undo history, Saved and the selection are not
+' changed. Upstream changed the equation in place (BuildUp, Linearize, ConvertToNormalText) and undid it, typed
+' "x" near the end of the document, and unbolded the equation outside the undo record.
+    If ir Is Nothing Then Set ir = Selection.Range
+    ReadEquation2 = WMSR_ReadOMath(ir)
 End Function
-
-Sub ReadSelectionOld()
-' inserts the selected command
-    Dim antal As Integer
-    Dim sstart As Integer
-    Dim sslut As Integer
-    Dim j As Integer
-
-    ' if bold causes buildup problems
-    For j = 1 To Selection.OMaths.Count
-        Selection.OMaths(j).Range.Font.Bold = False
-    Next
-
-    sstart = Selection.start
-    sslut = Selection.End
-    antal = Selection.OMaths.Count
-
-    If antal = 0 Then
-        If Len(Selection.text) < 2 Then
-            Kommando = ""
-            MsgBox "Mark what should be evaluated by Maxima.", vbOKOnly, "Choose"
-            Exit Sub
-        End If
-        Kommando = Selection.text
-        Selection.Collapse (wdCollapseEnd)
-    ElseIf antal = 1 Then
-        If Len(Selection.text) < 3 Then
-            Selection.OMaths(1).Range.Select
-        End If
-        If Selection.OMaths(1).Range.End < Selection.Range.End Then
-            Selection.OMaths(1).Range.Select
-        End If
-
-        Selection.OMaths.BuildUp
-        Selection.OMaths.Linearize
-        Selection.OMaths(1).ConvertToNormalText
-        Kommando = Selection.text
-        Selection.text = Replace(Selection.text, ChrW$(8727), MaximaGangeTegn)    'remove *
-        Selection.text = Replace(Selection.text, "*", MaximaGangeTegn)    'remove *
-        If DecSeparator = "," Then
-            Selection.text = Replace(Selection.text, ".", ",")    'When comma is the decseparator, . can be changed to comma.
-        End If
-        Selection.OMaths(1).ConvertToMathText
-        Selection.OMaths(1).Range.Select
-        Selection.OMaths.BuildUp
-        Selection.Collapse (wdCollapseEnd)
-    ElseIf antal > 1 Then
-        ReDim Kommandoer(1 To 100)
-        Selection.OMaths.Linearize
-        Dim i As Integer
-        Dim mathcol As OMaths
-        Set mathcol = Selection.OMaths
-        For i = 1 To antal
-            mathcol(i).ConvertToNormalText
-            Kommandoer(i) = Replace(mathcol(i).Range.text, ChrW$(11), "")
-            mathcol(i).ConvertToMathText
-            mathcol(i).BuildUp
-        Next
-        ReDim Preserve Kommandoer(1 To antal)
-    End If
-    Selection.start = sstart
-    Selection.End = sslut
-End Sub
 
 Sub GoToEndOfSelectedMaths(Optional DontGoBack As Boolean = False, Optional ResultAfterNum As Boolean = True)
     Dim mc As OMaths

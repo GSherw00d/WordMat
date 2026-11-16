@@ -371,10 +371,7 @@ Dim antal As Integer
 Dim j As Integer
 On Error GoTo slut
 
-' if ball gives it buildup problems
-For j = 1 To Selection.OMaths.Count
-    Selection.OMaths(j).Range.Font.Bold = False
-Next
+' word_math safe read: no unbolding of the user's equations (the safe reader unbolds its copy)
 
 'sstart = Selection.start
 'sslut = Selection.End
@@ -397,33 +394,14 @@ Else
         Set sr = Selection.Range
     End If
 
-    Dim Oundo As UndoRecord
-    Set Oundo = Application.UndoRecord
-    Oundo.StartCustomRecord
-    With sr
-        .OMaths.BuildUp
-        .OMaths.Linearize
-    End With
-
-'    Set tempDoc = Documents.Add(, , , False)
-'    Set r = tempDoc.Range
-'    r.Paste
-'    With r
-'    .OMaths.BuildUp
-'    .OMaths.Linearize
-'    End With
-    
     Dim mathcol As OMaths
     Set mathcol = sr.OMaths
-    For j = 0 To antal - 1
-        mathcol(j + 1).ConvertToNormalText
-        mboxes(j) = Replace(mathcol(j + 1).Range.text, ChrW$(11), "") ' remove shift-enter
+    For j = 0 To antal - 1 ' word_math safe read: each OMath read from a copy (was: change, read, Undo)
+        mboxes(j) = Replace(WMSR_ReadOMath(mathcol(j + 1).Range), ChrW$(11), "") ' remove shift-enter
     Next
     ReDim Preserve mboxes(0 To antal - 1)
     antalmboxes = antal
     sr.Select
-    Oundo.EndCustomRecord
-    ActiveDocument.Undo
 End If
 
 slut:

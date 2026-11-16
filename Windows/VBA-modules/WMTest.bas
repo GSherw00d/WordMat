@@ -178,7 +178,16 @@ Public Function WMTest_ReadCompare(ByVal docPath As String, ByVal resultPath As 
                   (a = b) & vbTab & Esc(a) & vbTab & Esc(b) & vbTab & Format$(dn, "0") & vbTab & Format$(dOld, "0") & vbCrLf
         WriteResult resultPath
     Next
-    WMTest_ReadCompare = "OK " & n & " equations " & nSame & " same " & Format$(tn, "0") & " " & Format$(tOld, "0")
+    ' the several-OMaths path (ReadSelection / ReadMathBoxes): all OMaths of the document at once
+    a = ""
+    For i = 1 To n
+        a = a & IIf(i > 1, " | ", "") & Replace(WMSR_ReadOMath(doc.Range.OMaths(i).Range), ChrW$(11), "")
+    Next
+    b = WMSR_ReadOMathsUndo(doc.Content)
+    If a = b Then nSame = nSame + 1
+    mResult = mResult & "all" & vbTab & 0 & vbTab & "-" & vbTab & (a = b) & vbTab & Esc(a) & vbTab & Esc(b) & vbTab & "-" & vbTab & "-" & vbCrLf
+    WriteResult resultPath
+    WMTest_ReadCompare = "OK " & n + 1 & " readings " & nSame & " same " & Format$(tn, "0") & " " & Format$(tOld, "0")
     GoTo slut
 fejl:
     WMTest_ReadCompare = "ERROR " & Err.Number & ": " & Err.Description & " (equation " & i & ")"
@@ -196,7 +205,7 @@ Public Function WMTest_ReadNonDestructive(ByVal docPath As String, ByVal resultP
 ' and checks after each read: full text, Saved, selection; after all: WordOpenXML, then a single Undo must
 ' remove the marker; finally the same reads with Saved = True. One line per check: name, PASS/FAIL, detail.
     Dim doc As Document, i As Long, n As Long, t0 As String, t1 As String, x1 As String, s1 As Long, e1 As Long
-    Dim sv1 As Boolean, bad As String, nFail As Long
+    Dim sv1 As Boolean, bad As String, nFail As Long, x2 As String
     On Error GoTo fejl
     WMTestMode = True
     If omax Is Nothing Then Set omax = New CMaxima
@@ -207,7 +216,7 @@ Public Function WMTest_ReadNonDestructive(ByVal docPath As String, ByVal resultP
     t0 = FullText(doc)
     Selection.HomeKey wdStory
     Selection.TypeText "WMSR-MARK "
-    t1 = FullText(doc): x1 = doc.Content.WordOpenXML: sv1 = doc.Saved
+    t1 = FullText(doc): x1 = NoRsid(doc.Content.WordOpenXML): sv1 = doc.Saved
     s1 = Selection.Start: e1 = Selection.End
     n = doc.Range.OMaths.Count
     For i = 1 To n
@@ -219,7 +228,9 @@ Public Function WMTest_ReadNonDestructive(ByVal docPath As String, ByVal resultP
         If Not ActiveDocument Is doc Then bad = bad & "active document changed; "
         NdRow "equation " & i & " (start " & doc.Range.OMaths(i).Range.Start & ")", bad, nFail
     Next
-    NdRow "formatting (WordOpenXML) after " & n & " reads", IIf(doc.Content.WordOpenXML = x1, "", "WordOpenXML changed"), nFail
+    x2 = NoRsid(doc.Content.WordOpenXML)
+    If x2 <> x1 Then WriteText resultPath & ".before.xml", x1: WriteText resultPath & ".after.xml", x2
+    NdRow "formatting (WordOpenXML without rsids) after " & n & " reads", IIf(x2 = x1, "", "WordOpenXML changed (see .before.xml/.after.xml)"), nFail
     doc.Undo 1
     NdRow "one Undo removes the typed marker", IIf(FullText(doc) = t0, "", "after one Undo the text is not the original: " & _
           Left$(Clean(FullText(doc)), 80)), nFail
@@ -239,6 +250,22 @@ slut:
     WMSR_CloseScratch
     If Not doc Is Nothing Then doc.Close wdDoNotSaveChanges
     WMTestMode = False
+End Function
+
+Public Function WMTest_ReadNoClose(ByVal docPath As String) As String
+' word_math safe read: reads the first OMath of docPath (closed without saving) through omax.ReadEquation2 and
+' leaves the scratch document to WMSafeRead's own idle-time close. Returns "<text>|<scratch open?>".
+    Dim doc As Document, t As String
+    On Error GoTo fejl
+    If omax Is Nothing Then Set omax = New CMaxima
+    Set doc = Documents.Open(FileName:=docPath, AddToRecentFiles:=False, Visible:=True)
+    doc.Activate
+    t = omax.ReadEquation2(doc.Range.OMaths(1).Range)
+    WMTest_ReadNoClose = t & "|" & WMSR_ScratchIsOpen()
+    doc.Close wdDoNotSaveChanges
+    Exit Function
+fejl:
+    WMTest_ReadNoClose = "ERROR " & Err.Number & ": " & Err.Description
 End Function
 
 Private Sub ReadOne(r As Range, ByVal reader As String)
@@ -498,6 +525,30 @@ End Function
 Private Function Clean(ByVal s As String) As String
     Clean = Replace(Replace(Replace(s, vbTab, " "), vbCr, " "), vbLf, " ")
 End Function
+
+Private Function NoRsid(ByVal x As String) As String
+' WordOpenXML without rsid attributes and <w:rsid> entries: Word assigns new revision-save IDs on export.
+    Dim re As Object
+    Set re = CreateObject("VBScript.RegExp")
+    re.Global = True
+    re.Pattern = " w:rsid\w*=""[0-9A-F]+"""
+    x = re.Replace(x, "")
+    re.Pattern = "<w:rsid w:val=""[0-9A-F]+""/>"
+    x = re.Replace(x, "")
+    re.Pattern = "<w:rsidRoot w:val=""[0-9A-F]+""/>"
+    NoRsid = re.Replace(x, "")
+End Function
+
+Private Sub WriteText(ByVal path As String, ByVal text As String)
+    Dim st As Object
+    Set st = CreateObject("ADODB.Stream")
+    st.Type = 2
+    st.Charset = "utf-8"
+    st.Open
+    st.WriteText text
+    st.SaveToFile path, 2
+    st.Close
+End Sub
 
 Private Sub WriteResult(ByVal path As String)
 ' UTF-8 (with BOM), rewritten after every case so a hang still leaves the finished cases on disk.

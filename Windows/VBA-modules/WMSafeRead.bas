@@ -14,7 +14,15 @@ Private mCloseQueued As Boolean     ' an OnTime close is pending
 
 Public Function WMSR_ReadOMath(ByVal ir As Range) As String
 ' Linear text of the first OMath in ir (as ReadEquation2 returned it), read from a copy.
-    Dim sd As Document, om As OMath, r As Range
+' OMath.BuildUp in the hidden scratch document makes it the ActiveDocument (ActiveWindow stays the user's, and
+' Document.Activate does not switch back). Reselecting the user's selection does, so that is done afterwards;
+' the selection itself is unchanged (upstream's ReadEquation2 reselected it the same way). Errors are passed on.
+    Dim sd As Document, om As OMath, r As Range, ad As Document, sel As Range
+    Dim en As Long, es As String, ed As String
+    On Error Resume Next
+    Set ad = ActiveDocument
+    Set sel = Selection.Range
+    On Error GoTo fejl
     Set sd = ScratchDoc()
     sd.Content.Text = vbCr & "x"            ' the equation never ends the scratch document (Word end-of-document bug)
     Set r = sd.Range(0, 0)
@@ -27,14 +35,39 @@ Public Function WMSR_ReadOMath(ByVal ir As Range) As String
         om.ConvertToNormalText
         WMSR_ReadOMath = om.Range.Text
     End If
-    sd.Content.Delete
-    sd.UndoClear
-    sd.Saved = True
+fejl:
+    en = Err.Number: es = Err.Source: ed = Err.Description
+    On Error Resume Next
+    If Not sd Is Nothing Then
+        sd.Content.Delete
+        sd.UndoClear
+        sd.Saved = True
+    End If
+    RestoreActive ad, sel
+    On Error GoTo 0
+    If en <> 0 Then Err.Raise en, es, ed
+End Function
+
+Private Sub RestoreActive(ad As Document, sel As Range)
+' Makes ad the ActiveDocument again (see WMSR_ReadOMath).
+    On Error Resume Next
+    If ad Is Nothing Then Exit Sub
+    If ActiveDocument.FullName = ad.FullName Then Exit Sub
+    If Not sel Is Nothing Then sel.Select
+    If ActiveDocument.FullName <> ad.FullName Then ad.Activate
+End Sub
+
+Public Function WMSR_ScratchIsOpen() As Boolean
+' For the tests: True while the scratch document exists.
+    Dim n As String
+    On Error Resume Next
+    If Not mScratch Is Nothing Then n = mScratch.Name
+    WMSR_ScratchIsOpen = (Len(n) > 0)
 End Function
 
 Private Function ScratchDoc() As Document
 ' The scratch document; created hidden if needed. The user's active document stays active.
-    Dim ad As Document, ok As Boolean
+    Dim ok As Boolean
     On Error Resume Next
     If Not mScratch Is Nothing Then
         ok = (Len(mScratch.Name) > 0)       ' fails if it was closed behind our back
@@ -42,12 +75,9 @@ Private Function ScratchDoc() As Document
     End If
     Err.Clear
     If mScratch Is Nothing Then
-        Set ad = Nothing
-        Set ad = ActiveDocument
         On Error GoTo 0
         Set mScratch = Documents.Add(Visible:=False)
         mScratch.Saved = True
-        If Not ad Is Nothing Then ad.Activate
         QueueClose
     End If
     Set ScratchDoc = mScratch
@@ -104,3 +134,26 @@ Public Function WMSR_ReadOMathUndo(Optional ir As Range) As String
     ActiveDocument.Undo
     sr.Select
 End Function
+
+Public Function WMSR_ReadOMathsUndo(ByVal r As Range) As String
+' TEST ONLY: the old several-OMaths read of CMaxima.ReadSelection / DocData.ReadMathBoxes (on r instead of the
+' selection): one change for all OMaths in r, then Undo. The texts are joined with " | ".
+    Dim mathcol As OMaths, j As Long, n As Long, o As String
+    Dim Oundo As UndoRecord
+    n = r.OMaths.Count
+    Set Oundo = Application.UndoRecord
+    Oundo.StartCustomRecord
+    Set mathcol = r.OMaths
+    With r.OMaths
+        .BuildUp
+        .Linearize
+    End With
+    For j = 0 To n - 1
+        mathcol(j + 1).ConvertToNormalText
+        o = o & IIf(j > 0, " | ", "") & Replace(mathcol(j + 1).Range.text, ChrW$(11), "")
+    Next
+    Oundo.EndCustomRecord
+    ActiveDocument.Undo
+    WMSR_ReadOMathsUndo = o
+End Function
+
