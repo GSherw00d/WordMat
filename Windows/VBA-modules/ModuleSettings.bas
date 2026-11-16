@@ -242,7 +242,9 @@ On Error Resume Next
     mSettShortcutAltQ = val(GetRegSetting("SettShortcutAltQ"))
     mSettShortcutAltQ = val(GetRegSetting("SettShortcutAltG"))
     
-    mseparator = CBool(GetRegSetting("Separator"))
+    ' word_math: decimal point only (decided by the user 2026-11-16); the registry setting is ignored.
+    ' Lists may still be typed with ";" (CodeForMaxima turns ";" into ",").
+    mseparator = True
     If mseparator Then
         mdecseparator = "."
         mlistseparator = ","
@@ -282,7 +284,7 @@ Public Sub SetAllDefaultRegistrySettings(Optional ForceReset As Boolean = False)
         MaximaExact = 2 ' numerisk
         Radians = False
         MaximaCifre = 7
-        MaximaSeparator = False
+        MaximaSeparator = True ' word_math: decimal point only
         MaximaGangeTegn = "prik"
         MaximaComplex = False
         LmSet = False
@@ -792,6 +794,7 @@ Public Property Get MaximaSeparator() As Boolean
     MaximaSeparator = mseparator
 End Property
 Public Property Let MaximaSeparator(xval As Boolean)
+    xval = True ' word_math: decimal point only (decided by the user 2026-11-16); a decimal comma can't be chosen
     SetRegSetting "Separator", Abs(CInt(xval))
     mseparator = xval
     If xval Then

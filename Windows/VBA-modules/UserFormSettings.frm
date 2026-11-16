@@ -473,6 +473,7 @@ Sub SetButtonsAccordingToSettings()
     Else
         OptionButton_komma.value = True
     End If
+    OptionButton_komma.Enabled = False ' word_math: decimal point only (decided 2026-11-16)
     
     If AllTrig Then
         OptionButton_trigall.value = True
