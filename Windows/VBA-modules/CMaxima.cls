@@ -1709,6 +1709,7 @@ start:
     End If
     
     If ListSeparator = "," Then MaximaOutput = Replace(MaximaOutput, ",", ", ") ' primarily necessary for lists
+    If InStr(MaximaOutput, "[") > 0 Then MaximaOutput = WMFT_ArraySeparators(MaximaOutput) ' word_math arrays: "[2; 4; 6]" (matrices are written as Word matrices, not [ ])
         
     If gemMaxExct >= 0 Then MaximaExact = gemMaxExct
 slut:
