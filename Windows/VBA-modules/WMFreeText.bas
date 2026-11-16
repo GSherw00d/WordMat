@@ -513,7 +513,28 @@ Private Function FormatResult(ByVal res As String, ByVal spaced As Boolean, ByVa
         errMsg = "Unknown symbol(s) left in the result: " & bad & ". Define them first, e.g. ~~" & Split(bad, ",")(0) & " := 5~~."
         Exit Function
     End If
-    FormatResult = out
+    FormatResult = WMFT_ArraySeparators(out)
+End Function
+
+Public Function WMFT_ArraySeparators(ByVal s As String) As String
+' word_math arrays (decided 2026-11-16): inside [ ... ] lists the elements are written with "; " between them,
+' e.g. "[2,4,6] [kN]" -> "[2; 4; 6] [kN]". With decimal points only, a comma in a list can only separate elements.
+' Unit brackets hold no commas, so they are unchanged.
+    Dim i As Long, c As String, depth As Long, out As String
+    For i = 1 To Len(s)
+        c = Mid$(s, i, 1)
+        If c = "[" Then depth = depth + 1
+        If c = "]" And depth > 0 Then depth = depth - 1
+        If depth > 0 And (c = "," Or c = ";") Then
+            out = out & "; "
+            Do While Mid$(s, i + 1, 1) = " "
+                i = i + 1
+            Loop
+        Else
+            out = out & c
+        End If
+    Next
+    WMFT_ArraySeparators = out
 End Function
 
 Private Function WrapResultUnit(ByVal s As String) As String
@@ -717,6 +738,11 @@ Private Function IsResultText(ByVal t As String) As Boolean
         If c = "[" Then
             j = InStr(i, t, "]")
             If j = 0 Then Exit Function
+            ' word_math arrays: a bracket holding ; or , is a list of numbers (a result value), not a unit
+            If InStr(Mid$(t, i, j - i), ";") > 0 Or InStr(Mid$(t, i, j - i), ",") > 0 Then
+                If Not IsNumberList(Mid$(t, i + 1, j - i - 1)) Then Exit Function
+                hasNum = True
+            End If
             i = j + 1
         Else
             If IsDigitCh(c) Or SupToNormal(c) <> "" Or c = ChrW$(960) Or c = ChrW$(8734) Then
@@ -730,6 +756,20 @@ Private Function IsResultText(ByVal t As String) As Boolean
         End If
     Loop
     IsResultText = hasNum
+End Function
+
+Private Function IsNumberList(ByVal t As String) As Boolean
+' True if t (the inside of [ ]) is a list of numbers, e.g. "2; 4; 6" or "0.5,1,1.5e3"
+    Dim i As Long, c As String, hasDigit As Boolean
+    For i = 1 To Len(t)
+        c = Mid$(t, i, 1)
+        If IsDigitCh(c) Then
+            hasDigit = True
+        ElseIf InStr(" .,;+-e^*" & ChrW$(183) & ChrW$(8722) & ChrW$(160), c) = 0 Then
+            Exit Function
+        End If
+    Next
+    IsNumberList = hasDigit
 End Function
 
 Private Function LastBracketUnit(ByVal t As String) As String

@@ -1496,6 +1496,7 @@ Private Function WMUnitsBeregn() As Boolean
         Exit Function
     End If
     valW = ConvertToWordSymbols(parts(2))
+    If Left$(parts(2), 1) = "[" Then valW = WMFT_ArraySeparators(valW) ' word_math arrays: "[2; 4; 6]"
     If req <> vbNullString Then unitW = req Else unitW = WMU_FromAscii(parts(3))
     If parts(1) = "~" Then MaximaOutput = ChrW$(8776) Else MaximaOutput = "="
     MaximaOutput = MaximaOutput & valW

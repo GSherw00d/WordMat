@@ -571,7 +571,42 @@ WMUnitCheck(e) := (wm_top: e, wm_an(e), e)$
 WMUnitSI(e) := (wm_top: e, wm_an(e))$
 WMUnitInfo(n) := block([u: wm_lookup(n)], [wm_fac[u], wm_dim[u], wm_sys[wm_root(u)], wm_pfx[u], wm_off[u]])$
 
-WMUnitResult(e, req) := block([inflag: true, r, v, d, oi, tag, au, sys, M, R, RM, c, rn, val, ustr, msg: "", f, kind],
+/* ---------------------------------------------------------------- arrays (decided 2026-11-16)
+   A free-text array [1; 2; 3] [kN] arrives as a Maxima list whose elements carry the unit. Every element must
+   have the same dimension; one display unit is chosen for the whole array (auto-fill and prefix from the element
+   with the largest magnitude, or the requested unit) and every element is shown in it. The value field holds
+   "[v1,v2,...]" (VBA shows it with ";" separators). */
+WMUnitResult(e, req) := block([inflag: true],
+  if listp(e) then wm_listresult(e, req) else wm_result1(e, req))$
+
+wm_listresult(L, req) := block([inflag: true, d, an, k, best, bv, x, r, u, vals: [], exact: true, msg: "", p],
+  if req = "" and freeof('wmabs, L) and lfreeof(map(wm_sym, wm_names), L) then return("WMU@@NONE"),
+  if L = [] then wm_err("The array is empty."),
+  if some(listp, L) then wm_err("Arrays of arrays aren't supported. Use a Word equation matrix instead."),
+  if not freeof('wmabs, L) then
+    wm_err("Arrays with absolute units such as [degC] or [barg] aren't supported yet. Use [K], [DdegC] or [bara]."),
+  wm_top: L,
+  an: map(wm_an, L), d: an[1][2],
+  for k: 2 thru length(an) do
+    if an[k][2] # d then
+      wm_err(sconcat("All elements of an array must have the same kind of unit, but element 1 is ", wm_dimtext(d),
+                     " and element ", k, " is ", wm_dimtext(an[k][2]), ".")),
+  u: req,
+  if u = "" then (
+    best: 1, bv: -1,
+    for k: 1 thru length(an) do (
+      x: errcatch(float(abs(an[k][1]))),
+      if x # [] and numberp(x[1]) and is(x[1] > bv) then (best: k, bv: x[1])),
+    p: split(wm_result1(L[best], ""), "@@", false),
+    u: p[4]),
+  for x in L do (
+    p: split(wm_result1(x, u), "@@", false),
+    if p[2] # "=" then exact: false,
+    if msg = "" then msg: p[5],
+    vals: endcons(p[3], vals)),
+  sconcat("WMU@@", if exact then "=" else "~", "@@[", simplode(vals, ","), "]@@", u, "@@", msg, "@@none"))$
+
+wm_result1(e, req) := block([inflag: true, r, v, d, oi, tag, au, sys, M, R, RM, c, rn, val, ustr, msg: "", f, kind],
   if req = "" and freeof('wmabs, e) and lfreeof(map(wm_sym, wm_names), e) then return("WMU@@NONE"),
   wm_top: e,
   r: wm_an(e), v: r[1], d: r[2],
