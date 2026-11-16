@@ -1404,7 +1404,9 @@ Public Sub WMUnitsSolve(ByVal ck As String, ByVal variabel As String)
 #If Mac Then
     WMU_LastError = "Units in [ ] are not supported on the Mac."
 #Else
-    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitSolve(" & ck & "," & variabel & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();"
+    ' word_math: the equation is quoted so it is rearranged with the defined names kept (c = a - b) and only then
+    ' evaluated; that makes arrays work (a list equation can't be solved directly)
+    MaximaInputStreng = "wm_lasterror:" & Chr$(34) & Chr$(34) & "$" & MaximaInputStreng & "WMUnitSolve('(" & ck & ")," & variabel & "," & Chr$(34) & reqAscii & Chr$(34) & ");WMUnitLastError();"
     RunMaxima 0, False, False ' no Reset: the legacy units mode must not post-process this output
     If StopNow Then Exit Sub
     raw = MaxProc.LastMaximaOutput
@@ -1430,6 +1432,7 @@ Public Sub WMUnitsSolve(ByVal ck As String, ByVal variabel As String)
             item = vbNullString
         End If
         If item <> vbNullString Then
+            If Left$(valW, 1) = "[" Then valW = WMFT_ArraySeparators(valW) ' word_math arrays: "[1000; 2000; 3000]"
             If out <> vbNullString Then out = out & " " & ChrW$(8744) & " "
             out = out & variabel & sg & valW
             If unitW <> vbNullString Then out = out & " [" & unitW & "]"
@@ -6042,7 +6045,7 @@ Function AddDefinition(s As String, Optional MathObj As OMath) As String
             '            FindDefinitions = CodeForMaxima(s) & "," & FindDefinitions
             defstringtext = defstringtext & s & ";"
             ea.text = Replace(s, ";", " , ")
-            ea.ConvertDecSeparator
+            If Not MaximaSeparator Then ea.ConvertDecSeparator ' word_math: decimal point only, so [1,2,3] must not become [1.2.3]
             ea.pos = 1
             Do
                 defenk = Trim$(ea.GetNextListItem(ea.pos, ","))

@@ -308,7 +308,7 @@ ea.SetNormalBrackets
 ea.pos = 1
 nrows = 0
     ea.text = Replace(ea.text, ";", " , ")
-    ea.ConvertDecSeparator
+    If Not MaximaSeparator Then ea.ConvertDecSeparator ' word_math: decimal point only
 
 
 Do

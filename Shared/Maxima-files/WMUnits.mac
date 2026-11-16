@@ -672,20 +672,42 @@ block([dir],
    auto-fill, prefixes and '= ? [unit]' requests work exactly as for evaluation.
    Returns a list with one string per real solution: WMU@@... as WMUnitResult, or WMUVAL@@<expr> when no units
    are involved (WordMat then formats the value as usual). Errors go through wm_err. */
-WMUnitSolve(eq, v, req) := block([inflag: true, sols, out: [], L, R, r],
-  if not freeof('wmabs, eq) then
-    wm_err("Absolute (offset) units such as [degC] or [barg] can't be used in an equation that is solved for an unknown yet. Use [K] or [bara] instead."),
+WMUnitSolve(eq, v, req) := block([inflag: true, sols, out: [], L, R, r, eqv, k, LL, RR, eqc],
+  /* eq may arrive QUOTED (from WordMat: WMUnitSolve('(a=b+c), c, "")), so defined names are still names.
+     It is rearranged symbolically first (c = a - b) and the answer evaluated afterwards with the definitions;
+     that is what makes arrays (and other structures Maxima's solve can't take) work (decided 2026-11-16).
+     If the symbolic rearrangement fails, the evaluated equation is solved as before. */
   if atom(eq) or op(eq) # "=" then eq: (eq = 0),
-  if freeof(v, eq) then wm_err(sconcat("The equation doesn't contain ", string(v), ".")),
+  eqv: ev(eq),
+  if not atom(eqv) and op(eqv) # "=" then eqv: (eqv = 0),
+  if not freeof('wmabs, eqv) then
+    wm_err("Absolute (offset) units such as [degC] or [barg] can't be used in an equation that is solved for an unknown yet. Use [K] or [bara] instead."),
+  if freeof(v, eqv) then wm_err(sconcat("The equation doesn't contain ", string(v), ".")),
+  /* 1. symbolic: names kept, then evaluated */
   sols: errcatch(solve(eq, v)),
-  if sols = [] then wm_err(sconcat("Maxima could not rearrange the equation for ", string(v), ".")),
-  sols: sublist(first(sols), lambda([s], not atom(s) and op(s) = "=" and lhs(s) = v
-                                          and freeof(v, rhs(s)) and freeof(%i, rhs(s)))),
+  sols: if sols = [] then [] else sublist(first(sols), lambda([s], not atom(s) and op(s) = "=" and lhs(s) = v
+                                                                  and freeof(v, rhs(s)))),
+  sols: sublist(map(lambda([s], v = ev(rhs(s))), sols), lambda([s], freeof(v, rhs(s)))),
+  eqc: eq, /* the equation the check substitutes into: symbolic if the symbolic solve worked */
+  /* 2. fallback: the evaluated equation */
+  if sols = [] then (
+    eqc: eqv,
+    sols: errcatch(solve(eqv, v)),
+    if sols = [] then wm_err(sconcat("Maxima could not rearrange the equation for ", string(v), ".")),
+    sols: sublist(first(sols), lambda([s], not atom(s) and op(s) = "=" and lhs(s) = v and freeof(v, rhs(s))))),
+  sols: sublist(sols, lambda([s], freeof(%i, rhs(s)))),
   if sols = [] then wm_err(sconcat("No real solution for ", string(v), ".")),
   for s in sols do (
-    wm_top: eq,
-    L: wm_an(subst(s, lhs(eq))), R: wm_an(subst(s, rhs(eq))),
-    if L[2] # R[2] then wm_mismatch("equate", L[2], R[2]),
+    wm_top: eqv,
+    /* unit check: both sides must have the same dimension (element by element for arrays) */
+    LL: ev(lhs(eqc), s), RR: ev(rhs(eqc), s), /* evaluated with the solution bound (subst first would nest arrays) */
+    if listp(LL) and listp(RR) and length(LL) = length(RR) then (
+      for k: 1 thru length(LL) do (
+        L: wm_an(LL[k]), R: wm_an(RR[k]),
+        if L[2] # R[2] then wm_mismatch("equate", L[2], R[2])))
+    elseif not (listp(LL) or listp(RR) or matrixp(LL) or matrixp(RR)) then (
+      L: wm_an(LL), R: wm_an(RR),
+      if L[2] # R[2] then wm_mismatch("equate", L[2], R[2])),
     r: WMUnitResult(rhs(s), req),
     if r = "WMU@@NONE" then r: sconcat("WMUVAL@@", string(rhs(s))),
     out: endcons(r, out)),
