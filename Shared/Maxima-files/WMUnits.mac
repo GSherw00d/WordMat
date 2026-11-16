@@ -577,7 +577,7 @@ WMUnitInfo(n) := block([u: wm_lookup(n)], [wm_fac[u], wm_dim[u], wm_sys[wm_root(
    with the largest magnitude, or the requested unit) and every element is shown in it. The value field holds
    "[v1,v2,...]" (VBA shows it with ";" separators). */
 WMUnitResult(e, req) := block([inflag: true],
-  if listp(e) then wm_listresult(e, req) else wm_result1(e, req))$
+  if matrixp(e) then wm_matresult(e, req) elseif listp(e) then wm_listresult(e, req) else wm_result1(e, req))$
 
 wm_listresult(L, req) := block([inflag: true, d, an, k, best, bv, x, r, u, vals: [], exact: true, msg: "", p],
   if req = "" and freeof('wmabs, L) and lfreeof(map(wm_sym, wm_names), L) then return("WMU@@NONE"),
@@ -661,7 +661,9 @@ block([dir],
          substring(dir, 1, 1 + lmax(cons(0, sublist(makelist(i, i, 1, slength(dir)),
                                                     lambda([i], charat(dir, i) = "/" or charat(dir, i) = "\\")))))
        else "",
-  load(sconcat(dir, "WMUnitTable.mac")))$
+  load(sconcat(dir, "WMUnitTable.mac")),
+  /* principal stresses and matrices with units (research 07) */
+  load(sconcat(dir, "WMMatrix.mac")))$
 
 /* ---------------------------------------------------------------- solving with units (2026-11-15)
    WMUnitSolve(eq, v, req): rearrange eq for the unknown v with Maxima's solve. Unit symbols (wmu_...) are opaque

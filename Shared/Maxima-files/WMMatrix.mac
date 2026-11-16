@@ -1,0 +1,192 @@
+/* ==========================================================================================================
+   WMMatrix.mac -- principal stresses (eigenvalues and eigenvectors) for word_math. GPL v3 or later.
+   Design: word_math\research\07_eigen_and_matrix_units.md. Loaded by WMUnits.mac (same folder), so it is
+   loaded once per Maxima process together with the unit engine.
+
+   Public functions
+     eigenval(M)          principal values as a column vector, sorted descending, repeated by multiplicity
+     eigenvec(M)          unit eigenvectors as COLUMNS, in the same order (M.V = V.Lambda)
+     principalangle(M)    2x2 only: angle of the first principal direction from the x axis, in degrees or
+                          radians (wm_radians, set by WordMat's settings string)
+     WMMatrixWarning()    "WMMWARN@@<message>" for the last warning (non-symmetric matrix), else ""
+   A matrix may carry one unit for all its elements (sigma: matrix(...)*wmu("MPa")): eigenval keeps it,
+   eigenvec and principalangle are dimensionless.
+   Method: symmetric matrices use the cyclic Jacobi algorithm (wm_jacobi); a symmetric 2x2 with exact entries
+   gives the exact closed form (sigma_avg +- R) when numer is false. A non-symmetric matrix gives a warning and
+   uses Maxima's general eigenvectors(). Errors go through wm_err (WMUnits.mac), so WordMat shows them.
+   ========================================================================================================== */
+
+wmmatrix_loaded: false$
+if not boundp('wm_radians) then wm_radians: false$
+wm_lastwarning: ""$
+wm_jacobi_maxsweeps: 50$
+
+wm_mwarn(s) := (if wm_lastwarning = "" then wm_lastwarning: s, s)$
+WMMatrixWarning() := if wm_lastwarning = "" then "" else sconcat("WMMWARN@@", wm_lastwarning)$
+
+wm_hasfloat(e) := if atom(e) then (floatnump(e) or bfloatp(e)) else some(wm_hasfloat, args(e))$
+wm_isnum(x) := numberp(float(x))$
+wm_issquare(M) := matrixp(M) and is(length(M) = length(M[1]))$
+wm_issym(N) := is(N = transpose(N)) or
+  (every(wm_isnum, flatten(args(N)))
+   and is(lmax(cons(0, map(lambda([x], abs(float(x))), flatten(args(N - transpose(N))))))
+          <= 1e-12 * lmax(cons(1e-300, map(lambda([x], abs(float(x))), flatten(args(N)))))))$
+
+/* cyclic Jacobi on a real symmetric matrix of numbers (floats). Returns [diagonal values, V] (unsorted), V's
+   columns the eigenvectors. Each rotation zeroes A[p,q] (Numerical Recipes, sec. 11.1): theta = (aqq-app)/(2apq),
+   t = sgn(theta)/(|theta| + sqrt(theta^2+1)), c = 1/sqrt(t^2+1), s = t*c; A <- J^T.A.J, V <- V.J.
+   Stops when the off-diagonal sum of squares is below (1e-15 * Frobenius norm)^2, at most 50 sweeps. */
+wm_jacobi(A0) := block([A: float(A0), n, V, off, fro2, sweep: 0, p, q, th, t, c, s, J],
+  n: length(A), V: ident(n), fro2: lsum(x^2, x, flatten(args(A))),
+  off: lambda([B], sum(sum(B[i, j]^2, j, i + 1, n), i, 1, n - 1)),
+  while off(A) > 1e-30 * fro2 and off(A) > 0 do (
+    sweep: sweep + 1,
+    if sweep > wm_jacobi_maxsweeps then wm_err("The eigenvalue routine (Jacobi) did not converge."),
+    for p: 1 thru n - 1 do for q: p + 1 thru n do
+      if A[p, q] # 0.0 and A[p, q] # 0 then (
+        th: (A[q, q] - A[p, p]) / (2 * A[p, q]),
+        t: (if th >= 0 then 1 else -1) / (abs(th) + sqrt(th^2 + 1)),
+        c: 1 / sqrt(t^2 + 1), s: t * c,
+        J: ident(n), J[p, p]: c, J[q, q]: c, J[p, q]: s, J[q, p]: -s,
+        A: transpose(J) . A . J, A[p, q]: 0.0, A[q, p]: 0.0,
+        V: V . J)),
+  [makelist(A[i, i], i, 1, n), V])$
+
+/* ---------------------------------------------------------------- ordering and sign rules */
+wm_iszero(x) := numberp(x) and is(float(x) = 0.0)$
+/* a vector (list) with unit length, its largest-magnitude component positive (the first of equal ones, within
+   1e-9), and components below 1e-13 set to 0.0 */
+wm_vecnorm(v) := block([m, k: 0, w],
+  w: float(v), m: sqrt(lsum(x^2, x, w)),
+  if m = 0.0 then return(w),
+  w: map(lambda([x], if abs(x / m) < 1e-13 then 0.0 else x / m), w),
+  m: lmax(map(abs, w)),
+  for j: 1 thru length(w) do if k = 0 and abs(w[j]) >= m * (1 - 1e-9) then k: j,
+  if w[k] < 0 then map(lambda([x], if x = 0.0 then 0.0 else -x), w) else w)$
+/* sort [value, vector] pairs: values descending (stable for equal values) */
+wm_sortpairs(P) := block([Q: makelist(endcons(i, P[i]), i, 1, length(P))],
+  Q: sort(Q, lambda([a, b], is(float(a[1]) > float(b[1]) or (float(a[1]) = float(b[1]) and a[3] < b[3])))),
+  map(lambda([q], [q[1], q[2]]), Q))$
+wm_cols(vs) := transpose(apply(matrix, vs))$
+
+/* symmetric: Jacobi, sorted, sign rule. Returns [values, V] */
+wm_eigsym(N) := block([r, n, sc, P],
+  r: wm_jacobi(N), n: length(N),
+  sc: sqrt(lsum(x^2, x, float(flatten(args(N))))),
+  P: makelist([if abs(r[1][i]) < 1e-13 * sc then 0.0 else r[1][i],
+               wm_vecnorm(makelist(r[2][k, i], k, 1, n))], i, 1, n),
+  P: wm_sortpairs(P),
+  [map(first, P), wm_cols(map(second, P))])$
+
+/* ---------------------------------------------------------------- one unit per matrix
+   [N, U]: the numbers N and the unit U (an expression in wmu_ symbols, or 1) with M = N*U. Every non-zero
+   element must have the same dimension. U is the unit WMUnitResult would show for the largest element (so
+   [MPa] stays MPa; mixed MPa and kPa elements are converted to it). */
+wm_matsplit(M) := block([inflag: true, L, an, d: false, best: 0, bv: -1, x, u, f],
+  if freeof('wmabs, M) and lfreeof(map(wm_sym, wm_names), M) then return([M, 1]),
+  if not freeof('wmabs, M) then
+    wm_err("Matrices with absolute units such as [degC] or [barg] aren't supported. Use [K], [DdegC] or [bara]."),
+  wm_top: M,
+  L: flatten(args(M)), an: map(wm_an, L),
+  for k: 1 thru length(L) do if not wm_iszero(L[k]) then (
+    if d = false then d: an[k][2]
+    elseif an[k][2] # d then
+      wm_err(sconcat("All elements of a matrix must have the same kind of unit, but one is ", wm_dimtext(d),
+                     " and another is ", wm_dimtext(an[k][2]), ".")),
+    x: errcatch(float(abs(an[k][1]))),
+    if x # [] and numberp(x[1]) and is(x[1] > bv) then (best: k, bv: x[1])),
+  if d = false or d = wm_dimzero or best = 0 then return([matrixmap(lambda([e], wm_an(e)[1]), M), 1]),
+  u: split(wm_result1(L[best], ""), "@@", false)[4],
+  f: wm_an(wmu(u))[1],
+  [matrixmap(lambda([e], if wm_iszero(e) then 0 else wm_an(e)[1] / f), M), wmu(u)])$
+
+/* not symmetric: warning, Maxima's general eigenvectors(). Returns [values, V] (V false if not needed) */
+wm_eiggen(N, exact) := block([ev, vals, P: [], n: length(N)],
+  wm_mwarn("Warning: the matrix is not symmetric, so its eigenvectors need not be orthogonal (this is not a stress tensor). Maxima's general eigenvalue routine was used."),
+  ev: errcatch(eigenvectors(if wm_hasfloat(N) then rationalize(N) else N)),
+  if ev = [] then wm_err("Maxima could not find the eigenvalues of this matrix."),
+  ev: ev[1], vals: ev[1][1],
+  if some(lambda([x], abs(float(imagpart(rectform(x)))) > 1e-12 * (1 + abs(float(realpart(rectform(x)))))), vals) then
+    wm_err("The matrix has complex eigenvalues, so it has no real principal values."),
+  for k: 1 thru length(vals) do
+    for v in ev[2][k] do
+      P: endcons([if exact then vals[k] else float(realpart(rectform(vals[k]))), wm_vecnorm(v)], P),
+  if length(P) < n then
+    wm_err("The matrix doesn't have a full set of eigenvectors (it is defective), so it can't be diagonalised."),
+  P: wm_sortpairs(P),
+  [map(first, P), wm_cols(map(second, P))])$
+
+/* ---------------------------------------------------------------- the public functions */
+/* [values, V, U]. exactok: a symmetric 2x2 with exact entries gives the exact closed form of the values
+   (sigma_avg +- R) when numer is false; V is then false (not computed). */
+wm_eigen(M, fname, exactok) := block([s, N, U, n, a, b, d, m, R, exact],
+  if not wm_issquare(M) then
+    wm_err(sconcat(fname, "( ) needs a square matrix, for example a 2x2 or 3x3 stress tensor.")),
+  s: wm_matsplit(M), N: s[1], U: s[2], n: length(N),
+  exact: exactok and not numer and not wm_hasfloat(N) and n = 2,
+  if not every(wm_isnum, flatten(args(N))) and not (exact and wm_issym(N)) then
+    wm_err(sconcat(fname, "( ) needs a matrix of numbers.")),
+  if wm_issym(N) then (
+    if exact then (
+      a: N[1, 1], b: N[1, 2], d: N[2, 2],
+      m: (a + d) / 2, R: sqrt(((a - d) / 2)^2 + b^2),
+      return([[m + R, m - R], false, U])),
+    s: wm_eigsym(N))
+  else s: wm_eiggen(N, exact and n = 2),
+  [s[1], s[2], U])$
+
+eigenval(M) := block([r: wm_eigen(M, "eigenval", true)],
+  apply(matrix, map(lambda([x], [x]), r[1])) * r[3])$
+
+eigenvec(M) := wm_eigen(M, "eigenvec", false)[2]$
+
+/* 2x2: theta = atan2(2 tau, sx - sy)/2 in (-90, 90] degrees for a symmetric matrix (0 when every direction
+   is principal); otherwise the angle of eigenvec's first column, brought into (-90, 90]. */
+principalangle(M) := block([s, N, a, b, d, th, V],
+  if not wm_issquare(M) or length(M) # 2 then
+    wm_err("principalangle( ) needs a 2x2 matrix (plane stress). For a 3x3 tensor, eigenvec( ) gives the principal directions."),
+  s: wm_matsplit(M), N: s[1],
+  if not every(wm_isnum, flatten(args(N))) then wm_err("principalangle( ) needs a matrix of numbers."),
+  if wm_issym(N) then (
+    a: N[1, 1], b: N[1, 2], d: N[2, 2],
+    th: if wm_iszero(b) and wm_iszero(a - d) then 0 else atan2(2 * b, a - d) / 2)
+  else (
+    V: wm_eiggen(N, false)[2],
+    th: atan2(V[2, 1], V[1, 1]),
+    if float(th) > float(%pi / 2) then th: th - %pi elseif float(th) <= float(-%pi / 2) then th: th + %pi),
+  if not wm_radians then float(th * 180 / %pi)
+  elseif numer or wm_hasfloat(N) then float(th) else th)$
+
+/* ---------------------------------------------------------------- matrices in WMUnitResult
+   One display unit for the whole matrix (decided 2026-11-16): auto-fill and prefix from the element with the
+   largest magnitude, or the requested unit. Zero elements are 0 in any unit. Every non-zero element must have
+   the same dimension. The value field is "matrix([v11,v12],[v21,v22])" (VBA turns it into a Word matrix). */
+wm_matresult(M, req) := block([inflag: true, L, an, d: false, best: 0, bv: -1, x, p, u, vals: [], exact: true,
+                               msg: "", nc],
+  if req = "" and freeof('wmabs, M) and lfreeof(map(wm_sym, wm_names), M) then return("WMU@@NONE"),
+  if not freeof('wmabs, M) then
+    wm_err("Matrices with absolute units such as [degC] or [barg] aren't supported. Use [K], [DdegC] or [bara]."),
+  wm_top: M,
+  L: flatten(args(M)), an: map(wm_an, L), nc: length(M[1]),
+  for k: 1 thru length(L) do if not wm_iszero(L[k]) then (
+    if d = false then d: an[k][2]
+    elseif an[k][2] # d then
+      wm_err(sconcat("All elements of a matrix must have the same kind of unit, but one is ", wm_dimtext(d),
+                     " and another is ", wm_dimtext(an[k][2]), ".")),
+    x: errcatch(float(abs(an[k][1]))),
+    if x # [] and numberp(x[1]) and is(x[1] > bv) then (best: k, bv: x[1])),
+  u: req,
+  if u = "" and best > 0 then u: split(wm_result1(L[best], ""), "@@", false)[4],
+  for x in L do
+    if wm_iszero(x) then vals: endcons("0", vals)
+    else (
+      p: split(wm_result1(x, u), "@@", false),
+      if p[2] # "=" then exact: false,
+      if msg = "" then msg: p[5],
+      vals: endcons(p[3], vals)),
+  sconcat("WMU@@", if exact then "=" else "~", "@@matrix(",
+          simplode(makelist(sconcat("[", simplode(makelist(vals[(i - 1) * nc + j], j, 1, nc), ","), "]"),
+                            i, 1, length(M)), ","),
+          ")@@", u, "@@", msg, "@@none"))$
+
+wmmatrix_loaded: true$
