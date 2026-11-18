@@ -474,6 +474,8 @@ Sub SetButtonsAccordingToSettings()
         OptionButton_komma.value = True
     End If
     OptionButton_komma.Enabled = False ' word_math: decimal point only (decided 2026-11-16)
+    OptionButton_geogebra.Enabled = False ' word_math: no GeoGebra graphing (decided 2026-11-18)
+    OptionButton_geogebraweb.Enabled = False
     
     If AllTrig Then
         OptionButton_trigall.value = True

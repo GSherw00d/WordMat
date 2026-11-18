@@ -1,4 +1,4 @@
-<!-- word_math (WordMathEng): edited copy of WordMat's ribbon. The build writes it into the template. Tab renamed; WordMat+ menu, update buttons and online help removed (2026-11-16); GeoGebra 5 install button removed (2026-11-18). -->
+<!-- word_math (WordMathEng): edited copy of WordMat's ribbon. The build writes it into the template. Tab renamed; WordMat+ menu, update buttons and online help removed (2026-11-16); GeoGebra install and graph buttons removed (2026-11-18; graphs use Excel). -->
 <!--RibbonX Visual Designer 1.92 for Microsoft Word 14.0. XML Code produced on 2010-08-04-->
 <customUI  xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="LoadRibbon">
 <ribbon >
@@ -205,8 +205,6 @@
 	<splitButton id="sbuttongraf" size="large" keytip="V" getVisible="Rib_GetVisible_SMGraphs">
 		<button id="ButtonGraf"	imageMso="ChartTrendline" getLabel="Rib_GetLabelShowGraph" keytip="V" getScreentip="Rib_STplot1" getSupertip="Rib_STplot2" showImage="true"	onAction="Rib_graf"/>
 		<menu id="menuvisgraf" label="grafer">
-			<button id="ButtonGeoGebra" image="GeoGebra" label="GeoGebra Calculator Suite" keytip="B" getScreentip="Rib_STgeogebraBplot1" getSupertip="Rib_STgeogebraBplot2" showImage="true" onAction="Rib_GeoGebraB" getVisible="Rib_GetVisible_SMGraphsGeogebraSuite"/>
-			<button id="ButtonGeoGebra5" image="GeoGebra" label="GeoGebra 5" getScreentip="Rib_STgeogebraplot1" getSupertip="Rib_STgeogebraplot2" showImage="true" onAction="Rib_GeoGebra" getVisible="Rib_GetVisible_SMGraphsGeogebra5"/>
 			<button id="gnuplotobj" label="GnuPlot" imageMso="ChartTrendline" showImage="true"  getScreentip="Rib_STgnuplot1" getSupertip="Rib_STgnuplot2" onAction="Rib_gnuplot" getVisible="Rib_GetVisible_SMGraphsGnuPlot"/>
 			<button id="graphobj" label="Graph" image="Graph" showImage="true" 	getScreentip="Rib_STgraphplot1" getSupertip="Rib_STgraphplot2" onAction="Rib_graphobj" getVisible="Rib_GetVisible_SMGraphsGraph"/>
 			<button id="excelobj" label="Excel" imageMso="TableExcelSpreadsheetInsert" showImage="true"	getScreentip="Rib_STexcelplot1" getSupertip="Rib_STexcelplot2" onAction="Rib_excelobj" getVisible="Rib_GetVisible_SMGraphsExcel"/>

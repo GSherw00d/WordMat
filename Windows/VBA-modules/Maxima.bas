@@ -591,7 +591,7 @@ newcas:
         End If
         If CheckForError Then
             If TempCas = 0 And CASengine = 0 Then
-                If MsgBox2(TT.A(131) & vbCrLf & vbCrLf & "Do you want to try GeoGebra CAS?", vbYesNo, "Retry?") = vbYes Then
+                If False Then ' word_math: no GeoGebra CAS fallback (decided 2026-11-18); as if the user answered No
                     CASengineTempOnly = 2
                     omax.MaximaOutput = vbNullString
                     omax.KommentarOutput = vbNullString
@@ -657,7 +657,7 @@ newcas:
             Selection.TypeText TT.A(132)
         ElseIf omax.MaximaOutput = "?" Or omax.MaximaOutput = "" Or InStr(omax.KommentarOutput, "Lisp error") > 0 Or (Not LmSet And Not IsSolved) Then
             If TempCas = 0 And CASengine = 0 Then
-                If MsgBox2(TT.A(131) & vbCrLf & vbCrLf & "Do you want to try GeoGebra CAS?", vbYesNo, "Retry?") = vbYes Then
+                If False Then ' word_math: no GeoGebra CAS fallback (decided 2026-11-18); as if the user answered No
                     CASengineTempOnly = 2
                     omax.MaximaOutput = vbNullString
                     omax.KommentarOutput = vbNullString

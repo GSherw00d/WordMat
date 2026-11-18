@@ -192,6 +192,7 @@ On Error Resume Next
     mshowassum = CBool(GetRegSetting("ShowAssum"))
     mpolaroutput = CBool(GetRegSetting("PolarOutput"))
     mgraphapp = val(GetRegSetting("GraphApp"))
+    If mgraphapp = 2 Or mgraphapp = 4 Then mgraphapp = 3 ' word_math: no GeoGebra; Excel instead (decided 2026-11-18)
 #If Mac Then
     If mgraphapp = 0 Then mgraphapp = 2 ' gnuplot is not available on mac
 #End If
@@ -309,7 +310,7 @@ Public Sub SetAllDefaultRegistrySettings(Optional ForceReset As Boolean = False)
 #If Mac Then
         GraphApp = 4 ' geogebraweb
 #Else
-        GraphApp = 4
+        GraphApp = 3 ' word_math: Excel is the default for graphs (decided 2026-11-18)
 #End If
         LanguageSetting = 0
         dAsDiffChr = False
@@ -999,6 +1000,7 @@ Public Property Get GraphApp() As Integer
     GraphApp = mgraphapp
 End Property
 Public Property Let GraphApp(xval As Integer)
+    If xval = 2 Or xval = 4 Then xval = 3 ' word_math: no GeoGebra; Excel instead
     SetRegSetting "GraphApp", xval
     mgraphapp = xval
 End Property
