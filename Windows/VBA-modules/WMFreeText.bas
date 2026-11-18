@@ -52,6 +52,7 @@ Private Type FTParsed
     ReplEnd As Long         ' 1-based offset in Content just after the last character to replace
     Spaced As Boolean       ' the user wrote spaces around the answer's = sign
     OutUnit As String       ' requested output unit, text inside [ ] (empty when none)
+    DefExpr As String       ' word_math define-ask: the definition part ("name := expr") of a definition, else empty
 End Type
 
 ' Free-text definitions found by WMFT_BeginDefinitions, in document order
@@ -260,7 +261,9 @@ Public Function WMFT_HandleEvaluate() As Boolean
                 firstErr = "-"
             End If
         ElseIf nt = 1 Then
-            If p.Kind = KIND_DEF Then
+            If p.Kind = KIND_DEF And p.ErrMsg <> "" Then
+                firstErr = p.ErrMsg ' word_math define-ask: a function definition with "= ?"
+            ElseIf p.Kind = KIND_DEF Then
                 firstErr = "This is a definition (:=). There is nothing to evaluate. Definitions are used by the equations after it."
             Else
                 firstErr = "There is nothing to evaluate. End the equation with '= ?' to ask for its value, e.g. ~~F = m" & ChrW$(183) & "a = ?~~"
@@ -321,9 +324,9 @@ Public Sub WMFT_BeginDefinitions(ByVal beforePos As Long)
     For i = 1 To n
         If Not spans(i).Unbalanced And spans(i).CloseEnd <= beforePos Then
             p = ParseSpan(spans(i).Content)
-            If p.Kind = KIND_DEF Then
+            If p.DefExpr <> "" Then ' word_math define-ask: also "name := expr = ?" and answered ones
                 e = ""
-                s = ToLinear(p.Expr, e)
+                s = ToLinear(p.DefExpr, e)
                 mDefCount = mDefCount + 1
                 mDefPos(mDefCount) = spans(i).OpenStart
                 mDefText(mDefCount) = Replace(s, ":=", ChrW$(8788))
@@ -407,7 +410,7 @@ Private Function EvaluateSpan(sp As FTSpan, p As FTParsed, ByRef delta As Long, 
         msg = "The brackets ( ) don't match."
         GoTo slut
     End If
-    lone = IsLoneName(p.Expr) ' word_math free-text solving: "~~a = ?~~"
+    lone = IsLoneName(p.Expr) And p.DefExpr = "" ' word_math free-text solving: "~~a = ?~~" (word_math define-ask: never for "b := a = ?")
     If lone Then WMU_Request = vbNullString ' first see whether the name has a value (a request could fail on it)
     omax.Kommando = cmd
     omax.beregn
@@ -645,14 +648,7 @@ Private Function ParseSpan(ByVal content As String) As FTParsed
 
     q = InStr(body, "?")
     If InStr(body, ":=") > 0 Or InStr(body, ChrW$(8788)) > 0 Then
-        If q > 0 Then
-            p.Kind = KIND_ERROR
-            p.ErrMsg = "An equation can't both define (:=) and ask for a value (= ?)."
-        Else
-            p.Kind = KIND_DEF
-            p.Expr = Trim$(Replace(body, ChrW$(8788), ":="))
-        End If
-        ParseSpan = p
+        ParseSpan = ParseDefinition(body, bodyLen) ' word_math define-ask
         Exit Function
     End If
 
@@ -731,6 +727,125 @@ Private Function ParseSpan(ByVal content As String) As FTParsed
         End If
     Next
     ParseSpan = p
+End Function
+
+Private Function ParseDefinition(ByVal body As String, ByVal bodyLen As Long) As FTParsed
+' word_math define-ask (decided 2026-11-18): "name := expr" defines name; "name := expr = ? [unit]" also writes
+' its value after it, and "name := expr = <result>" holds that answer, recalculated in place. DefExpr is always
+' the definition part only, so an answer tail never reaches the definitions.
+    Dim p As FTParsed, d As Long, dl As Long, nm As String, rhs As String, cut As Long, tail As String, s As String
+    WMFT_DefSign body, d, dl
+    nm = Trim$(Left$(body, d - 1))
+    rhs = Mid$(body, d + dl)
+    cut = WMFT_DefTailCut(rhs)
+    If cut = 0 Then
+        If InStr(body, "?") > 0 Then
+            p.Kind = KIND_ERROR
+            s = Trim$(Mid$(body, InStr(body, "?") + 1))
+            If s = "" Or (Left$(s, 1) = "[" And Right$(s, 1) = "]") Then
+                p.ErrMsg = "Ask for a value with '= ?' after the definition, e.g. ~~a := 5 = ?~~."
+            Else
+                p.ErrMsg = "The '?' must come at the end of the equation (optionally followed by an output unit, e.g. = ? [kN])."
+            End If
+        Else
+            p.Kind = KIND_DEF
+            p.Expr = Trim$(Replace(body, ChrW$(8788), ":="))
+            p.DefExpr = p.Expr
+        End If
+        ParseDefinition = p: Exit Function
+    End If
+    p.Expr = Trim$(Left$(rhs, cut - 1))
+    tail = Trim$(Mid$(rhs, cut + 1))
+    If nm = "" Then
+        p.Kind = KIND_ERROR: p.ErrMsg = "There is no name before ':='."
+    ElseIf p.Expr = "" Then
+        p.Kind = KIND_ERROR: p.ErrMsg = "There is no expression between ':=' and the '='."
+    ElseIf InStr(OutsideBrackets(nm), "(") > 0 Then
+        ' a function definition has no single value: it is still defined, the "?" or answer is left alone
+        p.Kind = KIND_DEF
+        p.DefExpr = nm & " := " & p.Expr
+        p.Expr = p.DefExpr
+        p.ErrMsg = nm & " is a function definition, so it has no single value to write after it. The function is defined; ask for a value of it in a later equation, e.g. ~~" & Left$(nm, InStr(nm, "(")) & "3) = ?~~."
+    Else
+        p.DefExpr = nm & " := " & p.Expr
+        p.ReplStart = d + dl - 1 + cut
+        p.ReplEnd = bodyLen + 1
+        p.Spaced = (Mid$(body, p.ReplStart + 1, 1) = " ") Or (Mid$(body, p.ReplStart - 1, 1) = " ")
+        If Left$(tail, 1) = "?" Then
+            p.Kind = KIND_ASK
+            s = Trim$(Mid$(tail, 2))
+            If s <> "" Then
+                p.OutUnit = Trim$(Mid$(s, 2, Len(s) - 2))
+                If p.OutUnit = "" Then p.Kind = KIND_ERROR: p.ErrMsg = "The output unit [ ] after '?' is empty."
+            End If
+        Else
+            p.Kind = KIND_ANSWERED
+            p.OutUnit = LastBracketUnit(tail)
+        End If
+    End If
+    ParseDefinition = p
+End Function
+
+Public Sub WMFT_DefSign(ByVal s As String, ByRef d As Long, ByRef dl As Long)
+' word_math define-ask: position d (0 = none) and length dl of the first definition sign, ":=" or U+2254
+    Dim k As Long
+    d = InStr(s, ChrW$(8788)): dl = 1
+    k = InStr(s, ":=")
+    If k > 0 And (d = 0 Or k < d) Then d = k: dl = 2
+End Sub
+
+Public Function WMFT_DefTailCut(ByVal rhs As String) As Long
+' word_math define-ask: rhs is the text after a definition sign. Returns the 1-based position of the top-level
+' = or approximately-equal sign where an ask tail ("= ?", "= ? [kN]") or an answer tail ("= 5", "= 2.5 [kN]")
+' starts, or 0 when rhs is just the defining expression. The first such sign counts.
+    Dim i As Long, c As String, depth As Long, t As String, u As String
+    For i = 1 To Len(rhs)
+        c = Mid$(rhs, i, 1)
+        If c = "(" Or c = "[" Or c = "{" Then depth = depth + 1
+        If c = ")" Or c = "]" Or c = "}" Then depth = depth - 1
+        If depth = 0 And (c = "=" Or c = ChrW$(8776)) Then
+            t = Trim$(Mid$(rhs, i + 1))
+            If Left$(t, 1) = "?" Then
+                u = Trim$(Mid$(t, 2))
+                If u = "" Or (Left$(u, 1) = "[" And Right$(u, 1) = "]" And InStr(2, u, "[") = 0 And InStr(u, "]") = Len(u)) Then WMFT_DefTailCut = i: Exit Function
+            ElseIf IsResultText(t) Then
+                WMFT_DefTailCut = i: Exit Function
+            End If
+        End If
+    Next
+End Function
+
+Public Function WMFT_DefAskRhs(ByVal s As String) As String
+' word_math define-ask, Word equations: if the linear text s is one definition of a name (not a function) with an
+' ask or answer tail ("M6" & U+2254 & "5=?", "M6:=5=5"), returns the part after the definition sign (with the
+' tail, "5=?"), so it can be evaluated like any other equation. Otherwise returns an empty string.
+    Dim d As Long, dl As Long, d2 As Long, dl2 As Long, nm As String, rhs As String, cut As Long
+    WMFT_DefSign s, d, dl
+    If d = 0 Then Exit Function
+    nm = Trim$(Left$(s, d - 1))
+    rhs = Mid$(s, d + dl)
+    WMFT_DefSign rhs, d2, dl2
+    If d2 > 0 Or nm = "" Or InStr(nm, "(") > 0 Or InStr(nm, ":") > 0 Or InStr(nm, ";") > 0 Then Exit Function
+    cut = WMFT_DefTailCut(rhs)
+    If cut = 0 Then Exit Function
+    If Trim$(Left$(rhs, cut - 1)) = "" Then Exit Function
+    WMFT_DefAskRhs = Trim$(rhs)
+End Function
+
+Public Function WMFT_DefinitionPart(ByVal s As String) As String
+' word_math define-ask: the definition without an ask or answer tail ("a:=5=5" -> "a:=5"); s unchanged otherwise.
+' Used by CMaxima.AddDefinition for Word equations and free text alike.
+    Dim d As Long, dl As Long, d2 As Long, dl2 As Long, rhs As String, cut As Long, slc As String
+    WMFT_DefinitionPart = s
+    slc = LCase$(s)
+    If InStr(slc, "ligning:") > 0 Or InStr(slc, "equation:") > 0 Then Exit Function ' equation definitions keep their =
+    WMFT_DefSign s, d, dl
+    If d = 0 Then Exit Function
+    rhs = Mid$(s, d + dl)
+    WMFT_DefSign rhs, d2, dl2
+    If d2 > 0 Then Exit Function ' several definitions: left as they are
+    cut = WMFT_DefTailCut(rhs)
+    If cut > 1 Then WMFT_DefinitionPart = RTrim$(Left$(s, d + dl - 1 + cut - 1))
 End Function
 
 Public Function WMFT_AnswerCut(ByVal t As String, ByRef cutPos As Long, ByRef oldUnit As String) As Boolean
