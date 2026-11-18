@@ -1,4 +1,4 @@
-<!-- word_math (WordMathEng): edited copy of WordMat's ribbon. The build writes it into the template. Tab renamed; WordMat+ menu, update buttons and online help removed (2026-11-16). -->
+<!-- word_math (WordMathEng): edited copy of WordMat's ribbon. The build writes it into the template. Tab renamed; WordMat+ menu, update buttons and online help removed (2026-11-16); GeoGebra 5 install button removed (2026-11-18). -->
 <!--RibbonX Visual Designer 1.92 for Microsoft Word 14.0. XML Code produced on 2010-08-04-->
 <customUI  xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="LoadRibbon">
 <ribbon >
@@ -308,7 +308,6 @@
 		<menuSeparator id="myMenuSep3"/>
 		<button id="ButtonHelpMaxima" imageMso="FunctionsLogicalInsertGallery" getLabel="Rib_GetLabelMaximaHelp" keytip="O" getScreentip="Rib_STmaxmanual1" getSupertip="Rib_STmaxmanual2" showImage="true" onAction="Rib_HelpMaxima"/>
 	</menu>
- <button id="ButtonCheckUpdateGeoGebra" size="normal" label="Update/Install GeoGebra 5" screentip="Donwloads or Updates GeoGebra 5" showImage="true" imageMso="RecurrenceEdit" onAction="Rib_CheckForUpdateGeoGebra"/>
 	<button id="ButtonOm" getLabel="Rib_GetLabelAbout" keytip="Om" getScreentip="Rib_STabout1" getSupertip="Rib_STabout2" showImage="true" imageMso="WorkflowPending" onAction="Rib_om"/>
 
 
