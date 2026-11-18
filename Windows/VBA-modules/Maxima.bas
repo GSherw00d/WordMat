@@ -1450,6 +1450,7 @@ Sub beregn()
     Dim fejlm As String, RemoveEqual As Boolean
     Dim wmAsk As Boolean, wmCmd As String ' word_math units
     Dim wmRecalc As Boolean, wmCut As Long, wmOldUnit As String, wmTail As String ' word_math recalculation
+    Dim wmDefRhs As String ' word_math define-ask
     On Error GoTo fejl
     If WMFT_HandleEvaluate() Then Exit Sub ' word_math free text: cursor/selection in a ~~...~~ span (no OMath selected)
    ' Application.ScreenUpdating = False
@@ -1513,6 +1514,10 @@ Sub beregn()
     End If
     omax.ReadSelection
     
+    ' word_math define-ask (decided 2026-11-18): "a" & U+2254 & "5=?" defines a (FindDefinitions takes the part
+    ' without the tail) and evaluates its right side; the answer replaces "=?" or the old answer as usual
+    wmDefRhs = WMFT_DefAskRhs(omax.Kommando)
+    If wmDefRhs <> vbNullString Then omax.Kommando = wmDefRhs
     If InStr(omax.Kommando, VBA.ChrW$(8788)) > 0 Or InStr(VBA.LCase$(omax.Kommando), "definer:") > 0 Or InStr(VBA.LCase$(omax.Kommando), "define:") > 0 Or InStr(VBA.LCase$(omax.Kommando), "definer ligning:") > 0 Or InStr(omax.Kommando, VBA.ChrW$(8801)) > 0 Then
         MsgBox TT.A(48), vbOKOnly, TT.Error
         GoTo slut
@@ -1526,7 +1531,7 @@ Sub beregn()
     ' word_math recalculation (decided 2026-11-16): an equation that already ends with WordMat's answer
     ' ("F=m*a=10") is evaluated again and the old answer replaced; its unit is kept as the unit check
     If Not wmAsk Then
-        If WMFT_AnswerCut(wmCmd, wmCut, wmOldUnit) Then
+        If WMFT_AnswerCut(wmCmd, wmCut, wmOldUnit, wmDefRhs <> vbNullString) Then ' word_math define-ask: defRhs
             wmRecalc = True
             wmTail = Mid$(wmCmd, wmCut)
             omax.Kommando = Trim$(Left$(wmCmd, wmCut - 1))

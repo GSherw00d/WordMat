@@ -6023,6 +6023,7 @@ Function AddDefinition(s As String, Optional MathObj As OMath) As String
 '    If InStr(s, ChrW$(12311)) Then s = Replace(s, ChrW$(12311), "")    ' special invisible brackets are removed
     If InStr(s, vbCrLf) Then s = Replace(s, vbCrLf, "")    ' enter can accur
     If InStr(s, vbCr) Then s = Replace(s, vbCr, "")
+    s = WMFT_DefinitionPart(s) ' word_math define-ask: "a:=5=?" and "a:=5=5" define a:=5 (the tail is ignored)
     slc = LCase$(s)
  
     If InStr(s, ChrW$(8788)) > 0 Or InStr(s, ChrW$(8797)) > 0 Or InStr(s, ":=") > 0 Or InStr(slc, "definer:") > 0 Or InStr(slc, "define:") > 0 Or InStr(slc, "ligning:") > 0 Or InStr(slc, "equation:") > 0 Or InStr(slc, "slet def") > 0 Or InStr(slc, "slet\ def") > 0 Or InStr(slc, "delete def") > 0 Or InStr(s, ChrW$(8801)) > 0 Or InStr(slc, LCase$(TT.A(69))) > 0 Then

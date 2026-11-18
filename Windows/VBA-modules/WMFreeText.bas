@@ -848,7 +848,7 @@ Public Function WMFT_DefinitionPart(ByVal s As String) As String
     If cut > 1 Then WMFT_DefinitionPart = RTrim$(Left$(s, d + dl - 1 + cut - 1))
 End Function
 
-Public Function WMFT_AnswerCut(ByVal t As String, ByRef cutPos As Long, ByRef oldUnit As String) As Boolean
+Public Function WMFT_AnswerCut(ByVal t As String, ByRef cutPos As Long, ByRef oldUnit As String, Optional ByVal defRhs As Boolean = False) As Boolean
 ' word_math recalculation for Word equations: True if the linear text t already ends with an answer written by
 ' WordMat, e.g. "F=m*a=10" or "2+3=5" or "1 [bar]*1 [m^2]=100 [kN]". cutPos is the 1-based position of the sign
 ' where the answer starts; oldUnit is the answer's [unit] (empty if none), used as the unit request so that
@@ -868,7 +868,8 @@ Public Function WMFT_AnswerCut(ByVal t As String, ByRef cutPos As Long, ByRef ol
             lhs = Trim$(Left$(t, relPos(i) - 1))
             If lhs = "" Then Exit Function
             ' a name on the left of the first sign: try the next sign ("y=2*3=99" is answered at the second)
-            If Not (i = 1 And IdentifierCount(OutsideBrackets(lhs)) > 0) Then
+            ' word_math define-ask: t is the right side of a definition ("m*acc=2.5 [kN]"): names are expected there
+            If defRhs Or Not (i = 1 And IdentifierCount(OutsideBrackets(lhs)) > 0) Then
                 cutPos = relPos(i)
                 oldUnit = LastBracketUnit(tail)
                 WMFT_AnswerCut = True
