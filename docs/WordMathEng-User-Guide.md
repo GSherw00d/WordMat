@@ -16,6 +16,7 @@ Numbers always use a **decimal point** (`2.5`). Lists and arrays separate their 
 |---|---|
 | `~~m := 5 [kg]~~` | a definition (`:=` or `≔`); applies to everything below it, in free text and in Word equations |
 | `~~F = m·a = ?~~` | calculate: the answer replaces the `?` |
+| `~~F := m·a = ? [kN]~~` | define and calculate in one: defines `F` and writes its value after it (`= 2.5 [kN]`); recalculated in place like any answer. Word equations: `F≔m·a=?` |
 | `~~F = m·a = ? [kN]~~` | calculate in a chosen unit |
 | `~~F = m·a~~` | a plain equation (a relation); not calculated, but used for solving |
 | `~~a = ?~~` | solve: rearranges the nearest earlier equation that contains `a` and whose other symbols are defined |
@@ -36,6 +37,7 @@ Numbers always use a **decimal point** (`2.5`). Lists and arrays separate their 
   - Note: an equation you typed yourself in the form `name = number`, e.g. `~~x = 5~~`, is also recalculated
     if something gives `x` a value.
 - The **Solve** button inside `~~ … ~~` explains the `~~a = ?~~` syntax.
+- **Define and ask:** the definition part (`F := m·a`) applies to later equations whether or not the answer has been written yet; the answer after it is ignored. A function definition (`~~f(x) := x^2 = ?~~`) is defined but gets no value, with a message.
 
 ## Units
 
